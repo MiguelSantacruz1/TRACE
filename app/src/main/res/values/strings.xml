@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Identificación de la aplicación -->
+    <string name="app_name">TRACE</string>
+    <string name="app_tagline">Trazabilidad y sostenibilidad de productos en tiempo real</string>
+
+    <!-- Navegación -->
+    <string name="nav_home">Inicio</string>
+    <string name="nav_scanner">Escanear</string>
+    <string name="nav_history">Historial</string>
+    <string name="nav_compare">Comparador</string>
+    <string name="nav_ai">TRACE AI</string>
+
+    <!-- Pantalla de Inicio (Home) -->
+    <string name="home_welcome_title">Investiga lo que consumes</string>
+    <string name="home_welcome_subtitle">Escanea el código de barras de cualquier producto para descubrir su origen, materiales, impacto ambiental y alternativas sostenibles.</string>
+    <string name="home_btn_scan">Escanear código de barras</string>
+    <string name="home_btn_history">Ver historial de consultas</string>
+    <string name="home_btn_compare">Comparar productos</string>
+    <string name="home_btn_ai">Consultar con TRACE AI</string>
+    <string name="home_manual_search_hint">O buscar por nombre o marca...</string>
+
+    <!-- Escáner de Códigos -->
+    <string name="scanner_title">Escáner de Productos</string>
+    <string name="scanner_instruction">Alinea el código de barras dentro del marco</string>
+    <string name="scanner_flashlight_on">Encender linterna</string>
+    <string name="scanner_flashlight_off">Apagar linterna</string>
+    <string name="scanner_camera_permission_title">Permiso de cámara necesario</string>
+    <string name="scanner_camera_permission_rationale">TRACE requiere acceso a la cámara para escanear los códigos de barras de los productos en tiempo real.</string>
+    <string name="scanner_camera_permission_granted">Permiso concedido</string>
+    <string name="scanner_camera_permission_denied">Permiso denegado</string>
+    <string name="scanner_camera_permission_permanently_denied">El permiso de cámara fue denegado permanentemente. Por favor habilítalo en los ajustes del sistema.</string>
+    <string name="scanner_open_settings">Abrir Ajustes</string>
+    <string name="scanner_rescan">Volver a escanear</string>
+
+    <!-- Resultados e Investigación -->
+    <string name="result_title">Resultado de Investigación</string>
+    <string name="result_confidence_high">Confianza Alta</string>
+    <string name="result_confidence_medium">Confianza Media</string>
+    <string name="result_confidence_low">Confianza Baja</string>
+    <string name="result_score_insufficient">Información insuficiente para calcular un TRACE SCORE confiable</string>
+    <string name="result_tab_summary">Resumen</string>
+    <string name="result_tab_details">Investigación Completa</string>
+    <string name="result_tab_sources">Fuentes Consultadas</string>
+    <string name="result_legal_disclaimer">Aviso legal: TRACE SCORE es una evaluación analítica propia basada en datos públicos y no constituye una certificación ambiental oficial.</string>
+
+    <!-- Estados Generales de UI -->
+    <string name="state_loading">Investigando producto en fuentes externas...</string>
+    <string name="state_error">Ocurrió un error durante la consulta</string>
+    <string name="state_retry">Reintentar</string>
+    <string name="state_offline">Sin conexión a Internet. Conéctate a una red para investigar nuevos productos.</string>
+    <string name="state_empty_history">No tienes investigaciones registradas aún.</string>
+    <string name="state_not_found">No se encontró información para este código de barras.</string>
+
+    <!-- Acciones Comunes -->
+    <string name="action_back">Volver</string>
+    <string name="action_close">Cerrar</string>
+    <string name="action_share">Compartir</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_clear_all">Borrar todo</string>
+</resources>
