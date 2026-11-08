@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,8 +36,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,6 +47,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ejemplo.trace.R
 
 data class ChatMessage(
@@ -61,26 +64,24 @@ enum class MessageSender {
 }
 
 /**
- * Pantalla de conversación con TRACE AI.
- * Analiza los datos encontrados y responde dudas específicas con citas a fuentes verificadas.
+ * Pantalla de conversación reactiva con TRACE AI vinculada a ChatViewModel.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
     barcode: String,
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ChatViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var inputText by remember { mutableStateOf("") }
-    val messages = remember {
-        mutableStateListOf(
-            ChatMessage(
-                id = "1",
-                sender = MessageSender.AI,
-                text = "Hola, soy TRACE AI. He analizado la información disponible para el producto con código $barcode. ¿Qué deseas saber sobre su origen, materiales o sostenibilidad?",
-                citedSources = listOf("Open Food Facts", "Reporte Ferrero")
-            )
-        )
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(uiState.messages.size) {
+        if (uiState.messages.isNotEmpty()) {
+            listState.animateScrollToItem(uiState.messages.size - 1)
+        }
     }
 
     Scaffold(
@@ -95,7 +96,7 @@ fun ChatScreen(
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Asistente de Sostenibilidad",
+                            text = "Asistente de Sostenibilidad • $barcode",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -126,13 +127,34 @@ fun ChatScreen(
                     .weight(1f)
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                state = rememberLazyListState(),
+                state = listState,
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 item { Spacer(modifier = Modifier.height(8.dp)) }
 
-                items(messages, key = { it.id }) { message ->
+                items(uiState.messages, key = { it.id }) { message ->
                     MessageBubble(message = message)
+                }
+
+                if (uiState.isProcessing) {
+                    item {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(start = 8.dp, top = 4.dp)
+                        ) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(18.dp),
+                                strokeWidth = 2.dp,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "TRACE AI está analizando los datos...",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
                 }
 
                 item { Spacer(modifier = Modifier.height(8.dp)) }
@@ -154,54 +176,39 @@ fun ChatScreen(
                         onValueChange = { inputText = it },
                         placeholder = {
                             Text(
-                                text = "Pregunta sobre el origen, empaque o score...",
+                                text = "Pregunta sobre materiales, origen o score...",
                                 style = MaterialTheme.typography.bodyMedium
                             )
                         },
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(24.dp),
-                        maxLines = 3
+                        maxLines = 3,
+                        enabled = !uiState.isProcessing
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
 
                     IconButton(
                         onClick = {
-                            if (inputText.isNotBlank()) {
-                                messages.add(
-                                    ChatMessage(
-                                        id = System.currentTimeMillis().toString(),
-                                        sender = MessageSender.USER,
-                                        text = inputText.trim()
-                                    )
-                                )
+                            if (inputText.isNotBlank() && !uiState.isProcessing) {
                                 val query = inputText.trim()
                                 inputText = ""
-
-                                // Simulación de respuesta inmediata contextual
-                                messages.add(
-                                    ChatMessage(
-                                        id = (System.currentTimeMillis() + 1).toString(),
-                                        sender = MessageSender.AI,
-                                        text = "Sobre '$query': Este producto utiliza vidrio 100% reciclable en su contenedor principal y tapa de polipropileno (PP). La trazabilidad indica procedencia de envasado en Francia con materias primas de cacao certificado.",
-                                        citedSources = listOf("Open Food Facts (FR)", "Ficha técnica de empaque")
-                                    )
-                                )
+                                viewModel.sendMessage(query)
                             }
                         },
-                        enabled = inputText.isNotBlank(),
+                        enabled = inputText.isNotBlank() && !uiState.isProcessing,
                         modifier = Modifier
                             .size(48.dp)
                             .clip(CircleShape)
                             .background(
-                                if (inputText.isNotBlank()) MaterialTheme.colorScheme.primary
+                                if (inputText.isNotBlank() && !uiState.isProcessing) MaterialTheme.colorScheme.primary
                                 else MaterialTheme.colorScheme.surfaceVariant
                             )
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.Send,
                             contentDescription = "Enviar mensaje",
-                            tint = if (inputText.isNotBlank()) MaterialTheme.colorScheme.onPrimary
+                            tint = if (inputText.isNotBlank() && !uiState.isProcessing) MaterialTheme.colorScheme.onPrimary
                             else MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
@@ -265,7 +272,8 @@ private fun MessageBubble(message: ChatMessage) {
                     Text(
                         text = "Fuentes: " + message.citedSources.joinToString(", "),
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = if (isUser) MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                        else MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Medium
                     )
                 }
