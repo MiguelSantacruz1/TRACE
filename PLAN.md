@@ -7,8 +7,8 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 ## 📊 Resumen General del Proyecto
 - **Meta mínima de commits:** 200 commits en la rama `main` (apuntando a ~220 para margen de seguridad).
 - **Convención de mensajes:** Conventional Commits (`tipo(alcance): descripción breve en infinitivo`).
-- **Commits actuales:** 38
-- **Etapa actual:** Etapa 3 completada. Listo para Etapa 4.
+- **Commits actuales:** 44
+- **Etapa actual:** Etapa 4 completada. Listo para Etapa 5.
 
 ---
 
@@ -19,7 +19,7 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 | **1** | **Arquitectura y estructura del proyecto** | Proyecto vacío compila con Hilt y navegación base. Existen README, .gitignore, PLAN.md y docs/DECISIONES.md. Plan aprobado. | ~16 | **Completada** |
 | **2** | **Diseño visual y navegación** | Todas las pantallas navegables, tema claro y oscuro, estados de carga, error y vacío. Ningún botón sin función. | ~26 | **Completada** |
 | **3** | **Escáner real** | En dispositivo/cámara, un código de barras se lee y muestra su número. Permisos, linterna y lecturas repetidas manejados. | ~22 | **Completada** |
-| **4** | **Fuentes externas, backend y búsqueda web** | Escaneo resuelve datos con fuentes identificables. Código inexistente devuelve estado no encontrado. Backend funcional con claves fuera del APK. | ~32 | Pendiente |
+| **4** | **Fuentes externas, backend y búsqueda web** | Escaneo resuelve datos con fuentes identificables. Código inexistente devuelve estado no encontrado. Backend funcional con claves fuera del APK. | ~32 | **Completada** |
 | **5** | **Organización y verificación** | Modelo con metadatos de fuente, verificador de coincidencia con pruebas, contradicciones visibles, validación JSON de IA. | ~22 | Pendiente |
 | **6** | **TRACE SCORE** | Pruebas unitarias en verde, docs/TRACE_SCORE.md, confianza y aviso legal visibles, mensaje de datos insuficientes. | ~22 | Pendiente |
 | **7** | **TRACE AI** | Responde solo con contexto, declara desconocimiento cuando falta información, resiste prompt injection, maneja timeouts y errores. | ~22 | Pendiente |
@@ -43,12 +43,19 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 
 ## 📝 Detalle de la Etapa 3: Escáner real (CameraX + Google ML Kit)
 **Objetivo:** Implementar la lectura real de códigos de barras (EAN-13, EAN-8, UPC-A, UPC-E, Code 128) con CameraX, Google ML Kit, validación matemática de checksum, control de linterna y prevención de lecturas repetidas.
-**Criterio de Aceptación:** En un dispositivo/cámara, un EAN-13 se lee y se muestra su número. Permisos, linterna y lecturas repetidas manejados.
 **Resultado:** Cumplido satisfactoriamente. 22 pruebas unitarias en verde (22/22) incluyendo códigos reales de prueba (Nutella, Coca-Cola y prefijo colombiano 770). APK Debug compilado exitosamente.
 
+---
+
+## 📝 Detalle de la Etapa 4: Fuentes externas, backend y búsqueda web
+**Objetivo:** Implementar el backend seguro con rate limiting y endpoints (`/health`, `/v1/lookup`, `/v1/search`, `/v1/ai/chat`), contrato en `docs/API.md`, cliente Retrofit para Open Food Facts y el backend, repositorio `ProductRepositoryImpl` e `InvestigateProductUseCase` conectado reactivamente a `ProductResultScreen`.
+**Criterio de Aceptación:** Escanear Nutella devuelve datos con fuentes identificadas. Un código inexistente devuelve estado no encontrado. Backend funcionando con claves fuera del APK.
+**Resultado:** Cumplido satisfactoriamente. 27 pruebas unitarias en verde (27/27), servidor backend verificado y APK Debug compilado exitosamente.
+
 ### Tareas y Registro de Commits:
-- [x] `feat(scanner): implementar modelos de escaneo y BarcodeValidator con verificacion estricta de checksum y pruebas` (Commit 35)
-- [x] `feat(scanner): implementar BarcodeAnalyzer con CameraX y Google ML Kit con prevencion de lecturas repetidas` (Commit 36)
-- [x] `feat(scanner): implementar CameraPreviewView con CameraX ProcessCameraProvider, PreviewView y soporte de linterna` (Commit 37)
-- [x] `feat(scanner): integrar CameraPreviewView, gestion de permisos de camara y navegacion a resultado` (Commit 38)
-- [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 3` (Commit 39)
+- [x] `docs(api): documentar contrato de endpoints del backend seguro en docs/API.md` (Commit 40)
+- [x] `feat(backend): implementar servidor backend seguro con endpoints /health, /v1/lookup, /v1/search, /v1/ai/chat y rate limiting` (Commit 41)
+- [x] `feat(network): implementar ProductSourceProvider, OpenFoodFactsProvider, TraceBackendApi, NetworkModule y pruebas unitarias` (Commit 42)
+- [x] `feat(domain): implementar ProductRepository, ProductRepositoryImpl e InvestigateProductUseCase con pruebas` (Commit 43)
+- [x] `feat(result): integrar ProductResultViewModel con estados reactivos Loading, NotFound, Error y Success` (Commit 44)
+- [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 4` (Commit 45)
