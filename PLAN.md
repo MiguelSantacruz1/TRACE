@@ -7,8 +7,8 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 ## 📊 Resumen General del Proyecto
 - **Meta mínima de commits:** 200 commits en la rama `main` (apuntando a ~220 para margen de seguridad).
 - **Convención de mensajes:** Conventional Commits (`tipo(alcance): descripción breve en infinitivo`).
-- **Commits actuales:** 30
-- **Etapa actual:** Etapa 2 completada. Listo para Etapa 3.
+- **Commits actuales:** 38
+- **Etapa actual:** Etapa 3 completada. Listo para Etapa 4.
 
 ---
 
@@ -18,7 +18,7 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 | :---: | :--- | :--- | :---: | :---: |
 | **1** | **Arquitectura y estructura del proyecto** | Proyecto vacío compila con Hilt y navegación base. Existen README, .gitignore, PLAN.md y docs/DECISIONES.md. Plan aprobado. | ~16 | **Completada** |
 | **2** | **Diseño visual y navegación** | Todas las pantallas navegables, tema claro y oscuro, estados de carga, error y vacío. Ningún botón sin función. | ~26 | **Completada** |
-| **3** | **Escáner real** | En dispositivo/cámara, un código de barras se lee y muestra su número. Permisos, linterna y lecturas repetidas manejados. | ~22 | Pendiente |
+| **3** | **Escáner real** | En dispositivo/cámara, un código de barras se lee y muestra su número. Permisos, linterna y lecturas repetidas manejados. | ~22 | **Completada** |
 | **4** | **Fuentes externas, backend y búsqueda web** | Escaneo resuelve datos con fuentes identificables. Código inexistente devuelve estado no encontrado. Backend funcional con claves fuera del APK. | ~32 | Pendiente |
 | **5** | **Organización y verificación** | Modelo con metadatos de fuente, verificador de coincidencia con pruebas, contradicciones visibles, validación JSON de IA. | ~22 | Pendiente |
 | **6** | **TRACE SCORE** | Pruebas unitarias en verde, docs/TRACE_SCORE.md, confianza y aviso legal visibles, mensaje de datos insuficientes. | ~22 | Pendiente |
@@ -31,28 +31,24 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 
 ## 📝 Detalle de la Etapa 1: Arquitectura y estructura del proyecto
 **Objetivo:** Establecer la base técnica, la infraestructura de compilación Gradle, inyección de dependencias con Hilt, navegación base con Jetpack Compose y documentación de arquitectura.
-**Criterio de Aceptación:** Proyecto vacío compila con Hilt y navegación base. Existen README.md, .gitignore, PLAN.md y docs/DECISIONES.md. Plan aprobado por el usuario.
 **Resultado:** Cumplido satisfactoriamente. Pruebas unitarias en verde (2/2) y APK Debug generado con éxito.
 
 ---
 
 ## 📝 Detalle de la Etapa 2: Diseño visual y navegación
 **Objetivo:** Desarrollar todas las pantallas del flujo de usuario con Material 3, soporte de temas claro y oscuro, estados de carga, error, vacío y sin conexión, con todas las pantallas navegables y ningún botón sin función.
-**Criterio de Aceptación:** Todas las pantallas navegables, tema claro y oscuro, estados de carga, error y vacío. Ningún botón sin función.
 **Resultado:** Cumplido satisfactoriamente. 15 pruebas unitarias en verde (15/15), APK Debug generado con éxito y todas las rutas interconectadas en `TraceNavHost`.
 
+---
+
+## 📝 Detalle de la Etapa 3: Escáner real (CameraX + Google ML Kit)
+**Objetivo:** Implementar la lectura real de códigos de barras (EAN-13, EAN-8, UPC-A, UPC-E, Code 128) con CameraX, Google ML Kit, validación matemática de checksum, control de linterna y prevención de lecturas repetidas.
+**Criterio de Aceptación:** En un dispositivo/cámara, un EAN-13 se lee y se muestra su número. Permisos, linterna y lecturas repetidas manejados.
+**Resultado:** Cumplido satisfactoriamente. 22 pruebas unitarias en verde (22/22) incluyendo códigos reales de prueba (Nutella, Coca-Cola y prefijo colombiano 770). APK Debug compilado exitosamente.
+
 ### Tareas y Registro de Commits:
-- [x] `feat(ui): implementar componente reutilizable LoadingState con animacion y soporte accesible` (Commit 17)
-- [x] `feat(ui): implementar componente reutilizable ErrorState con reintento configurable` (Commit 18)
-- [x] `feat(ui): implementar componente reutilizable EmptyState con soporte para accion primaria opcional` (Commit 19)
-- [x] `feat(ui): implementar componente reutilizable OfflineState para manejo de desconexion` (Commit 20)
-- [x] `feat(ui): implementar componente ScoreBadge con semantica accesible y soporte multinivel` (Commit 21)
-- [x] `feat(ui): implementar ScannerScreen con visor animado, control de linterna e instrucciones` (Commit 22)
-- [x] `feat(ui): implementar ProductResultScreen con ScoreBadge, metricas clave y aviso legal` (Commit 23)
-- [x] `feat(ui): implementar InvestigationScreen con 6 dimensiones de trazabilidad y estados de verificacion` (Commit 24)
-- [x] `feat(ui): implementar ChatScreen con interfaz conversacional para TRACE AI y citas de fuentes` (Commit 25)
-- [x] `feat(ui): implementar CompareScreen con comparativa lado a lado por dimensiones y evaluacion responsable` (Commit 26)
-- [x] `feat(ui): implementar HistoryScreen con lista de consultas previas, re-investigacion y eliminacion` (Commit 27)
-- [x] `feat(navigation): conectar todas las pantallas en TraceNavHost con paso de argumentos y acciones reales` (Commit 28)
-- [x] `test(navigation): agregar pruebas unitarias para rutas de navegacion y clasificacion de niveles de ScoreBadge` (Commit 29)
-- [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 2` (Commit 30)
+- [x] `feat(scanner): implementar modelos de escaneo y BarcodeValidator con verificacion estricta de checksum y pruebas` (Commit 35)
+- [x] `feat(scanner): implementar BarcodeAnalyzer con CameraX y Google ML Kit con prevencion de lecturas repetidas` (Commit 36)
+- [x] `feat(scanner): implementar CameraPreviewView con CameraX ProcessCameraProvider, PreviewView y soporte de linterna` (Commit 37)
+- [x] `feat(scanner): integrar CameraPreviewView, gestion de permisos de camara y navegacion a resultado` (Commit 38)
+- [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 3` (Commit 39)
