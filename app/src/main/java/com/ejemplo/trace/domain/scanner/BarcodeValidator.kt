@@ -19,7 +19,7 @@ object BarcodeValidator {
             13 -> validateEan13Checksum(trimmed)
             8 -> validateEan8Checksum(trimmed)
             12 -> validateUpcAChecksum(trimmed)
-            else -> trimmed.length in 4..48 // Permitir códigos de longitud libre alfanuméricos como Code 128
+            else -> false // Para investigación en fuentes comerciales estándar se requieren códigos con checksum
         }
     }
 
