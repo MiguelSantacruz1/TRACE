@@ -7,8 +7,8 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 ## 📊 Resumen General del Proyecto
 - **Meta mínima de commits:** 200 commits en la rama `main` (apuntando a ~220 para margen de seguridad).
 - **Convención de mensajes:** Conventional Commits (`tipo(alcance): descripción breve en infinitivo`).
-- **Commits actuales:** 47
-- **Etapa actual:** Etapa 5 completada. Listo para Etapa 6.
+- **Commits actuales:** 51
+- **Etapa actual:** Etapa 6 completada. Listo para Etapa 7.
 
 ---
 
@@ -21,7 +21,7 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 | **3** | **Escáner real** | En dispositivo/cámara, un código de barras se lee y muestra su número. Permisos, linterna y lecturas repetidas manejados. | ~22 | **Completada** |
 | **4** | **Fuentes externas, backend y búsqueda web** | Escaneo resuelve datos con fuentes identificables. Código inexistente devuelve estado no encontrado. Backend funcional con claves fuera del APK. | ~32 | **Completada** |
 | **5** | **Organización y verificación** | Modelo con metadatos de fuente, verificador de coincidencia con pruebas, contradicciones visibles, validación JSON de IA. | ~22 | **Completada** |
-| **6** | **TRACE SCORE** | Pruebas unitarias en verde, docs/TRACE_SCORE.md, confianza y aviso legal visibles, mensaje de datos insuficientes. | ~22 | Pendiente |
+| **6** | **TRACE SCORE** | Pruebas unitarias en verde, docs/TRACE_SCORE.md, confianza y aviso legal visibles, mensaje de datos insuficientes. | ~22 | **Completada** |
 | **7** | **TRACE AI** | Responde solo con contexto, declara desconocimiento cuando falta información, resiste prompt injection, maneja timeouts y errores. | ~22 | Pendiente |
 | **8** | **Comparador e historial** | Comparación sin veredicto cuando faltan datos. Historial Room que vuelve a consultar Internet y permite eliminar items. | ~22 | Pendiente |
 | **9** | **Seguridad, rendimiento y pruebas** | Rate limiting, validación de integridad, pruebas unitarias e instrumentadas en verde, cero claves en APK/repo. | ~22 | Pendiente |
@@ -55,9 +55,16 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 
 ## 📝 Detalle de la Etapa 5: Organización y verificación
 **Objetivo:** Implementar el modelo de dominio con metadatos rigurosos de fuente (`SourceMetadata`, `SourcePriority`, `VerificationState`, `VerifiedFact`, `ConflictingFact`), el verificador de coincidencia `ProductMatchVerifier` (criterio fuerte por código de barras o marca+nombre), y el filtro de seguridad `AiOutputValidator` que descarta alucinaciones y exige citas textuales verificables en la fuente original.
-**Criterio de Aceptación:** Modelo con metadatos de fuente, verificador de coincidencia con pruebas, contradicciones visibles, JSON de IA validado y verificado contra el texto fuente.
 **Resultado:** Cumplido satisfactoriamente. 33 pruebas unitarias en verde (33/33) y APK Debug compilado exitosamente.
 
+---
+
+## 📝 Detalle de la Etapa 6: TRACE SCORE
+**Objetivo:** Diseñar y documentar la metodología del score en `docs/TRACE_SCORE.md`, implementar el motor puro determinista en Kotlin `TraceScoreCalculator` con ponderaciones oficiales (Materias primas: 20, Fabricación: 15, Reparabilidad: 15, Reciclabilidad: 15, Transporte: 10, Uso: 10, Impacto: 10, Empaque: 5), regla de umbral de cobertura mínima del 50%, descuento para afirmaciones no auditadas, y caso de uso `CalculateTraceScoreUseCase`.
+**Criterio de Aceptación:** Pruebas unitarias en verde (datos completos, parciales, insuficientes y no auditados), `docs/TRACE_SCORE.md`, confianza y aviso legal visibles, mensaje de datos insuficientes sin asignar score arbitrario.
+**Resultado:** Cumplido satisfactoriamente. 38 pruebas unitarias en verde (38/38) y APK Debug compilado exitosamente.
+
 ### Tareas y Registro de Commits:
-- [x] `feat(verification): implementar SourceMetadata, VerifiedFact, ProductMatchVerifier y AiOutputValidator con pruebas` (Commit 46)
-- [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 5` (Commit 47)
+- [x] `docs(score): documentar metodologia, ponderaciones, formula y rubrica de TRACE SCORE en docs/TRACE_SCORE.md` (Commit 48)
+- [x] `feat(score): implementar TraceScoreCalculator determinista, CalculateTraceScoreUseCase y suite de pruebas unitarias exhaustivas` (Commit 49)
+- [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 6` (Commit 50)
