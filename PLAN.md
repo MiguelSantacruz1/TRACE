@@ -7,8 +7,8 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 ## 📊 Resumen General del Proyecto
 - **Meta mínima de commits:** 200 commits en la rama `main` (apuntando a ~220 para margen de seguridad).
 - **Convención de mensajes:** Conventional Commits (`tipo(alcance): descripción breve en infinitivo`).
-- **Commits actuales:** 54
-- **Etapa actual:** Etapa 7 completada. Listo para Etapa 8.
+- **Commits actuales:** 57
+- **Etapa actual:** Etapa 8 completada. Listo para Etapa 9.
 
 ---
 
@@ -23,7 +23,7 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 | **5** | **Organización y verificación** | Modelo con metadatos de fuente, verificador de coincidencia con pruebas, contradicciones visibles, validación JSON de IA. | ~22 | **Completada** |
 | **6** | **TRACE SCORE** | Pruebas unitarias en verde, docs/TRACE_SCORE.md, confianza y aviso legal visibles, mensaje de datos insuficientes. | ~22 | **Completada** |
 | **7** | **TRACE AI** | Responde solo con contexto, declara desconocimiento cuando falta información, resiste prompt injection, maneja timeouts y errores. | ~22 | **Completada** |
-| **8** | **Comparador e historial** | Comparación sin veredicto cuando faltan datos. Historial Room que vuelve a consultar Internet y permite eliminar items. | ~22 | Pendiente |
+| **8** | **Comparador e historial** | Comparación sin veredicto cuando faltan datos. Historial Room que vuelve a consultar Internet y permite eliminar items. | ~22 | **Completada** |
 | **9** | **Seguridad, rendimiento y pruebas** | Rate limiting, validación de integridad, pruebas unitarias e instrumentadas en verde, cero claves en APK/repo. | ~22 | Pendiente |
 | **10**| **Compilación y entrega** | APK final compilado, README completo, reporte final verificado y meta de >=200 commits alcanzada. | ~12 | Pendiente |
 
@@ -80,3 +80,16 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 - [x] `feat(ai): implementar AiProvider, PromptDefenseSanitizer, TraceBackendAiProvider, ChatViewModel y pruebas unitarias` (Commit 51)
 - [x] `docs(ai): documentar arquitectura de TRACE AI, politicas de cero alucinacion y defensa activa de prompts en docs/AI_ARCHITECTURE.md` (Commit 52)
 - [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 7` (Commit 53)
+
+---
+
+## 📝 Detalle de la Etapa 8: Comparador e Historial Local (Room Database)
+**Objetivo:** Implementar base de datos local Room (`ScannedProductEntity`, `ProductHistoryDao`, `TraceDatabase`, `DatabaseModule`) para almacenar historial de escaneos del usuario y caché efímero con TTL (sin catálogos propietarios preinstalados). Implementar `HistoryRepositoryImpl`, casos de uso de historial (`GetScanHistoryUseCase`, `SaveScanToHistoryUseCase`, `DeleteHistoryItemUseCase`, `ClearHistoryUseCase`), auto-guardado en investigación exitosa, `HistoryViewModel`, motor de comparación determinista `CompareProductsUseCase` con regla ética (sin veredicto arbitrario ante datos faltantes), `CompareViewModel` y pantallas reactivas `HistoryScreen` y `CompareScreen`.
+**Criterio de Aceptación:** Historial almacena solo productos escaneados y permite eliminación individual o vaciado completo. Comparador declara explícitamente "Datos insuficientes" y no emite veredicto sesgado si falta evidencia. Pruebas unitarias en verde (54/54) y APK Debug compilado exitosamente.
+**Resultado:** Cumplido satisfactoriamente. 54 pruebas unitarias en verde (54/54) y APK Debug generado con éxito.
+
+### Tareas y Registro de Commits:
+- [x] `feat(database): implementar ScannedProductEntity, ProductHistoryDao, TraceDatabase y DatabaseModule para cache TTL e historial` (Commit 54)
+- [x] `feat(history): implementar HistoryRepository, casos de uso de historial (Get, Save, Delete, Clear), auto-guardado y pruebas unitarias` (Commit 55)
+- [x] `feat(compare): implementar CompareProductsUseCase, CompareViewModel, comparacion responsable lado a lado y pruebas unitarias` (Commit 56)
+- [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 8` (Commit 57)
