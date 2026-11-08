@@ -7,8 +7,8 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 ## 📊 Resumen General del Proyecto
 - **Meta mínima de commits:** 200 commits en la rama `main` (apuntando a ~220 para margen de seguridad).
 - **Convención de mensajes:** Conventional Commits (`tipo(alcance): descripción breve en infinitivo`).
-- **Commits actuales:** 51
-- **Etapa actual:** Etapa 6 completada. Listo para Etapa 7.
+- **Commits actuales:** 54
+- **Etapa actual:** Etapa 7 completada. Listo para Etapa 8.
 
 ---
 
@@ -22,7 +22,7 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 | **4** | **Fuentes externas, backend y búsqueda web** | Escaneo resuelve datos con fuentes identificables. Código inexistente devuelve estado no encontrado. Backend funcional con claves fuera del APK. | ~32 | **Completada** |
 | **5** | **Organización y verificación** | Modelo con metadatos de fuente, verificador de coincidencia con pruebas, contradicciones visibles, validación JSON de IA. | ~22 | **Completada** |
 | **6** | **TRACE SCORE** | Pruebas unitarias en verde, docs/TRACE_SCORE.md, confianza y aviso legal visibles, mensaje de datos insuficientes. | ~22 | **Completada** |
-| **7** | **TRACE AI** | Responde solo con contexto, declara desconocimiento cuando falta información, resiste prompt injection, maneja timeouts y errores. | ~22 | Pendiente |
+| **7** | **TRACE AI** | Responde solo con contexto, declara desconocimiento cuando falta información, resiste prompt injection, maneja timeouts y errores. | ~22 | **Completada** |
 | **8** | **Comparador e historial** | Comparación sin veredicto cuando faltan datos. Historial Room que vuelve a consultar Internet y permite eliminar items. | ~22 | Pendiente |
 | **9** | **Seguridad, rendimiento y pruebas** | Rate limiting, validación de integridad, pruebas unitarias e instrumentadas en verde, cero claves en APK/repo. | ~22 | Pendiente |
 | **10**| **Compilación y entrega** | APK final compilado, README completo, reporte final verificado y meta de >=200 commits alcanzada. | ~12 | Pendiente |
@@ -68,3 +68,15 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 - [x] `docs(score): documentar metodologia, ponderaciones, formula y rubrica de TRACE SCORE en docs/TRACE_SCORE.md` (Commit 48)
 - [x] `feat(score): implementar TraceScoreCalculator determinista, CalculateTraceScoreUseCase y suite de pruebas unitarias exhaustivas` (Commit 49)
 - [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 6` (Commit 50)
+
+---
+
+## 📝 Detalle de la Etapa 7: TRACE AI (Explicabilidad y Defensa contra Inyecciones)
+**Objetivo:** Implementar la interfaz `AiProvider` desacoplada del proveedor directo, el cliente seguro `TraceBackendAiProvider` canalizado por el backend, el filtro de defensa activa `PromptDefenseSanitizer` (delimitación XML de datos web no confiables, neutralización de caracteres de escape y detección temprana de inyecciones de instrucciones), `AskTraceAiUseCase`, el `ChatViewModel` reactivo conectado a `ChatScreen`, y documentación técnica en `docs/AI_ARCHITECTURE.md`.
+**Criterio de Aceptación:** Responde solo con contexto verificado, declara desconocimiento explícito si falta evidencia, resiste ataques adversarios de prompt injection, maneja fallos de conexión y errores con estados claros, 45 pruebas unitarias en verde (45/45) y APK Debug compilado exitosamente.
+**Resultado:** Cumplido satisfactoriamente. 45 pruebas unitarias en verde (45/45) y APK Debug generado con éxito.
+
+### Tareas y Registro de Commits:
+- [x] `feat(ai): implementar AiProvider, PromptDefenseSanitizer, TraceBackendAiProvider, ChatViewModel y pruebas unitarias` (Commit 51)
+- [x] `docs(ai): documentar arquitectura de TRACE AI, politicas de cero alucinacion y defensa activa de prompts en docs/AI_ARCHITECTURE.md` (Commit 52)
+- [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 7` (Commit 53)
