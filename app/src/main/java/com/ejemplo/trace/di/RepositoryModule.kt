@@ -1,6 +1,8 @@
 package com.ejemplo.trace.di
 
+import com.ejemplo.trace.data.repository.HistoryRepositoryImpl
 import com.ejemplo.trace.data.repository.ProductRepositoryImpl
+import com.ejemplo.trace.domain.repository.HistoryRepository
 import com.ejemplo.trace.domain.repository.ProductRepository
 import dagger.Binds
 import dagger.Module
@@ -17,4 +19,10 @@ abstract class RepositoryModule {
     abstract fun bindProductRepository(
         impl: ProductRepositoryImpl
     ): ProductRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindHistoryRepository(
+        impl: HistoryRepositoryImpl
+    ): HistoryRepository
 }

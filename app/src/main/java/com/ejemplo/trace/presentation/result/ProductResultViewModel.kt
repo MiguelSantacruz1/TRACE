@@ -3,8 +3,10 @@ package com.ejemplo.trace.presentation.result
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ejemplo.trace.domain.model.HistoryProduct
 import com.ejemplo.trace.domain.model.ProductLookupResult
 import com.ejemplo.trace.domain.usecase.InvestigateProductUseCase
+import com.ejemplo.trace.domain.usecase.SaveScanToHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,6 +24,7 @@ sealed interface ProductResultUiState {
 @HiltViewModel
 class ProductResultViewModel @Inject constructor(
     private val investigateProductUseCase: InvestigateProductUseCase,
+    private val saveScanToHistoryUseCase: SaveScanToHistoryUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -51,6 +54,15 @@ class ProductResultViewModel @Inject constructor(
             result.fold(
                 onSuccess = { product ->
                     _uiState.value = ProductResultUiState.Success(product)
+                    saveScanToHistoryUseCase(
+                        HistoryProduct(
+                            barcode = product.barcode,
+                            name = product.name,
+                            brand = product.brand ?: "",
+                            imageUrl = product.imageUrl,
+                            scannedAt = System.currentTimeMillis()
+                        )
+                    )
                 },
                 onFailure = { error ->
                     if (error is NoSuchElementException) {
