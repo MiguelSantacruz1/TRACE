@@ -7,8 +7,8 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 ## 📊 Resumen General del Proyecto
 - **Meta mínima de commits:** 200 commits en la rama `main` (apuntando a ~220 para margen de seguridad).
 - **Convención de mensajes:** Conventional Commits (`tipo(alcance): descripción breve en infinitivo`).
-- **Commits actuales:** 16
-- **Etapa actual:** Etapa 1 completada. Listo para Etapa 2.
+- **Commits actuales:** 30
+- **Etapa actual:** Etapa 2 completada. Listo para Etapa 3.
 
 ---
 
@@ -17,7 +17,7 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 | Etapa | Alcance | Criterio de Aceptación | Commits Est. | Estado |
 | :---: | :--- | :--- | :---: | :---: |
 | **1** | **Arquitectura y estructura del proyecto** | Proyecto vacío compila con Hilt y navegación base. Existen README, .gitignore, PLAN.md y docs/DECISIONES.md. Plan aprobado. | ~16 | **Completada** |
-| **2** | **Diseño visual y navegación** | Todas las pantallas navegables, tema claro y oscuro, estados de carga, error y vacío. Ningún botón sin función. | ~26 | Pendiente |
+| **2** | **Diseño visual y navegación** | Todas las pantallas navegables, tema claro y oscuro, estados de carga, error y vacío. Ningún botón sin función. | ~26 | **Completada** |
 | **3** | **Escáner real** | En dispositivo/cámara, un código de barras se lee y muestra su número. Permisos, linterna y lecturas repetidas manejados. | ~22 | Pendiente |
 | **4** | **Fuentes externas, backend y búsqueda web** | Escaneo resuelve datos con fuentes identificables. Código inexistente devuelve estado no encontrado. Backend funcional con claves fuera del APK. | ~32 | Pendiente |
 | **5** | **Organización y verificación** | Modelo con metadatos de fuente, verificador de coincidencia con pruebas, contradicciones visibles, validación JSON de IA. | ~22 | Pendiente |
@@ -34,20 +34,25 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 **Criterio de Aceptación:** Proyecto vacío compila con Hilt y navegación base. Existen README.md, .gitignore, PLAN.md y docs/DECISIONES.md. Plan aprobado por el usuario.
 **Resultado:** Cumplido satisfactoriamente. Pruebas unitarias en verde (2/2) y APK Debug generado con éxito.
 
+---
+
+## 📝 Detalle de la Etapa 2: Diseño visual y navegación
+**Objetivo:** Desarrollar todas las pantallas del flujo de usuario con Material 3, soporte de temas claro y oscuro, estados de carga, error, vacío y sin conexión, con todas las pantallas navegables y ningún botón sin función.
+**Criterio de Aceptación:** Todas las pantallas navegables, tema claro y oscuro, estados de carga, error y vacío. Ningún botón sin función.
+**Resultado:** Cumplido satisfactoriamente. 15 pruebas unitarias en verde (15/15), APK Debug generado con éxito y todas las rutas interconectadas en `TraceNavHost`.
+
 ### Tareas y Registro de Commits:
-- [x] `chore(project): estructura inicial con README.md y .gitignore` (Commit 1)
-- [x] `docs(plan): crear PLAN.md con seguimiento detallado de todas las etapas y criterios` (Commit 2)
-- [x] `docs(decisiones): registrar decisiones técnicas en docs/DECISIONES.md` (Commit 3)
-- [x] `docs(arquitectura): documentar arquitectura y flujo de datos en docs/ARQUITECTURA.md` (Commit 4)
-- [x] `build(config): agregar local.properties.example y backend/.env.example para manejo seguro de secretos` (Commit 5)
-- [x] `build(config): incluir local.properties.example y permitirlo en .gitignore` (Commit 6)
-- [x] `build(gradle): configurar gradle wrapper y settings.gradle.kts con repositorios estandar` (Commit 7)
-- [x] `build(deps): definir catalogo de dependencias en gradle/libs.versions.toml (Compose, Hilt, Room, Retrofit)` (Commit 8)
-- [x] `build(app): configurar build.gradle.kts raiz y del modulo app con plugins y compatibilidad Java 17` (Commit 9)
-- [x] `feat(app): configurar clase Application con anotacion @HiltAndroidApp y registro en AndroidManifest` (Commit 10)
-- [x] `feat(theme): implementar tema Material 3 base (Color, Type, Theme) con soporte claro y oscuro` (Commit 11)
-- [x] `feat(resources): configurar strings.xml inicial en espanol con claves base para la app` (Commit 12)
-- [x] `feat(di): crear modulos base de inyeccion de dependencias con Hilt (CoroutinesDispatchersModule)` (Commit 13)
-- [x] `feat(presentation): implementar MainActivity, NavHost y pantalla de bienvenida base con Hilt` (Commit 14)
-- [x] `test(app): agregar prueba unitaria de configuracion base y verificar compilacion exitosa` (Commit 15)
-- [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 1` (Commit 16)
+- [x] `feat(ui): implementar componente reutilizable LoadingState con animacion y soporte accesible` (Commit 17)
+- [x] `feat(ui): implementar componente reutilizable ErrorState con reintento configurable` (Commit 18)
+- [x] `feat(ui): implementar componente reutilizable EmptyState con soporte para accion primaria opcional` (Commit 19)
+- [x] `feat(ui): implementar componente reutilizable OfflineState para manejo de desconexion` (Commit 20)
+- [x] `feat(ui): implementar componente ScoreBadge con semantica accesible y soporte multinivel` (Commit 21)
+- [x] `feat(ui): implementar ScannerScreen con visor animado, control de linterna e instrucciones` (Commit 22)
+- [x] `feat(ui): implementar ProductResultScreen con ScoreBadge, metricas clave y aviso legal` (Commit 23)
+- [x] `feat(ui): implementar InvestigationScreen con 6 dimensiones de trazabilidad y estados de verificacion` (Commit 24)
+- [x] `feat(ui): implementar ChatScreen con interfaz conversacional para TRACE AI y citas de fuentes` (Commit 25)
+- [x] `feat(ui): implementar CompareScreen con comparativa lado a lado por dimensiones y evaluacion responsable` (Commit 26)
+- [x] `feat(ui): implementar HistoryScreen con lista de consultas previas, re-investigacion y eliminacion` (Commit 27)
+- [x] `feat(navigation): conectar todas las pantallas en TraceNavHost con paso de argumentos y acciones reales` (Commit 28)
+- [x] `test(navigation): agregar pruebas unitarias para rutas de navegacion y clasificacion de niveles de ScoreBadge` (Commit 29)
+- [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 2` (Commit 30)
