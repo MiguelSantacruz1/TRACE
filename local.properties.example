@@ -1,0 +1,8 @@
+## Configuración local del SDK de Android
+## Copia este archivo a 'local.properties' y ajusta la ruta a tu instalación local del SDK.
+## IMPORTANTE: 'local.properties' está ignorado en Git para no filtrar rutas ni claves privadas.
+
+sdk.dir=C\:\\Users\\Albeiro\\AppData\\Local\\Android\\Sdk
+
+# URL base del backend seguro de TRACE (en desarrollo local o producción)
+TRACE_BACKEND_BASE_URL=https://trace-backend.example.workers.dev/
