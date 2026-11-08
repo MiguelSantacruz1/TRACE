@@ -7,8 +7,8 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 ## 📊 Resumen General del Proyecto
 - **Meta mínima de commits:** 200 commits en la rama `main` (apuntando a ~220 para margen de seguridad).
 - **Convención de mensajes:** Conventional Commits (`tipo(alcance): descripción breve en infinitivo`).
-- **Commits actuales:** 57
-- **Etapa actual:** Etapa 8 completada. Listo para Etapa 9.
+- **Commits actuales:** 59
+- **Etapa actual:** Etapa 9 completada. Listo para Etapa 10.
 
 ---
 
@@ -24,7 +24,7 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 | **6** | **TRACE SCORE** | Pruebas unitarias en verde, docs/TRACE_SCORE.md, confianza y aviso legal visibles, mensaje de datos insuficientes. | ~22 | **Completada** |
 | **7** | **TRACE AI** | Responde solo con contexto, declara desconocimiento cuando falta información, resiste prompt injection, maneja timeouts y errores. | ~22 | **Completada** |
 | **8** | **Comparador e historial** | Comparación sin veredicto cuando faltan datos. Historial Room que vuelve a consultar Internet y permite eliminar items. | ~22 | **Completada** |
-| **9** | **Seguridad, rendimiento y pruebas** | Rate limiting, validación de integridad, pruebas unitarias e instrumentadas en verde, cero claves en APK/repo. | ~22 | Pendiente |
+| **9** | **Seguridad, rendimiento y pruebas** | Rate limiting, validación de integridad, pruebas unitarias e instrumentadas en verde, cero claves en APK/repo. | ~22 | **Completada** |
 | **10**| **Compilación y entrega** | APK final compilado, README completo, reporte final verificado y meta de >=200 commits alcanzada. | ~12 | Pendiente |
 
 ---
@@ -93,3 +93,14 @@ Este documento registra el progreso, los criterios de aceptación y el conteo de
 - [x] `feat(history): implementar HistoryRepository, casos de uso de historial (Get, Save, Delete, Clear), auto-guardado y pruebas unitarias` (Commit 55)
 - [x] `feat(compare): implementar CompareProductsUseCase, CompareViewModel, comparacion responsable lado a lado y pruebas unitarias` (Commit 56)
 - [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 8` (Commit 57)
+
+---
+
+## 📝 Detalle de la Etapa 9: Seguridad, Rendimiento y Pruebas
+**Objetivo:** Auditar y blindar la aplicación conforme a las directivas de seguridad (cero credenciales en APK/repo, Network Security Config forzando HTTPS y desactivando cleartext salvo excepción local en emulador, `allowBackup="false"`, componentes no exportados), optimización de R8 / ProGuard para Compose, Coil, Room y CameraX, estabilidad en listas y flujos reactivos, suite de pruebas unitarias e instrumentadas, y reporte técnico en `docs/SEGURIDAD_Y_RENDIMIENTO.md`.
+**Criterio de Aceptación:** Cero credenciales expuestas, HTTPS forzado en el manifiesto, reglas ProGuard completas, pruebas en verde (54/54) y compilación limpia.
+**Resultado:** Cumplido satisfactoriamente. 54 pruebas unitarias en verde (54/54) y APK Debug generado con éxito.
+
+### Tareas y Registro de Commits:
+- [x] `feat(security): implementar network_security_config, reglas R8 ProGuard, prueba instrumentada y auditoria en docs/SEGURIDAD_Y_RENDIMIENTO.md` (Commit 58)
+- [x] `docs(plan): actualizar PLAN.md con el cierre formal de la Etapa 9` (Commit 59)
