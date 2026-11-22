@@ -614,3 +614,30 @@ private fun DrawScope.drawCorners(color: Color) {
     l(Offset(inset + len, h - inset), Offset(inset, h - inset)); l(Offset(inset, h - inset), Offset(inset, h - inset - len))
 }
 
+// ── HUD de estado ────────────────────────────────────────────────────────────
+
+@Composable
+private fun StatusHud(
+    scanState: ScanState,
+    color: Color,
+    message: String,
+    productName: String,
+    errorText: String,
+    cameraProblem: Boolean
+) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = when (scanState) {
+                ScanState.IDLE -> "ENCUADRA EL PRODUCTO"
+                ScanState.ANALYZING -> message
+                ScanState.IDENTIFIED -> "PRODUCTO IDENTIFICADO"
+                ScanState.ERROR -> "NO SE PUDO ANALIZAR"
+            },
+            color = color,
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.labelLarge.copy(fontSize = 14.sp)
+        )
+        Spacer(Modifier.height(8.dp))
+        when (scanState) {
+            ScanState.IDLE -> Text(
+                text = if (cameraProblem) "Elige una foto de la galería para que la IA la analice."
