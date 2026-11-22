@@ -286,3 +286,30 @@ fun SectionLabel(text: String, modifier: Modifier = Modifier, trailing: String? 
     }
 }
 
+// ── Medidor de score ─────────────────────────────────────────────────────────
+
+/** Arco de 270° con brillo, cabeza luminosa y conteo animado hasta [score]. */
+@Composable
+fun ScoreGauge(
+    score: Int,
+    modifier: Modifier = Modifier,
+    size: Dp = 180.dp,
+    stroke: Dp = 14.dp,
+    showCaption: Boolean = true
+) {
+    val color = scoreColor(score)
+    val progress = remember { Animatable(0f) }
+    LaunchedEffect(score) {
+        progress.snapTo(0f)
+        progress.animateTo(score / 100f, tween(1400, easing = FastOutSlowInEasing))
+    }
+    val shown = (progress.value * 100f).roundToInt()
+
+    Box(modifier = modifier.size(size), contentAlignment = Alignment.Center) {
+        Canvas(Modifier.fillMaxSize()) {
+            val sw = stroke.toPx()
+            val inset = sw * 1.2f
+            val arcSize = Size(this.size.width - inset * 2, this.size.height - inset * 2)
+            val topLeft = Offset(inset, inset)
+            val sweep = 270f * progress.value
+
