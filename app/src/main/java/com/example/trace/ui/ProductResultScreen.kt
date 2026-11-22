@@ -160,3 +160,30 @@ fun ProductResultScreen(
         MetricItemCard(
             icon = "🛠️",
             title = "Reparabilidad",
+            value = product.repairability,
+            description = "Capacidad para reparar y sustituir componentes.",
+            accent = NeonCyan,
+            index = product.repairIndex,
+            modifier = Modifier.staggerIn(3)
+        )
+        MetricItemCard(
+            icon = "♻️",
+            title = "Reciclabilidad",
+            value = product.recyclability,
+            description = "Proporción de materiales reciclables o biodegradables.",
+            accent = NeonLime,
+            index = product.recycleIndex,
+            modifier = Modifier.staggerIn(4)
+        )
+        MetricItemCard(
+            icon = "🚛",
+            title = "Transporte y logística",
+            value = product.transport ?: "Información no disponible",
+            description = "Método de envío e impacto logístico.",
+            accent = NeonViolet,
+            modifier = Modifier.staggerIn(5)
+        )
+
+        Spacer(Modifier.height(4.dp))
+
+        Column(
