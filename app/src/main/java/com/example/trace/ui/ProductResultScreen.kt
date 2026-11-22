@@ -133,3 +133,30 @@ fun ProductResultScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable { runCatching { uriHandler.openUri(src.url) } }
+                                    .padding(vertical = 5.dp)
+                            )
+                        }
+                    }
+                    Spacer(Modifier.height(10.dp))
+                    Text(
+                        text = "Calificación estimada por IA a partir de información pública. Puede contener errores.",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = TextMid
+                    )
+                }
+            }
+        }
+
+        SectionLabel("MÉTRICAS DE SOSTENIBILIDAD", Modifier.staggerIn(1))
+
+        MetricItemCard(
+            icon = "🌍",
+            title = "Impacto ambiental",
+            value = product.impactTag,
+            description = "Huella de carbono y emisiones durante la producción.",
+            accent = NeonMint,
+            modifier = Modifier.staggerIn(2)
+        )
+        MetricItemCard(
+            icon = "🛠️",
+            title = "Reparabilidad",
