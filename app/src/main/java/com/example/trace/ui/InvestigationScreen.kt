@@ -270,3 +270,30 @@ fun TimelineItemRow(
     }
 }
 
+@Composable
+fun PillarTile(
+    icon: String,
+    title: String,
+    value: String,
+    accent: Color,
+    modifier: Modifier = Modifier
+) {
+    GlassCard(modifier = modifier, accent = accent, shape = RoundedCornerShape(18.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(14.dp)
+        ) {
+            Text(icon, fontSize = 24.sp)
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = title.uppercase(),
+                style = MaterialTheme.typography.labelSmall,
+                color = accent
+            )
+            Spacer(Modifier.height(2.dp))
+            Text(
+                text = value,
+                style = MaterialTheme.typography.titleSmall,
+                color = TextHi
+            )
