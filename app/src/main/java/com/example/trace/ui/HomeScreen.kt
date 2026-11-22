@@ -214,3 +214,19 @@ private fun RadarOrb(size: Dp, modifier: Modifier = Modifier) {
         drawCircle(NeonMint, 3.dp.toPx(), Offset(c.x + r * 0.45f, c.y - r * 0.35f))
         drawCircle(NeonCyan, 2.5.dp.toPx(), Offset(c.x - r * 0.5f, c.y + r * 0.25f))
         drawCircle(NeonLime.copy(alpha = 0.3f), 9.dp.toPx(), c)
+        drawCircle(NeonLime, 4.5.dp.toPx(), c)
+    }
+}
+
+@Composable
+private fun StatsRow(products: List<Product>, modifier: Modifier = Modifier) {
+    val average = if (products.isEmpty()) 0 else products.sumOf { it.score } / products.size
+    val best = products.maxOfOrNull { it.score } ?: 0
+
+    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        StatTile("${products.size}", "ANALIZADOS", NeonCyan, Modifier.weight(1f))
+        StatTile("$average", "PROMEDIO", NeonLime, Modifier.weight(1f))
+        StatTile("$best", "MEJOR SCORE", NeonMint, Modifier.weight(1f))
+    }
+}
+
