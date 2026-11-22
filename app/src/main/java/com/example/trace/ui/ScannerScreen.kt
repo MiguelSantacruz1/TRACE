@@ -527,3 +527,30 @@ private fun CameraFeed(modifier: Modifier = Modifier) {
                 listOf(Color.Transparent, Color.Black.copy(alpha = 0.55f)),
                 center = center,
                 radius = size.maxDimension * 0.65f
+            )
+        )
+    }
+}
+
+// ── Visor ────────────────────────────────────────────────────────────────────
+
+@Composable
+private fun Viewfinder(
+    scanState: ScanState,
+    frameColor: Color,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    val t = rememberInfiniteTransition(label = "scan")
+    val laser = t.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1400, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "laser"
+    )
+    val breathe = t.animateFloat(
+        initialValue = 0.55f,
+        targetValue = 1f,
