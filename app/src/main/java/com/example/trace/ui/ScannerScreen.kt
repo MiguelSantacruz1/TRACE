@@ -581,3 +581,23 @@ private fun Viewfinder(
                         1f to Color.Transparent,
                         startY = ly - band,
                         endY = ly + band
+                    ),
+                    topLeft = Offset(0f, ly - band),
+                    size = Size(w, band * 2)
+                )
+                drawLine(
+                    color = NeonAmber,
+                    start = Offset(w * 0.04f, ly),
+                    end = Offset(w * 0.96f, ly),
+                    strokeWidth = 2.5.dp.toPx(),
+                    cap = StrokeCap.Round
+                )
+            } else if (scanState == ScanState.IDENTIFIED) {
+                drawRect(NeonMint.copy(alpha = 0.12f))
+            } else if (scanState == ScanState.ERROR) {
+                drawRect(NeonRose.copy(alpha = 0.10f))
+            }
+        }
+    }
+}
+
