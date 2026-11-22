@@ -115,3 +115,21 @@ fun HeaderSection(modifier: Modifier = Modifier) {
             )
         }
         Spacer(Modifier.height(6.dp))
+        Text(
+            text = "TRACE",
+            style = TextStyle(
+                brush = Brush.horizontalGradient(listOf(NeonLime, NeonMint, NeonCyan)),
+                fontSize = 64.sp,
+                fontWeight = FontWeight.Black,
+                letterSpacing = 6.sp,
+                shadow = Shadow(NeonMint.copy(alpha = 0.55f), Offset.Zero, 28f)
+            )
+        )
+        Text(
+            text = "INVESTIGA LO QUE COMPRAS",
+            style = MaterialTheme.typography.labelLarge,
+            color = TextMid
+        )
+    }
+}
+
