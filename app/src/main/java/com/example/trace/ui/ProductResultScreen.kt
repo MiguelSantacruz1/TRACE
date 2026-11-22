@@ -224,3 +224,30 @@ fun ProductResultScreen(
     }
 }
 
+@Composable
+fun MetricItemCard(
+    icon: String,
+    title: String,
+    value: String,
+    description: String,
+    accent: Color,
+    modifier: Modifier = Modifier,
+    /** 0f..1f: si no es null se dibuja una barra de nivel animada. */
+    index: Float? = null
+) {
+    GlassCard(modifier = modifier.fillMaxWidth(), accent = accent, shape = RoundedCornerShape(20.dp)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.Top
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(accent.copy(alpha = 0.12f))
+                    .border(1.dp, accent.copy(alpha = 0.4f), RoundedCornerShape(14.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(icon, fontSize = 24.sp)
