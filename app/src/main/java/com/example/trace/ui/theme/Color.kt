@@ -19,3 +19,7 @@ val TextMid = Color(0xFFA7BDB1)
 val TextLow = Color(0xFF64796F)
 val Hairline = Color(0xFF22332C)
 
+// Indicadores de score
+val HighScoreGreen = NeonMint
+val MediumScoreAmber = NeonAmber
+val LowScoreRed = NeonRose
