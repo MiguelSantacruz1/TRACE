@@ -37,3 +37,22 @@ val TraceTypography = Typography(
     ),
     bodyMedium = TextStyle(
         fontFamily = Sans, fontWeight = FontWeight.Normal,
+        fontSize = 14.sp, lineHeight = 21.sp
+    ),
+    bodySmall = TextStyle(
+        fontFamily = Sans, fontWeight = FontWeight.Normal,
+        fontSize = 12.sp, lineHeight = 17.sp
+    ),
+    labelLarge = TextStyle(
+        fontFamily = TraceMono, fontWeight = FontWeight.Bold,
+        fontSize = 13.sp, lineHeight = 18.sp, letterSpacing = 1.6.sp
+    ),
+    labelMedium = TextStyle(
+        fontFamily = TraceMono, fontWeight = FontWeight.Bold,
+        fontSize = 11.sp, lineHeight = 15.sp, letterSpacing = 1.4.sp
+    ),
+    labelSmall = TextStyle(
+        fontFamily = TraceMono, fontWeight = FontWeight.Bold,
+        fontSize = 10.sp, lineHeight = 14.sp, letterSpacing = 1.2.sp
+    )
+)
