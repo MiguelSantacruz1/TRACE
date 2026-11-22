@@ -244,3 +244,30 @@ fun ScannerScreen(
                 Text(
                     text = if (realCamera) "● CÁMARA ACTIVA" else "● SIN CÁMARA · USA LA GALERÍA",
                     style = MaterialTheme.typography.labelSmall,
+                    color = badgeColor,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(50))
+                        .background(badgeColor.copy(alpha = 0.10f))
+                        .border(1.dp, badgeColor.copy(alpha = 0.35f), RoundedCornerShape(50))
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
+                )
+
+                Spacer(Modifier.height(20.dp))
+
+                Viewfinder(
+                    scanState = scanState,
+                    frameColor = frameColor,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .widthIn(max = 360.dp)
+                        .height(320.dp)
+                ) {
+                    val shot = captured
+                    when {
+                        shot != null -> Image(
+                            bitmap = shot.asImageBitmap(),
+                            contentDescription = "Foto del producto",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize()
+                        )
+
