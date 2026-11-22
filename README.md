@@ -11,3 +11,12 @@ Aplicación Android para investigar lo que compras. Tomas una foto de un product
 - TRACE AI: preguntas rápidas sobre el producto (si vale la pena, alternativas, reciclaje, comparación).
 - Historial de productos analizados en la pantalla de inicio.
 
+## Tecnologías
+
+- Kotlin y Jetpack Compose (Material 3)
+- Navigation Compose
+- CameraX
+- Gemini API (generateContent)
+
+## Requisitos
+
