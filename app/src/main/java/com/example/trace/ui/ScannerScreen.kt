@@ -163,3 +163,30 @@ fun ScannerScreen(
                     errorText = it.message ?: "Error desconocido."
                     scanState = ScanState.ERROR
                 }
+        }
+    }
+
+    fun reset() {
+        captured = null
+        errorText = ""
+        scanState = ScanState.IDLE
+    }
+
+    val galleryLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        if (uri != null) {
+            val bmp = runCatching { decodeUri(context, uri) }.getOrNull()
+            if (bmp != null) analyze(bmp) else {
+                errorText = "No se pudo leer esa imagen."
+                scanState = ScanState.ERROR
+            }
+        }
+    }
+
+    fun takePhoto() {
+        if (scanState != ScanState.IDLE) return
+        imageCapture.takePicture(
+            ContextCompat.getMainExecutor(context),
+            object : ImageCapture.OnImageCapturedCallback() {
+                override fun onCaptureSuccess(image: ImageProxy) {
+                    val bmp = runCatching { image.toScaledBitmap() }.getOrNull()
+                    image.close()
