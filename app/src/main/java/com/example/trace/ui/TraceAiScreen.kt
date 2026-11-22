@@ -216,3 +216,13 @@ private fun ProductBanner(product: Product, modifier: Modifier = Modifier) {
                 )
                 Text(
                     text = product.name,
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Black),
+                    color = TextHi
+                )
+                Spacer(Modifier.height(4.dp))
+                NeonChip("⚡ IA LOCAL · DATOS DEL PRODUCTO", NeonLime)
+            }
+        }
+    }
+}
+
