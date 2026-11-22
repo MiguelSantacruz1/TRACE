@@ -81,3 +81,30 @@ enum class MessageSender {
     USER, AI
 }
 
+private const val Q_WORTH = "¿Vale la pena comprarlo?"
+private const val Q_GREENER = "¿Hay una opción más sostenible?"
+private const val Q_RECYCLE = "¿Cómo puedo reciclarlo?"
+private const val Q_COMPARE = "¿Cómo se compara con los demás?"
+private val quickQuestions = listOf(Q_WORTH, Q_GREENER, Q_RECYCLE, Q_COMPARE)
+
+@Composable
+fun TraceAiScreen(
+    productId: String,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val product = productById(productId)
+
+    val messages = remember {
+        mutableStateListOf(
+            ChatMessage(
+                id = 0,
+                sender = MessageSender.AI,
+                text = "¡Hola! Soy **TRACE AI**. Analicé **${product.name}** (puntaje ${product.score}/100). ¿Qué quieres saber?"
+            )
+        )
+    }
+    var nextId by remember { mutableIntStateOf(1) }
+    var isAnalyzing by remember { mutableStateOf(false) }
+    val listState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
