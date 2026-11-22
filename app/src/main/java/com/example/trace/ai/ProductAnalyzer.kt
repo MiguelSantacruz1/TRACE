@@ -122,3 +122,30 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
             )
             .put("generationConfig", JSONObject().put("temperature", 0.2))
         if (useSearch) body.put("tools", JSONArray().put(JSONObject().put("google_search", JSONObject())))
+
+        val url = URL("https://generativelanguage.googleapis.com/v1beta/models/${BuildConfig.GEMINI_MODEL}:generateContent")
+        val conn = (url.openConnection() as HttpURLConnection).apply {
+            requestMethod = "POST"
+            connectTimeout = 20_000
+            readTimeout = 90_000
+            doOutput = true
+            setRequestProperty("Content-Type", "application/json")
+            setRequestProperty("x-goog-api-key", BuildConfig.GEMINI_API_KEY)
+        }
+        try {
+            conn.outputStream.use { it.write(body.toString().toByteArray()) }
+            val code = conn.responseCode
+            if (code != 200) {
+                val err = conn.errorStream?.bufferedReader()?.readText().orEmpty()
+                val msg = runCatching { JSONObject(err).getJSONObject("error").getString("message") }
+                    .getOrDefault(err.take(200))
+                if (code == 429 && useSearch) throw QuotaException()
+                if (code == 503) throw OverloadedException()
+                throw AnalysisException(
+                    when (code) {
+                        400, 403 -> "Clave de Gemini inválida o sin permiso: $msg"
+                        429 -> "Se alcanzó el límite gratuito de Gemini. Espera un minuto e intenta de nuevo."
+                        else -> "Error $code de Gemini: $msg"
+                    }
+                )
+            }
