@@ -186,3 +186,13 @@ fun InvestigationScreen(
                 modifier = Modifier.fillMaxWidth()
             )
         }
+        Spacer(Modifier.height(12.dp))
+    }
+}
+
+data class TimelineStage(
+    val title: String,
+    val icon: String,
+    val value: String?
+)
+
