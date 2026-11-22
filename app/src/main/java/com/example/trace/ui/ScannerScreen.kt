@@ -109,3 +109,30 @@ private val analyzingMessages = listOf(
     "CALCULANDO TU TRACE SCORE"
 )
 
+@Composable
+fun ScannerScreen(
+    onScanSuccess: (productId: String) -> Unit,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var scanState by remember { mutableStateOf(ScanState.IDLE) }
+    var captured by remember { mutableStateOf<Bitmap?>(null) }
+    var errorText by remember { mutableStateOf("") }
+    var identifiedName by remember { mutableStateOf("") }
+    var messageIndex by remember { mutableStateOf(0) }
+    var analysisJob by remember { mutableStateOf<Job?>(null) }
+
+    var hasPermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED
+        )
+    }
+    var permissionAsked by remember { mutableStateOf(false) }
+    var cameraError by remember { mutableStateOf(false) }
+    val imageCapture = remember {
+        ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY).build()
+    }
+
