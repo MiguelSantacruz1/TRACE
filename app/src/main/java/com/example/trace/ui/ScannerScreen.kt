@@ -96,3 +96,16 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
+enum class ScanState {
+    IDLE, ANALYZING, IDENTIFIED, ERROR
+}
+
+private const val MAX_SIDE = 1024
+
+private val analyzingMessages = listOf(
+    "IDENTIFICANDO PRODUCTO",
+    "BUSCANDO EN LA WEB",
+    "REVISANDO MATERIALES Y ORIGEN",
+    "CALCULANDO TU TRACE SCORE"
+)
+
