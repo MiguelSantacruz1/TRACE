@@ -176,3 +176,30 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
             if (json.isNull(key)) null
             else json.optString(key).trim().takeIf { it.isNotEmpty() && it != "null" }
 
+        fun idx(key: String): Float? {
+            if (!json.has(key) || json.isNull(key)) return null
+            val v = json.optDouble(key)
+            return if (v.isNaN()) null else v.toFloat().coerceIn(0f, 1f)
+        }
+
+        val sources = mutableListOf<SourceLink>()
+        val chunks = candidate.optJSONObject("groundingMetadata")?.optJSONArray("groundingChunks")
+        if (chunks != null) {
+            for (i in 0 until chunks.length()) {
+                val web = chunks.getJSONObject(i).optJSONObject("web") ?: continue
+                val uri = web.optString("uri")
+                if (uri.isNotBlank() && sources.none { it.url == uri }) {
+                    sources += SourceLink(web.optString("title").ifBlank { uri }, uri)
+                }
+            }
+        }
+
+        return Product(
+            id = "ai-${System.currentTimeMillis()}",
+            name = json.getString("name").trim(),
+            score = json.optInt("score", 50).coerceIn(0, 100),
+            category = str("category") ?: "Producto",
+            impactTag = str("impactTag") ?: "Impacto no determinado",
+            repairability = str("repairability") ?: "Información no disponible",
+            repairIndex = idx("repairIndex"),
+            recyclability = str("recyclability") ?: "Información no disponible",
