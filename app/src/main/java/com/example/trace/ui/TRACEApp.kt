@@ -81,3 +81,29 @@ fun TRACEApp(
                 onGoHome = {
                     navController.popBackStack(Screen.Home.route, inclusive = false)
                 }
+            )
+        }
+
+        composable(Screen.Investigation.route, arguments = productArg) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: "1"
+            InvestigationScreen(
+                productId = productId,
+                onAskAiClick = {
+                    navController.navigate(Screen.TraceAi.createRoute(productId))
+                },
+                onBackClick = { navController.popBackStack() },
+                onGoHome = {
+                    navController.popBackStack(Screen.Home.route, inclusive = false)
+                }
+            )
+        }
+
+        composable(Screen.TraceAi.route, arguments = productArg) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: "1"
+            TraceAiScreen(
+                productId = productId,
+                onBack = { navController.popBackStack() }
+            )
+        }
+    }
+}
