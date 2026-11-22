@@ -348,3 +348,12 @@ fun ScannerScreen(
     }
 }
 
+// ── Imágenes ─────────────────────────────────────────────────────────────────
+
+private fun ImageProxy.toScaledBitmap(): Bitmap {
+    val raw = toBitmap()
+    val matrix = Matrix().apply { postRotate(imageInfo.rotationDegrees.toFloat()) }
+    val rotated = Bitmap.createBitmap(raw, 0, 0, raw.width, raw.height, matrix, true)
+    return rotated.scaledDown()
+}
+
