@@ -180,3 +180,30 @@ fun GlassCard(
     )
 }
 
+// ── Botones ──────────────────────────────────────────────────────────────────
+
+enum class NeonStyle { Primary, Secondary, Ghost }
+
+@Composable
+fun NeonButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    style: NeonStyle = NeonStyle.Primary,
+    enabled: Boolean = true,
+    leading: String? = null,
+    height: Dp = 56.dp
+) {
+    val interaction = remember { MutableInteractionSource() }
+    val pressed by interaction.collectIsPressedAsState()
+    val scale by animateFloatAsState(if (pressed) 0.96f else 1f, spring(dampingRatio = 0.6f), label = "press")
+    val shape = RoundedCornerShape(18.dp)
+    val glow = if (style == NeonStyle.Secondary) NeonCyan else NeonLime
+    val fill: Brush = when (style) {
+        NeonStyle.Primary -> Brush.horizontalGradient(listOf(NeonLime, NeonMint))
+        NeonStyle.Secondary -> Brush.horizontalGradient(listOf(NeonCyan, NeonViolet))
+        NeonStyle.Ghost -> SolidColor(Color.White.copy(alpha = 0.05f))
+    }
+    val fg = if (style == NeonStyle.Ghost) TextHi else Void
+
+    Box(
