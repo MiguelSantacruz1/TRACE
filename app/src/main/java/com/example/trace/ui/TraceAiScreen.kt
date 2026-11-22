@@ -389,3 +389,12 @@ private fun generateAiResponse(question: String, product: Product): String = whe
     else -> "Analicé **${product.name}**: puntaje ${product.score}/100, ${product.impactTag}."
 }
 
+@Preview(showBackground = true)
+@Composable
+fun TraceAiScreenPreview() {
+    TRACETheme {
+        AuroraBackground {
+            TraceAiScreen(productId = "1", onBack = {})
+        }
+    }
+}
