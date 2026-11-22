@@ -105,3 +105,30 @@ fun InvestigationScreen(
                         style = MaterialTheme.typography.titleMedium,
                         color = TextHi
                     )
+                    Spacer(Modifier.height(10.dp))
+                    NeonChip(scoreRating(product.score), color)
+                }
+            }
+        }
+
+        SectionLabel("PILARES DE SOSTENIBILIDAD", Modifier.staggerIn(2))
+
+        Column(
+            modifier = Modifier.fillMaxWidth().staggerIn(3),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            Row(
+                modifier = Modifier.height(IntrinsicSize.Max),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                PillarTile("🌍", "Impacto", product.impactTag, NeonMint, Modifier.weight(1f).fillMaxHeight())
+                PillarTile("🚛", "Transporte", product.transport ?: "No disponible", NeonViolet, Modifier.weight(1f).fillMaxHeight())
+            }
+            Row(
+                modifier = Modifier.height(IntrinsicSize.Max),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                PillarTile("🛠️", "Reparabilidad", product.repairability, NeonCyan, Modifier.weight(1f).fillMaxHeight())
+                PillarTile("♻️", "Reciclabilidad", product.recyclability, NeonLime, Modifier.weight(1f).fillMaxHeight())
+            }
+        }
