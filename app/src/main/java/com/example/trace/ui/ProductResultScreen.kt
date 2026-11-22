@@ -301,3 +301,18 @@ private fun LevelBar(level: Float, color: Color) {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun ProductResultScreenPreview() {
+    TRACETheme {
+        AuroraBackground {
+            ProductResultScreen(
+                productId = "1",
+                onViewInvestigation = {},
+                onAskAiClick = {},
+                onScanAnother = {},
+                onGoHome = {}
+            )
+        }
+    }
+}
