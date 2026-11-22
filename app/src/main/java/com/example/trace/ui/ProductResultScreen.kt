@@ -52,3 +52,30 @@ import com.example.trace.ui.theme.NeonMint
 import com.example.trace.ui.theme.NeonViolet
 import com.example.trace.ui.theme.TRACETheme
 import com.example.trace.ui.theme.TextHi
+import com.example.trace.ui.theme.TextMid
+
+@Composable
+fun ProductResultScreen(
+    productId: String,
+    onViewInvestigation: () -> Unit,
+    onAskAiClick: () -> Unit,
+    onScanAnother: () -> Unit,
+    onGoHome: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val product = productById(productId)
+    val color = scoreColor(product.score)
+
+    TraceScaffold(
+        modifier = modifier,
+        title = "Producto detectado",
+        onBack = onGoHome
+    ) {
+        // Tarjeta héroe con el score
+        GlassCard(
+            modifier = Modifier.fillMaxWidth().staggerIn(0),
+            accent = color,
+            shape = RoundedCornerShape(28.dp)
+        ) {
+            Column(
+                modifier = Modifier
