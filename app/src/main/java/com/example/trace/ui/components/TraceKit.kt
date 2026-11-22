@@ -408,3 +408,12 @@ fun TraceScaffold(
                     .fillMaxSize()
                     .then(if (scroll) Modifier.verticalScroll(rememberScrollState()) else Modifier)
                     .padding(contentPadding),
+                verticalArrangement = Arrangement.spacedBy(spacing)
+            ) {
+                content()
+                Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
+            }
+        }
+    }
+}
+
