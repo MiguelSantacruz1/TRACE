@@ -250,3 +250,23 @@ fun TimelineItemRow(
         Column(
             modifier = Modifier
                 .weight(1f)
+                .padding(bottom = if (isLast) 0.dp else 34.dp, top = 2.dp)
+        ) {
+            Text(
+                text = stage.title.uppercase(),
+                style = MaterialTheme.typography.labelSmall,
+                color = if (isAvailable) NeonMint else TextLow
+            )
+            Spacer(Modifier.height(2.dp))
+            Text(
+                text = displayValue,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = if (isAvailable) FontWeight.SemiBold else FontWeight.Normal,
+                    fontStyle = if (isAvailable) FontStyle.Normal else FontStyle.Italic
+                ),
+                color = if (isAvailable) TextHi else TextLow
+            )
+        }
+    }
+}
+
