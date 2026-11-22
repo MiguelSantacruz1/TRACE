@@ -340,3 +340,30 @@ fun ScoreGauge(
                 )
             }
         }
+    }
+}
+
+// ── Barra superior + scaffold ────────────────────────────────────────────────
+
+@Composable
+fun TraceTopBar(title: String, onBack: () -> Unit, modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .statusBarsPadding()
+            .padding(horizontal = 16.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            modifier = Modifier
+                .size(44.dp)
+                .clip(CircleShape)
+                .background(Color.White.copy(alpha = 0.06f))
+                .border(1.dp, NeonMint.copy(alpha = 0.4f), CircleShape)
+                .semantics { contentDescription = "Volver" }
+                .clickable(role = Role.Button, onClick = onBack),
+            contentAlignment = Alignment.Center
+        ) {
+            Canvas(Modifier.size(16.dp)) {
+                val w = size.width
+                val h = size.height
