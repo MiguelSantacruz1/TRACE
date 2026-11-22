@@ -281,3 +281,29 @@ fun ProductCard(
                 Text(
                     text = product.category.uppercase(),
                     style = MaterialTheme.typography.labelSmall,
+                    color = color
+                )
+                Text(
+                    text = product.name,
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Black),
+                    color = TextHi
+                )
+                Spacer(Modifier.height(8.dp))
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    NeonChip(product.impactTag, NeonCyan)
+                }
+            }
+            Text(
+                text = "›",
+                color = color,
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Light,
+                modifier = Modifier.padding(start = 6.dp)
+            )
+        }
+    }
+}
+
