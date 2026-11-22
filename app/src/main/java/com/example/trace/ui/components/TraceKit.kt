@@ -367,3 +367,17 @@ fun TraceTopBar(title: String, onBack: () -> Unit, modifier: Modifier = Modifier
             Canvas(Modifier.size(16.dp)) {
                 val w = size.width
                 val h = size.height
+                val sw = 2.6.dp.toPx()
+                drawLine(NeonMint, Offset(w * 0.7f, h * 0.05f), Offset(w * 0.25f, h * 0.5f), sw, StrokeCap.Round)
+                drawLine(NeonMint, Offset(w * 0.25f, h * 0.5f), Offset(w * 0.7f, h * 0.95f), sw, StrokeCap.Round)
+            }
+        }
+        Spacer(Modifier.width(14.dp))
+        Text(
+            text = title.uppercase(),
+            style = MaterialTheme.typography.labelLarge.copy(fontSize = 15.sp, letterSpacing = 2.2.sp, fontFamily = TraceMono),
+            color = TextHi
+        )
+    }
+}
+
