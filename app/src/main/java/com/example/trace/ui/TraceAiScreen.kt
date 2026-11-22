@@ -308,3 +308,30 @@ fun AnalyzingIndicator(modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun PromptOptionChip(
+    text: String,
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val shape = RoundedCornerShape(16.dp)
+    Box(
+        modifier = modifier
+            .height(58.dp)
+            .alpha(if (enabled) 1f else 0.45f)
+            .clip(shape)
+            .background(Color.White.copy(alpha = 0.05f))
+            .border(1.dp, NeonMint.copy(alpha = 0.35f), shape)
+            .clickable(enabled = enabled, onClick = onClick)
+            .padding(horizontal = 12.dp),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold, fontSize = 12.sp),
+            color = TextHi
+        )
+    }
+}
+
