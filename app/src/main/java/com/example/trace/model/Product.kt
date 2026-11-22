@@ -90,3 +90,14 @@ val sampleProducts = listOf(
     )
 )
 
+/** Productos de ejemplo + los que la IA identifica al escanear (el más reciente primero). */
+object ProductStore {
+    val products = mutableStateListOf<Product>().apply { addAll(sampleProducts) }
+
+    fun add(product: Product) {
+        products.add(0, product)
+    }
+}
+
+fun productById(id: String): Product =
+    ProductStore.products.find { it.id == id } ?: ProductStore.products.first()
