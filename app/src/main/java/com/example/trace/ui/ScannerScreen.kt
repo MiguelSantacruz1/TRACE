@@ -554,3 +554,30 @@ private fun Viewfinder(
     val breathe = t.animateFloat(
         initialValue = 0.55f,
         targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(1100), RepeatMode.Reverse),
+        label = "breathe"
+    )
+
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(20.dp))
+            .background(Color.White.copy(alpha = 0.04f))
+    ) {
+        content()
+        Canvas(Modifier.fillMaxSize()) {
+            val w = size.width
+            val h = size.height
+
+            val alpha = if (scanState == ScanState.IDLE) breathe.value else 1f
+            drawCorners(frameColor.copy(alpha = alpha))
+
+            if (scanState == ScanState.ANALYZING) {
+                val ly = h * (0.06f + 0.88f * laser.value)
+                val band = 44.dp.toPx()
+                drawRect(
+                    brush = Brush.verticalGradient(
+                        0f to Color.Transparent,
+                        0.5f to NeonAmber.copy(alpha = 0.35f),
+                        1f to Color.Transparent,
+                        startY = ly - band,
+                        endY = ly + band
