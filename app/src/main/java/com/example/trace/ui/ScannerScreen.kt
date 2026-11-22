@@ -271,3 +271,30 @@ fun ScannerScreen(
                             modifier = Modifier.fillMaxSize()
                         )
 
+                        realCamera -> CameraPreview(
+                            imageCapture = imageCapture,
+                            onError = { cameraError = true },
+                            modifier = Modifier.fillMaxSize()
+                        )
+
+                        !hasPermission -> PermissionPanel(
+                            denied = permissionAsked,
+                            onRequest = { permissionLauncher.launch(Manifest.permission.CAMERA) }
+                        )
+                    }
+                }
+
+                Spacer(Modifier.height(22.dp))
+                StatusHud(
+                    scanState = scanState,
+                    color = frameColor,
+                    message = analyzingMessages[messageIndex],
+                    productName = identifiedName,
+                    errorText = errorText,
+                    cameraProblem = !realCamera
+                )
+                Spacer(Modifier.height(16.dp))
+            }
+
+            Column(
+                modifier = Modifier
