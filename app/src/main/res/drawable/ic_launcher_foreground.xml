@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Mira de escaneo con una T al centro, dentro de la zona segura (66dp centrales). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Esquinas del visor -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FF19FFA8"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M33,45 L33,33 L45,33 M63,33 L75,33 L75,45 M75,63 L75,75 L63,75 M45,75 L33,75 L33,63" />
+
+    <!-- Letra T -->
+    <path
+        android:strokeWidth="0"
+        android:pathData="M42,42 L66,42 L66,49 L57.5,49 L57.5,68 L50.5,68 L50.5,49 L42,49 Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:startX="42"
+                android:startY="42"
+                android:endX="66"
+                android:endY="68"
+                android:type="linear">
+                <item android:color="#FFC6FF3D" android:offset="0.0" />
+                <item android:color="#FF19FFA8" android:offset="1.0" />
+            </gradient>
+        </aapt:attr>
+    </path>
+</vector>
