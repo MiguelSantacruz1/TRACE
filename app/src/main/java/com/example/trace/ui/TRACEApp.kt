@@ -54,3 +54,30 @@ fun TRACEApp(
 
         composable(Screen.Scanner.route) {
             ScannerScreen(
+                onScanSuccess = { productId ->
+                    navController.navigate(Screen.ProductResult.createRoute(productId)) {
+                        popUpTo(Screen.Scanner.route) { inclusive = true }
+                    }
+                },
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable(Screen.ProductResult.route, arguments = productArg) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: "1"
+            ProductResultScreen(
+                productId = productId,
+                onViewInvestigation = {
+                    navController.navigate(Screen.Investigation.createRoute(productId))
+                },
+                onAskAiClick = {
+                    navController.navigate(Screen.TraceAi.createRoute(productId))
+                },
+                onScanAnother = {
+                    navController.navigate(Screen.Scanner.route) {
+                        popUpTo(Screen.Home.route)
+                    }
+                },
+                onGoHome = {
+                    navController.popBackStack(Screen.Home.route, inclusive = false)
+                }
