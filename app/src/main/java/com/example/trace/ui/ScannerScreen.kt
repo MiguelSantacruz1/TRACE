@@ -668,3 +668,15 @@ private fun StatusHud(
                 style = MaterialTheme.typography.bodySmall
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ScannerScreenPreview() {
+    TRACETheme {
+        AuroraBackground {
+            ScannerScreen(onScanSuccess = {}, onBackClick = {})
+        }
+    }
+}
