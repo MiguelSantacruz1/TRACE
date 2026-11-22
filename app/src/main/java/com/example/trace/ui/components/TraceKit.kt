@@ -100,3 +100,30 @@ fun scoreRating(score: Int): String = when {
     else -> "SOSTENIBILIDAD BAJA"
 }
 
+// ── Fondo ────────────────────────────────────────────────────────────────────
+
+/** Fondo vivo: gradientes de aurora que derivan despacio sobre una rejilla tenue. */
+@Composable
+fun AuroraBackground(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
+    val transition = rememberInfiniteTransition(label = "aurora")
+    val drift = transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(16000, easing = LinearEasing), RepeatMode.Reverse),
+        label = "drift"
+    )
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(Void)
+            .drawBehind {
+                val w = size.width
+                val h = size.height
+                val d = drift.value
+
+                val c1 = Offset(w * (0.05f + 0.45f * d), h * 0.08f)
+                drawCircle(
+                    Brush.radialGradient(listOf(NeonMint.copy(alpha = 0.20f), Color.Transparent), center = c1, radius = w),
+                    radius = w, center = c1
+                )
+                val c2 = Offset(w * (0.95f - 0.40f * d), h * 0.88f)
