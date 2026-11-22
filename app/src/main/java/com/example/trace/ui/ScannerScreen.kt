@@ -403,3 +403,15 @@ private fun CameraPreview(
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(
                     lifecycleOwner, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageCapture
+                )
+            } catch (e: Exception) {
+                currentOnError()
+            }
+        }, ContextCompat.getMainExecutor(context))
+
+        onDispose { provider?.unbindAll() }
+    }
+
+    AndroidView(factory = { previewView }, modifier = modifier)
+}
+
