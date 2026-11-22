@@ -601,3 +601,16 @@ private fun Viewfinder(
     }
 }
 
+private fun DrawScope.drawCorners(color: Color) {
+    val len = 34.dp.toPx()
+    val sw = 4.5.dp.toPx()
+    val inset = sw / 2f
+    val w = size.width
+    val h = size.height
+    fun l(a: Offset, b: Offset) = drawLine(color, a, b, sw, StrokeCap.Round)
+    l(Offset(inset, inset + len), Offset(inset, inset)); l(Offset(inset, inset), Offset(inset + len, inset))
+    l(Offset(w - inset - len, inset), Offset(w - inset, inset)); l(Offset(w - inset, inset), Offset(w - inset, inset + len))
+    l(Offset(w - inset, h - inset - len), Offset(w - inset, h - inset)); l(Offset(w - inset, h - inset), Offset(w - inset - len, h - inset))
+    l(Offset(inset + len, h - inset), Offset(inset, h - inset)); l(Offset(inset, h - inset), Offset(inset, h - inset - len))
+}
+
