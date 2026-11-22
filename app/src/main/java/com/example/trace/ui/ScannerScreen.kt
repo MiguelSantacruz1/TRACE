@@ -325,3 +325,26 @@ fun ScannerScreen(
 
                     else -> NeonButton(
                         text = if (scanState == ScanState.ANALYZING) "Analizando…" else "¡Identificado!",
+                        enabled = false,
+                        onClick = {},
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                if (scanState == ScanState.ANALYZING) {
+                    NeonButton(
+                        text = "Cancelar",
+                        style = NeonStyle.Ghost,
+                        height = 46.dp,
+                        onClick = {
+                            analysisJob?.cancel()
+                            reset()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+                Spacer(Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
+            }
+        }
+    }
+}
+
