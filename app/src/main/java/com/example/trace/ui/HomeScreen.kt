@@ -230,3 +230,27 @@ private fun StatsRow(products: List<Product>, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+private fun StatTile(value: String, label: String, color: Color, modifier: Modifier = Modifier) {
+    GlassCard(modifier = modifier, accent = color) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 14.dp, horizontal = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = value,
+                color = color,
+                fontSize = 30.sp,
+                fontWeight = FontWeight.Black
+            )
+            Text(
+                text = label,
+                color = TextMid,
+                style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.sp, fontFamily = TraceMono)
+            )
+        }
+    }
+}
+
