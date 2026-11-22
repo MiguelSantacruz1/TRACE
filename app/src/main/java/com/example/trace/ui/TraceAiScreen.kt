@@ -253,3 +253,22 @@ fun ChatMessageBubble(
             modifier = Modifier
                 .widthIn(max = 300.dp)
                 .weight(1f, fill = false)
+                .clip(shape)
+                .then(
+                    if (isUser) Modifier.background(Brush.linearGradient(listOf(NeonLime, NeonMint)))
+                    else Modifier
+                        .background(Color.White.copy(alpha = 0.06f))
+                        .border(1.dp, NeonCyan.copy(alpha = 0.35f), shape)
+                )
+                .padding(horizontal = 16.dp, vertical = 12.dp)
+        ) {
+            Text(
+                text = markdownBold(message.text, if (isUser) Void else NeonCyan),
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (isUser) Void else TextHi,
+                fontWeight = if (isUser) FontWeight.SemiBold else FontWeight.Normal
+            )
+        }
+    }
+}
+
