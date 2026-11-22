@@ -251,3 +251,30 @@ fun MetricItemCard(
                 contentAlignment = Alignment.Center
             ) {
                 Text(icon, fontSize = 24.sp)
+            }
+            Spacer(Modifier.width(14.dp))
+            Column(Modifier.weight(1f)) {
+                Text(
+                    text = title.uppercase(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = accent
+                )
+                Spacer(Modifier.height(2.dp))
+                Text(
+                    text = value,
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.ExtraBold),
+                    color = TextHi
+                )
+                if (index != null) {
+                    Spacer(Modifier.height(8.dp))
+                    LevelBar(index, accent)
+                }
+                Spacer(Modifier.height(6.dp))
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = TextMid
+                )
+            }
+        }
+    }
