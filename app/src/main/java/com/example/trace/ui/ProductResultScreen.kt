@@ -106,3 +106,30 @@ fun ProductResultScreen(
 
         if (product.aiGenerated) {
             val uriHandler = LocalUriHandler.current
+            GlassCard(
+                modifier = Modifier.fillMaxWidth().staggerIn(1),
+                accent = NeonViolet,
+                shape = RoundedCornerShape(22.dp)
+            ) {
+                Column(Modifier.fillMaxWidth().padding(18.dp)) {
+                    SectionLabel("ANÁLISIS DE LA IA")
+                    Spacer(Modifier.height(8.dp))
+                    Text(
+                        text = product.summary ?: "La IA identificó el producto pero no dejó un resumen.",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = TextHi
+                    )
+                    if (product.sources.isNotEmpty()) {
+                        Spacer(Modifier.height(14.dp))
+                        Text("FUENTES WEB", style = MaterialTheme.typography.labelSmall, color = TextMid)
+                        Spacer(Modifier.height(6.dp))
+                        product.sources.forEach { src ->
+                            Text(
+                                text = "↗ ${src.title}",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = NeonCyan,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { runCatching { uriHandler.openUri(src.url) } }
