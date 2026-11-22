@@ -108,3 +108,30 @@ fun TraceAiScreen(
     var isAnalyzing by remember { mutableStateOf(false) }
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
+
+    // Siempre muestra lo último (mensaje nuevo o indicador "analizando")
+    LaunchedEffect(messages.size, isAnalyzing) {
+        val last = messages.size - 1 + if (isAnalyzing) 1 else 0
+        if (last >= 0) listState.animateScrollToItem(last)
+    }
+
+    fun ask(question: String) {
+        if (isAnalyzing) return
+        messages.add(ChatMessage(nextId++, MessageSender.USER, question))
+        isAnalyzing = true
+        scope.launch {
+            delay(900) // simula el análisis local
+            messages.add(ChatMessage(nextId++, MessageSender.AI, generateAiResponse(question, product)))
+            isAnalyzing = false
+        }
+    }
+
+    TraceScaffold(
+        modifier = modifier,
+        title = "TRACE AI",
+        onBack = onBack,
+        scroll = false,
+        contentPadding = PaddingValues(0.dp),
+        spacing = 0.dp
+    ) {
+        ProductBanner(product, Modifier.padding(horizontal = 20.dp, vertical = 6.dp))
