@@ -61,3 +61,30 @@ import com.example.trace.ui.theme.TextHi
 import com.example.trace.ui.theme.TextMid
 import com.example.trace.ui.theme.TraceMono
 
+@Composable
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    products: List<Product> = ProductStore.products,
+    onScanClick: () -> Unit = {},
+    onProductClick: (Product) -> Unit = {}
+) {
+    TraceScaffold(modifier = modifier, spacing = 18.dp) {
+        HeaderSection(Modifier.staggerIn(0))
+        ScanHeroCard(onScanClick, Modifier.staggerIn(1))
+        StatsRow(products, Modifier.staggerIn(2))
+
+        SectionLabel(
+            text = "ÚLTIMOS ESCANEOS",
+            trailing = "${products.size}",
+            modifier = Modifier.staggerIn(3)
+        )
+        products.forEachIndexed { index, product ->
+            ProductCard(
+                product = product,
+                onClick = { onProductClick(product) },
+                modifier = Modifier.staggerIn(4 + index)
+            )
+        }
+        Spacer(Modifier.height(16.dp))
+    }
+}
