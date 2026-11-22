@@ -162,3 +162,30 @@ fun TraceAiScreen(
             Text(
                 text = "PREGÚNTALE A TRACE AI",
                 style = MaterialTheme.typography.labelSmall,
+                color = TextMid,
+                modifier = Modifier.padding(bottom = 10.dp)
+            )
+            quickQuestions.chunked(2).forEach { row ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    row.forEach { q ->
+                        PromptOptionChip(
+                            text = q,
+                            enabled = !isAnalyzing,
+                            onClick = { ask(q) },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                }
+            }
+            NeonButton(
+                text = "Volver",
+                style = NeonStyle.Ghost,
+                height = 46.dp,
+                onClick = onBack,
+                modifier = Modifier.fillMaxWidth()
+            )
