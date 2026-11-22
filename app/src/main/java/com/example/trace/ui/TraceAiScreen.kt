@@ -189,3 +189,30 @@ fun TraceAiScreen(
                 onClick = onBack,
                 modifier = Modifier.fillMaxWidth()
             )
+        }
+    }
+}
+
+@Composable
+private fun ProductBanner(product: Product, modifier: Modifier = Modifier) {
+    GlassCard(
+        modifier = modifier.fillMaxWidth(),
+        accent = NeonCyan,
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ScoreGauge(score = product.score, size = 60.dp, stroke = 6.dp, showCaption = false)
+            Spacer(Modifier.width(14.dp))
+            Column(Modifier.weight(1f)) {
+                Text(
+                    text = "ANALIZANDO",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = TextMid
+                )
+                Text(
+                    text = product.name,
