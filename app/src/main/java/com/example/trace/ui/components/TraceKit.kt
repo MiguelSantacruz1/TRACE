@@ -154,3 +154,29 @@ fun AuroraBackground(modifier: Modifier = Modifier, content: @Composable BoxScop
         content = content
     )
 }
+
+// ── Tarjeta de cristal ───────────────────────────────────────────────────────
+
+@Composable
+fun GlassCard(
+    modifier: Modifier = Modifier,
+    accent: Color = NeonMint,
+    shape: Shape = RoundedCornerShape(24.dp),
+    onClick: (() -> Unit)? = null,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Column(
+        modifier = modifier
+            .clip(shape)
+            .background(Ink.copy(alpha = 0.72f))
+            .background(Brush.linearGradient(listOf(accent.copy(alpha = 0.10f), Color.White.copy(alpha = 0.02f))))
+            .border(
+                1.dp,
+                Brush.linearGradient(listOf(accent.copy(alpha = 0.65f), Color.White.copy(alpha = 0.06f), accent.copy(alpha = 0.18f))),
+                shape
+            )
+            .then(if (onClick != null) Modifier.clickable(role = Role.Button, onClick = onClick) else Modifier),
+        content = content
+    )
+}
+
