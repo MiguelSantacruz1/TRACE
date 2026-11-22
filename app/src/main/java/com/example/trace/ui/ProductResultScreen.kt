@@ -187,3 +187,30 @@ fun ProductResultScreen(
         Spacer(Modifier.height(4.dp))
 
         Column(
+            modifier = Modifier.fillMaxWidth().staggerIn(6),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            NeonButton(
+                text = "Ver investigación",
+                leading = "🔍",
+                onClick = onViewInvestigation,
+                modifier = Modifier.fillMaxWidth()
+            )
+            NeonButton(
+                text = "Preguntar a TRACE AI",
+                leading = "🤖",
+                style = NeonStyle.Secondary,
+                onClick = onAskAiClick,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                NeonButton(
+                    text = "Escanear otro",
+                    style = NeonStyle.Ghost,
+                    height = 50.dp,
+                    onClick = onScanAnother,
+                    modifier = Modifier.weight(1f)
+                )
+                NeonButton(
+                    text = "Inicio",
+                    style = NeonStyle.Ghost,
