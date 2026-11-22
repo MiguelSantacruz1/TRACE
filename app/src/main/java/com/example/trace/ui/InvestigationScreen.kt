@@ -196,3 +196,30 @@ data class TimelineStage(
     val value: String?
 )
 
+@Composable
+fun TimelineItemRow(
+    stage: TimelineStage,
+    isLast: Boolean,
+    modifier: Modifier = Modifier
+) {
+    val isAvailable = !stage.value.isNullOrBlank()
+    val displayValue = if (isAvailable) stage.value!! else "Información no disponible"
+    val nodeColor = if (isAvailable) NeonMint else TextLow
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .width(40.dp)
+                .fillMaxHeight()
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(nodeColor.copy(alpha = if (isAvailable) 0.14f else 0.06f))
+                    .border(1.5.dp, nodeColor.copy(alpha = if (isAvailable) 0.8f else 0.35f), CircleShape),
