@@ -217,3 +217,30 @@ fun ScannerScreen(
 
     val frameColor by animateColorAsState(
         targetValue = when (scanState) {
+            ScanState.IDLE -> NeonCyan
+            ScanState.ANALYZING -> NeonAmber
+            ScanState.IDENTIFIED -> NeonMint
+            ScanState.ERROR -> NeonRose
+        },
+        animationSpec = tween(350),
+        label = "frameColor"
+    )
+
+    Box(modifier.fillMaxSize()) {
+        CameraFeed(Modifier.fillMaxSize())
+
+        Column(Modifier.fillMaxSize()) {
+            TraceTopBar(title = "Escáner IA", onBack = onBackClick)
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                val badgeColor = if (realCamera) NeonMint else NeonAmber
+                Text(
+                    text = if (realCamera) "● CÁMARA ACTIVA" else "● SIN CÁMARA · USA LA GALERÍA",
+                    style = MaterialTheme.typography.labelSmall,
