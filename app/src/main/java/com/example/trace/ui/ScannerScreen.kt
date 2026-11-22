@@ -136,3 +136,30 @@ fun ScannerScreen(
         ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY).build()
     }
 
+    val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) {
+        hasPermission = it
+        permissionAsked = true
+    }
+    LaunchedEffect(Unit) { if (!hasPermission) permissionLauncher.launch(Manifest.permission.CAMERA) }
+
+    val realCamera = hasPermission && !cameraError
+
+    // Envía la foto a la IA y navega al resultado. Vive en el scope de la pantalla:
+    // si el usuario sale, se cancela y no aparece un resultado "fantasma".
+    fun analyze(bitmap: Bitmap) {
+        captured = bitmap
+        scanState = ScanState.ANALYZING
+        analysisJob = scope.launch {
+            val jpeg = ByteArrayOutputStream().also { bitmap.compress(Bitmap.CompressFormat.JPEG, 82, it) }.toByteArray()
+            ProductAnalyzer.analyze(jpeg)
+                .onSuccess { product ->
+                    ProductStore.add(product)
+                    identifiedName = product.name
+                    scanState = ScanState.IDENTIFIED
+                    delay(900)
+                    onScanSuccess(product.id)
+                }
+                .onFailure {
+                    errorText = it.message ?: "Error desconocido."
+                    scanState = ScanState.ERROR
+                }
