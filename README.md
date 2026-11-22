@@ -32,3 +32,13 @@ Aplicación Android para investigar lo que compras. Tomas una foto de un product
 GEMINI_API_KEY=tu_clave
 ```
 
+3. Opcional: cambia el modelo con `GEMINI_MODEL=nombre-del-modelo`. Por defecto se usa `gemini-3.5-flash-lite`.
+
+`local.properties` está en `.gitignore` y no se sube al repositorio. La clave se compila dentro del APK, así que no compartas el APK si la clave es personal.
+
+## Ejecutar
+
+```
+./gradlew assembleDebug
+```
+
