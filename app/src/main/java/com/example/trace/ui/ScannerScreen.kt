@@ -442,3 +442,30 @@ private fun PermissionPanel(denied: Boolean, onRequest: () -> Unit) {
         Spacer(Modifier.height(10.dp))
         PillChip(text = "Permitir cámara", onClick = onRequest)
     }
+}
+
+// ── Controles ────────────────────────────────────────────────────────────────
+
+@Composable
+private fun Shutter(enabled: Boolean, onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .size(76.dp)
+            .clip(CircleShape)
+            .border(3.dp, if (enabled) NeonLime else TextMid.copy(alpha = 0.4f), CircleShape)
+            .clickable(enabled = enabled, onClick = onClick)
+            .padding(7.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            Modifier
+                .fillMaxSize()
+                .clip(CircleShape)
+                .background(
+                    if (enabled) Brush.linearGradient(listOf(NeonLime, NeonMint))
+                    else Brush.linearGradient(listOf(TextMid.copy(alpha = 0.25f), TextMid.copy(alpha = 0.25f)))
+                )
+        )
+    }
+}
+
