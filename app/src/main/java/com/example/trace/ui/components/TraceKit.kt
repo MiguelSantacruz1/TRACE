@@ -234,3 +234,14 @@ fun NeonButton(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
             if (leading != null) {
+                Text(leading, fontSize = 18.sp, modifier = Modifier.padding(end = 10.dp))
+            }
+            Text(
+                text = text.uppercase(),
+                color = fg,
+                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Black, letterSpacing = 1.8.sp)
+            )
+        }
+    }
+}
+
