@@ -52,3 +52,12 @@ import com.example.trace.ui.components.SectionLabel
 import com.example.trace.ui.components.TraceScaffold
 import com.example.trace.ui.components.scoreColor
 import com.example.trace.ui.components.staggerIn
+import com.example.trace.ui.theme.NeonCyan
+import com.example.trace.ui.theme.NeonLime
+import com.example.trace.ui.theme.NeonMint
+import com.example.trace.ui.theme.NeonViolet
+import com.example.trace.ui.theme.TRACETheme
+import com.example.trace.ui.theme.TextHi
+import com.example.trace.ui.theme.TextMid
+import com.example.trace.ui.theme.TraceMono
+
