@@ -254,3 +254,30 @@ private fun StatTile(value: String, label: String, color: Color, modifier: Modif
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun ProductCard(
+    product: Product,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val color = scoreColor(product.score)
+
+    GlassCard(
+        modifier = modifier.fillMaxWidth(),
+        accent = color,
+        shape = RoundedCornerShape(22.dp),
+        onClick = onClick
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ScoreGauge(score = product.score, size = 84.dp, stroke = 8.dp)
+            Spacer(Modifier.width(14.dp))
+            Column(Modifier.weight(1f)) {
+                Text(
+                    text = product.category.uppercase(),
+                    style = MaterialTheme.typography.labelSmall,
