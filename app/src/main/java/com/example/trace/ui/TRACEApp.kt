@@ -27,3 +27,30 @@ sealed class Screen(val route: String) {
     }
 }
 
+@Composable
+fun TRACEApp(
+    modifier: Modifier = Modifier
+) {
+    val navController = rememberNavController()
+    val productArg = listOf(navArgument("productId") { type = NavType.StringType })
+
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Home.route,
+        modifier = modifier,
+        enterTransition = { fadeIn(tween(320)) + slideInHorizontally(tween(380)) { it / 6 } },
+        exitTransition = { fadeOut(tween(220)) + slideOutHorizontally(tween(380)) { -it / 10 } },
+        popEnterTransition = { fadeIn(tween(320)) + slideInHorizontally(tween(380)) { -it / 10 } },
+        popExitTransition = { fadeOut(tween(220)) + slideOutHorizontally(tween(380)) { it / 6 } }
+    ) {
+        composable(Screen.Home.route) {
+            HomeScreen(
+                onScanClick = { navController.navigate(Screen.Scanner.route) },
+                onProductClick = { product ->
+                    navController.navigate(Screen.ProductResult.createRoute(product.id))
+                }
+            )
+        }
+
+        composable(Screen.Scanner.route) {
+            ScannerScreen(
