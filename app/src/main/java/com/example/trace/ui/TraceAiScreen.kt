@@ -135,3 +135,30 @@ fun TraceAiScreen(
         spacing = 0.dp
     ) {
         ProductBanner(product, Modifier.padding(horizontal = 20.dp, vertical = 6.dp))
+
+        LazyColumn(
+            state = listState,
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            items(messages, key = { it.id }) { message ->
+                ChatMessageBubble(message)
+            }
+            if (isAnalyzing) {
+                item(key = "typing") { AnalyzingIndicator() }
+            }
+        }
+
+        // Preguntas rápidas
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Brush.verticalGradient(listOf(Color.Transparent, Void.copy(alpha = 0.85f))))
+                .padding(horizontal = 20.dp, vertical = 12.dp)
+        ) {
+            Text(
+                text = "PREGÚNTALE A TRACE AI",
+                style = MaterialTheme.typography.labelSmall,
