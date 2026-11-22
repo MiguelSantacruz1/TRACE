@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Ventana oscura desde el primer frame (sin destello blanco al abrir). -->
+    <style name="Theme.TRACE" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/trace_void</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowSplashScreenBackground">@color/trace_void</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/trace_void</item>
+    </style>
+</resources>
