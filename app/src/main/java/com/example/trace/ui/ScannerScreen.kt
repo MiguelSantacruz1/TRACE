@@ -298,3 +298,30 @@ fun ScannerScreen(
 
             Column(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                when (scanState) {
+                    ScanState.IDLE -> Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(24.dp)
+                    ) {
+                        SideButton("🖼", "GALERÍA") { galleryLauncher.launch("image/*") }
+                        Shutter(enabled = realCamera, onClick = ::takePhoto)
+                        // Marcador de simetría con el botón de galería.
+                        Spacer(Modifier.size(64.dp))
+                    }
+
+                    ScanState.ERROR -> {
+                        NeonButton(
+                            text = "Intentar de nuevo",
+                            leading = "↺",
+                            onClick = ::reset,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+
+                    else -> NeonButton(
+                        text = if (scanState == ScanState.ANALYZING) "Analizando…" else "¡Identificado!",
