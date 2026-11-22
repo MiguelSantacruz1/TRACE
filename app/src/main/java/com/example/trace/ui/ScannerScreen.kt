@@ -376,3 +376,30 @@ private fun decodeUri(context: android.content.Context, uri: Uri): Bitmap {
     }
 }
 
+// ── Cámara real: CameraX ─────────────────────────────────────────────────────
+
+@Composable
+private fun CameraPreview(
+    imageCapture: ImageCapture,
+    onError: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val currentOnError by rememberUpdatedState(onError)
+    val previewView = remember {
+        PreviewView(context).apply { scaleType = PreviewView.ScaleType.FILL_CENTER }
+    }
+
+    DisposableEffect(lifecycleOwner) {
+        val future = ProcessCameraProvider.getInstance(context)
+        var provider: ProcessCameraProvider? = null
+        future.addListener({
+            try {
+                val cameraProvider = future.get()
+                provider = cameraProvider
+                val preview = CameraPreviewUseCase.Builder().build()
+                    .also { it.setSurfaceProvider(previewView.surfaceProvider) }
+                cameraProvider.unbindAll()
+                cameraProvider.bindToLifecycle(
+                    lifecycleOwner, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageCapture
