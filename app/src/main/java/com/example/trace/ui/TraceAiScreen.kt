@@ -52,3 +52,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.clickable
 import com.example.trace.model.Product
+import com.example.trace.model.productById
+import com.example.trace.model.ProductStore
+import com.example.trace.ui.components.AuroraBackground
+import com.example.trace.ui.components.GlassCard
+import com.example.trace.ui.components.NeonButton
+import com.example.trace.ui.components.NeonChip
+import com.example.trace.ui.components.NeonStyle
+import com.example.trace.ui.components.ScoreGauge
+import com.example.trace.ui.components.TraceScaffold
+import com.example.trace.ui.theme.NeonCyan
+import com.example.trace.ui.theme.NeonLime
+import com.example.trace.ui.theme.NeonMint
+import com.example.trace.ui.theme.TRACETheme
+import com.example.trace.ui.theme.TextHi
+import com.example.trace.ui.theme.TextMid
+import com.example.trace.ui.theme.Void
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
