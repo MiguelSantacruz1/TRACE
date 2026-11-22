@@ -79,3 +79,14 @@ val sampleProducts = listOf(
         repairability = "No aplica (consumible)",
         repairIndex = null,
         recyclability = "90%",
+        recycleIndex = 0.9f,
+        transport = "Transporte terrestre de proximidad",
+        rawMaterial = "Grano 100% Arábica de origen sostenible",
+        manufacturing = "Tostado y empaque de bajo impacto en origen",
+        countryOfOrigin = "Colombia (Eje Cafetero)",
+        destinationCountry = "Colombia",
+        store = "Comercio local y tiendas ecológicas",
+        consumerStage = "Consumo directo y compostaje del empaque"
+    )
+)
+
