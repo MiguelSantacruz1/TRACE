@@ -159,3 +159,30 @@ fun InvestigationScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 22.dp)
+            ) {
+                stages.forEachIndexed { index, stage ->
+                    TimelineItemRow(stage = stage, isLast = index == stages.lastIndex)
+                }
+            }
+        }
+
+        Column(
+            modifier = Modifier.fillMaxWidth().staggerIn(6),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            NeonButton(
+                text = "Preguntar a TRACE AI",
+                leading = "🤖",
+                style = NeonStyle.Secondary,
+                onClick = onAskAiClick,
+                modifier = Modifier.fillMaxWidth()
+            )
+            NeonButton(
+                text = "Volver al inicio",
+                style = NeonStyle.Ghost,
+                height = 50.dp,
+                onClick = onGoHome,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
