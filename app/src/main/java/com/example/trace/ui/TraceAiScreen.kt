@@ -286,3 +286,25 @@ private fun AiAvatar() {
     }
 }
 
+@Composable
+fun AnalyzingIndicator(modifier: Modifier = Modifier) {
+    val transition = rememberInfiniteTransition(label = "typing")
+    val pulse by transition.animateFloat(
+        initialValue = 0.35f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(700), RepeatMode.Reverse),
+        label = "pulse"
+    )
+
+    Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        AiAvatar()
+        Spacer(Modifier.width(10.dp))
+        Text(
+            text = "TRACE AI ESTÁ ANALIZANDO…",
+            style = MaterialTheme.typography.labelSmall,
+            color = NeonCyan,
+            modifier = Modifier.alpha(pulse)
+        )
+    }
+}
+
