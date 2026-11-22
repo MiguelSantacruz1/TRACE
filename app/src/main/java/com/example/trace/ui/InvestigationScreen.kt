@@ -51,3 +51,30 @@ import com.example.trace.ui.theme.TextHi
 import com.example.trace.ui.theme.TextLow
 import com.example.trace.ui.theme.TextMid
 
+@Composable
+fun InvestigationScreen(
+    productId: String,
+    onAskAiClick: () -> Unit,
+    onBackClick: () -> Unit,
+    onGoHome: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val product = productById(productId)
+    val color = scoreColor(product.score)
+
+    TraceScaffold(
+        modifier = modifier,
+        title = "Investigación",
+        onBack = onBackClick,
+        spacing = 18.dp
+    ) {
+        // Encabezado del producto
+        Column(Modifier.fillMaxWidth().staggerIn(0)) {
+            NeonChip(product.category.uppercase(), NeonCyan)
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = product.name,
+                style = MaterialTheme.typography.headlineMedium,
+                color = TextHi
+            )
+        }
