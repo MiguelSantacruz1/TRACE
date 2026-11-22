@@ -313,3 +313,30 @@ fun ScoreGauge(
             val topLeft = Offset(inset, inset)
             val sweep = 270f * progress.value
 
+            drawArc(Color.White.copy(alpha = 0.07f), 135f, 270f, false, topLeft, arcSize, style = Stroke(sw, cap = StrokeCap.Round))
+            if (sweep > 0.5f) {
+                drawArc(color.copy(alpha = 0.22f), 135f, sweep, false, topLeft, arcSize, style = Stroke(sw * 2.4f, cap = StrokeCap.Round))
+                drawArc(color, 135f, sweep, false, topLeft, arcSize, style = Stroke(sw, cap = StrokeCap.Round))
+                val r = arcSize.width / 2f
+                val ang = (135f + sweep) * (PI.toFloat() / 180f)
+                val head = Offset(center.x + r * cos(ang), center.y + r * sin(ang))
+                drawCircle(color.copy(alpha = 0.35f), sw * 1.1f, head)
+                drawCircle(Color.White, sw * 0.38f, head)
+            }
+        }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                text = "$shown",
+                color = color,
+                fontSize = (size.value * 0.32f).sp,
+                fontWeight = FontWeight.Black,
+                lineHeight = (size.value * 0.34f).sp
+            )
+            if (showCaption && size >= 120.dp) {
+                Text(
+                    text = "/ 100",
+                    color = TextMid,
+                    style = MaterialTheme.typography.labelMedium
+                )
+            }
+        }
