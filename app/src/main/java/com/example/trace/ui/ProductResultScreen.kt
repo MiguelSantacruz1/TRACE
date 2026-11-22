@@ -79,3 +79,30 @@ fun ProductResultScreen(
         ) {
             Column(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 24.dp, horizontal = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                NeonChip(product.category.uppercase(), NeonCyan)
+                Spacer(Modifier.height(10.dp))
+                Text(
+                    text = product.name,
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = TextHi,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    text = "TRACE SCORE",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = TextMid
+                )
+                Spacer(Modifier.height(14.dp))
+                ScoreGauge(score = product.score, size = 200.dp, stroke = 15.dp)
+                Spacer(Modifier.height(8.dp))
+                NeonChip(scoreRating(product.score), color)
+            }
+        }
+
+        if (product.aiGenerated) {
+            val uriHandler = LocalUriHandler.current
