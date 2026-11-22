@@ -278,3 +278,26 @@ fun MetricItemCard(
             }
         }
     }
+}
+
+@Composable
+private fun LevelBar(level: Float, color: Color) {
+    val fill = remember { Animatable(0f) }
+    LaunchedEffect(level) { fill.animateTo(level.coerceIn(0f, 1f), tween(1100, easing = FastOutSlowInEasing)) }
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .height(6.dp)
+            .clip(RoundedCornerShape(3.dp))
+            .background(Color.White.copy(alpha = 0.08f))
+    ) {
+        Box(
+            Modifier
+                .fillMaxWidth(fill.value)
+                .height(6.dp)
+                .clip(RoundedCornerShape(3.dp))
+                .background(Brush.horizontalGradient(listOf(color.copy(alpha = 0.5f), color)))
+        )
+    }
+}
+
