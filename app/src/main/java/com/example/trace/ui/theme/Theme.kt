@@ -29,3 +29,16 @@ private val TraceColorScheme = darkColorScheme(
     error = NeonRose
 )
 
+/**
+ * TRACE siempre es oscuro: el neón es parte de la identidad de la app,
+ * así que no seguimos el modo del sistema ni el color dinámico.
+ */
+@Composable
+fun TRACETheme(content: @Composable () -> Unit) {
+    MaterialTheme(
+        colorScheme = TraceColorScheme,
+        typography = TraceTypography
+    ) {
+        CompositionLocalProvider(LocalContentColor provides TextHi, content = content)
+    }
+}
