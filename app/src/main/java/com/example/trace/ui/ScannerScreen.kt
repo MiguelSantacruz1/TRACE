@@ -190,3 +190,30 @@ fun ScannerScreen(
                 override fun onCaptureSuccess(image: ImageProxy) {
                     val bmp = runCatching { image.toScaledBitmap() }.getOrNull()
                     image.close()
+                    if (bmp != null) analyze(bmp) else {
+                        errorText = "No se pudo procesar la foto."
+                        scanState = ScanState.ERROR
+                    }
+                }
+
+                override fun onError(exception: ImageCaptureException) {
+                    errorText = "No se pudo tomar la foto."
+                    scanState = ScanState.ERROR
+                }
+            }
+        )
+    }
+
+    // Mensajes rotativos mientras la IA trabaja.
+    LaunchedEffect(scanState) {
+        if (scanState == ScanState.ANALYZING) {
+            messageIndex = 0
+            while (true) {
+                delay(2600)
+                messageIndex = (messageIndex + 1) % analyzingMessages.size
+            }
+        }
+    }
+
+    val frameColor by animateColorAsState(
+        targetValue = when (scanState) {
