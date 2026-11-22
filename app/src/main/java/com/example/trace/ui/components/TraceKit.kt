@@ -207,3 +207,30 @@ fun NeonButton(
     val fg = if (style == NeonStyle.Ghost) TextHi else Void
 
     Box(
+        modifier = modifier
+            .height(height)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+                alpha = if (enabled) 1f else 0.4f
+            }
+            .then(
+                if (style != NeonStyle.Ghost && enabled)
+                    Modifier.shadow(16.dp, shape, ambientColor = glow, spotColor = glow)
+                else Modifier
+            )
+            .clip(shape)
+            .background(fill)
+            .then(if (style == NeonStyle.Ghost) Modifier.border(1.dp, NeonMint.copy(alpha = 0.45f), shape) else Modifier)
+            .clickable(
+                interactionSource = interaction,
+                indication = null,
+                enabled = enabled,
+                role = Role.Button,
+                onClick = onClick
+            )
+            .padding(horizontal = 16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+            if (leading != null) {
