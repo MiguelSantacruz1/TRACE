@@ -30,3 +30,12 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun MainAppPreview() {
+    TRACETheme {
+        AuroraBackground {
+            TRACEApp()
+        }
+    }
+}
