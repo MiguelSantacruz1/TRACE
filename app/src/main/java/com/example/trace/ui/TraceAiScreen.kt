@@ -226,3 +226,30 @@ private fun ProductBanner(product: Product, modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun ChatMessageBubble(
+    message: ChatMessage,
+    modifier: Modifier = Modifier
+) {
+    val isUser = message.sender == MessageSender.USER
+
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = if (isUser) Arrangement.End else Arrangement.Start,
+        verticalAlignment = Alignment.Top
+    ) {
+        if (!isUser) {
+            AiAvatar()
+            Spacer(Modifier.width(10.dp))
+        }
+
+        val shape = RoundedCornerShape(
+            topStart = 18.dp,
+            topEnd = 18.dp,
+            bottomStart = if (isUser) 18.dp else 4.dp,
+            bottomEnd = if (isUser) 4.dp else 18.dp
+        )
+        Box(
+            modifier = Modifier
+                .widthIn(max = 300.dp)
+                .weight(1f, fill = false)
