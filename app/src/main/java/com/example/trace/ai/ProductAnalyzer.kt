@@ -68,3 +68,30 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
             var response: JSONObject? = null
             for (attempt in 1..4) {
                 try {
+                    response = send(jpeg)
+                    break
+                } catch (e: OverloadedException) {
+                    // 503: el modelo está saturado, suele pasar en segundos.
+                    if (attempt == 4) {
+                        throw AnalysisException("Gemini está saturado en este momento. Intenta de nuevo en un minuto.")
+                    }
+                    delay(2500L * attempt)
+                }
+            }
+            parse(response!!)
+        }.recoverCatching {
+            throw when (it) {
+                is AnalysisException -> it
+                is UnknownHostException -> AnalysisException("Sin conexión a internet.")
+                is SocketTimeoutException -> AnalysisException("La IA tardó demasiado. Intenta de nuevo.")
+                else -> AnalysisException("No se pudo analizar el producto: ${it.message}")
+            }
+        }
+    }
+
+    private fun send(jpeg: ByteArray): JSONObject {
+        if (!searchAvailable) return call(jpeg, useSearch = false)
+        return try {
+            call(jpeg, useSearch = true)
+        } catch (e: QuotaException) {
+            // La búsqueda web no tiene cuota gratuita en todas las cuentas:
