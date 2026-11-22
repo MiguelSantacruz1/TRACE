@@ -88,3 +88,30 @@ fun HomeScreen(
         Spacer(Modifier.height(16.dp))
     }
 }
+
+@Composable
+fun HeaderSection(modifier: Modifier = Modifier) {
+    val blink = rememberInfiniteTransition(label = "blink")
+    val dot = blink.animateFloat(
+        initialValue = 0.3f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(900), RepeatMode.Reverse),
+        label = "dot"
+    )
+
+    Column(modifier = modifier.fillMaxWidth().padding(top = 8.dp)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                Modifier
+                    .size(8.dp)
+                    .clip(CircleShape)
+                    .background(NeonMint.copy(alpha = dot.value))
+            )
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = "SISTEMA EN LÍNEA · V1.0",
+                style = MaterialTheme.typography.labelSmall,
+                color = NeonMint
+            )
+        }
+        Spacer(Modifier.height(6.dp))
