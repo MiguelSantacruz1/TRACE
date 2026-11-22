@@ -20,3 +20,15 @@ Aplicación Android para investigar lo que compras. Tomas una foto de un product
 
 ## Requisitos
 
+- Android Studio con JDK 17 o superior
+- Android 11 (API 30) o superior
+
+## Configuración de la clave de Gemini
+
+1. Crea una clave gratuita en https://aistudio.google.com/apikey
+2. Agrega en el archivo `local.properties` de la raíz del proyecto:
+
+```
+GEMINI_API_KEY=tu_clave
+```
+
