@@ -346,3 +346,30 @@ private fun markdownBold(text: String, boldColor: Color): AnnotatedString = buil
     }
 }
 
+private fun generateAiResponse(question: String, product: Product): String = when (question) {
+    Q_WORTH -> when {
+        product.score >= 80 ->
+            "Sí, vale la pena 🟢. Con **${product.score}/100** destaca por su compromiso de sostenibilidad (${product.impactTag}) y una reciclabilidad de ${product.recyclability}."
+
+        product.score >= 65 ->
+            "Es una opción aceptable 🟡. Su puntaje es **${product.score}/100** (${product.impactTag}). Tiene puntos a favor, pero todavía hay margen de mejora en reciclabilidad (${product.recyclability}) y transporte. Antes de comprarlo, evalúa si puedes alargar la vida de lo que ya tienes."
+
+        else ->
+            "No lo recomendamos como primera opción 🔴. Su puntaje es **${product.score}/100**: reparabilidad ${product.repairability} y reciclabilidad ${product.recyclability}. Considera alternativas mejor calificadas."
+    }
+
+    Q_GREENER -> {
+        val better = ProductStore.products.filter { it.score > product.score }.maxByOrNull { it.score }
+        if (better != null) {
+            "Sí. En el registro local la opción más sostenible es **${better.name}** con **${better.score}/100** (${better.impactTag}, reciclabilidad ${better.recyclability}). Ojo: es de otra categoría (${better.category}), así que sirve como referencia, no como reemplazo directo."
+        } else {
+            "**${product.name}** ya tiene el puntaje más alto del registro local de TRACE (**${product.score}/100**, ${product.impactTag})."
+        }
+    }
+
+    Q_RECYCLE -> {
+        val advice = when (product.category) {
+            "Electrónica" -> "Llévalo a un punto de recolección de residuos electrónicos autorizado en Colombia, para evitar la contaminación por metales pesados."
+            "Alimentos" -> "El empaque es biodegradable o reciclable. Separa los residuos orgánicos de los envases y usa la caneca que corresponda al código de colores local."
+            "Calzado" -> "Si todavía sirve, dónalo. Si está desgastado, llévalo a puntos de acopio de calzado o textil, o a programas de recolección de marcas."
+            else -> "Consulta las guías de separación de residuos y los puntos limpios de tu ciudad para materiales de tipo ${product.category}."
