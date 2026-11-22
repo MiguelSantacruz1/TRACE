@@ -357,3 +357,22 @@ private fun ImageProxy.toScaledBitmap(): Bitmap {
     return rotated.scaledDown()
 }
 
+private fun Bitmap.scaledDown(): Bitmap {
+    val longest = maxOf(width, height)
+    if (longest <= MAX_SIDE) return this
+    val ratio = MAX_SIDE / longest.toFloat()
+    return Bitmap.createScaledBitmap(this, (width * ratio).toInt(), (height * ratio).toInt(), true)
+}
+
+private fun decodeUri(context: android.content.Context, uri: Uri): Bitmap {
+    val source = ImageDecoder.createSource(context.contentResolver, uri)
+    return ImageDecoder.decodeBitmap(source) { decoder, info, _ ->
+        decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
+        val longest = maxOf(info.size.width, info.size.height)
+        if (longest > MAX_SIDE) {
+            val ratio = MAX_SIDE / longest.toFloat()
+            decoder.setTargetSize((info.size.width * ratio).toInt(), (info.size.height * ratio).toInt())
+        }
+    }
+}
+
