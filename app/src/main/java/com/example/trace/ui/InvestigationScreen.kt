@@ -132,3 +132,30 @@ fun InvestigationScreen(
                 PillarTile("♻️", "Reciclabilidad", product.recyclability, NeonLime, Modifier.weight(1f).fillMaxHeight())
             }
         }
+
+        // Línea de tiempo
+        val stages = listOf(
+            TimelineStage("Materia prima", "🌾", product.rawMaterial),
+            TimelineStage("Fabricación", "🏭", product.manufacturing),
+            TimelineStage("País de origen", "🗺️", product.countryOfOrigin),
+            TimelineStage("Transporte", "🚛", product.transport),
+            TimelineStage("País de destino", "🇨🇴", product.destinationCountry),
+            TimelineStage("Tienda", "🏪", product.store),
+            TimelineStage("Consumidor", "👤", product.consumerStage)
+        )
+        val verified = stages.count { !it.value.isNullOrBlank() }
+
+        SectionLabel(
+            text = "RECORRIDO DEL PRODUCTO",
+            trailing = "$verified/${stages.size} VERIFICADAS",
+            modifier = Modifier.staggerIn(4)
+        )
+
+        GlassCard(
+            modifier = Modifier.fillMaxWidth().staggerIn(5),
+            accent = NeonMint,
+            shape = RoundedCornerShape(24.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
