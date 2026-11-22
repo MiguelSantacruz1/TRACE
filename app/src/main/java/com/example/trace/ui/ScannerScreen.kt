@@ -484,3 +484,19 @@ private fun SideButton(icon: String, label: String, onClick: () -> Unit) {
     }
 }
 
+@Composable
+private fun PillChip(text: String, onClick: () -> Unit) {
+    val shape = RoundedCornerShape(50)
+    Text(
+        text = text.uppercase(),
+        color = NeonCyan,
+        style = MaterialTheme.typography.labelMedium,
+        modifier = Modifier
+            .clip(shape)
+            .background(NeonCyan.copy(alpha = 0.14f))
+            .border(1.dp, NeonCyan.copy(alpha = 0.7f), shape)
+            .clickable(onClick = onClick)
+            .padding(horizontal = 14.dp, vertical = 9.dp)
+    )
+}
+
