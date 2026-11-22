@@ -641,3 +641,30 @@ private fun StatusHud(
         when (scanState) {
             ScanState.IDLE -> Text(
                 text = if (cameraProblem) "Elige una foto de la galería para que la IA la analice."
+                else "Toma una foto: la IA reconoce el producto, lo busca en la web y lo califica.",
+                color = TextMid,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodySmall
+            )
+
+            ScanState.ANALYZING -> Text(
+                text = "Puede tardar unos segundos…",
+                color = TextMid,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodySmall
+            )
+
+            ScanState.IDENTIFIED -> Text(
+                text = productName,
+                color = TextHi,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge
+            )
+
+            ScanState.ERROR -> Text(
+                text = errorText,
+                color = TextMid,
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
