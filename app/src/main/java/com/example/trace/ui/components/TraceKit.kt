@@ -262,3 +262,27 @@ fun NeonChip(text: String, color: Color, modifier: Modifier = Modifier) {
     )
 }
 
+@Composable
+fun SectionLabel(text: String, modifier: Modifier = Modifier, trailing: String? = null) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(
+            Modifier
+                .width(4.dp)
+                .height(16.dp)
+                .clip(RoundedCornerShape(2.dp))
+                .background(Brush.verticalGradient(listOf(NeonLime, NeonMint)))
+        )
+        Spacer(Modifier.width(10.dp))
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelLarge,
+            color = TextHi,
+            modifier = Modifier.weight(1f)
+        )
+        if (trailing != null) NeonChip(trailing, NeonMint)
+    }
+}
+
