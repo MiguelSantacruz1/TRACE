@@ -187,3 +187,30 @@ private fun RadarOrb(size: Dp, modifier: Modifier = Modifier) {
 
         drawCircle(NeonLime.copy(alpha = 0.06f), r)
         for (i in 1..3) drawCircle(NeonLime.copy(alpha = 0.22f), r * i / 3f, style = Stroke(hair))
+        drawLine(NeonLime.copy(alpha = 0.18f), Offset(c.x - r, c.y), Offset(c.x + r, c.y), hair)
+        drawLine(NeonLime.copy(alpha = 0.18f), Offset(c.x, c.y - r), Offset(c.x, c.y + r), hair)
+
+        rotate(sweep.value, c) {
+            drawCircle(
+                Brush.sweepGradient(
+                    0f to Color.Transparent,
+                    0.7f to Color.Transparent,
+                    1f to NeonLime.copy(alpha = 0.75f),
+                    center = c
+                ),
+                radius = r,
+                center = c
+            )
+        }
+
+        // Ondas de pulso desde el centro
+        drawCircle(
+            NeonLime.copy(alpha = (1f - pulse.value) * 0.5f),
+            radius = r * (0.15f + 0.85f * pulse.value),
+            style = Stroke(2.dp.toPx())
+        )
+
+        // "Blips" detectados
+        drawCircle(NeonMint, 3.dp.toPx(), Offset(c.x + r * 0.45f, c.y - r * 0.35f))
+        drawCircle(NeonCyan, 2.5.dp.toPx(), Offset(c.x - r * 0.5f, c.y + r * 0.25f))
+        drawCircle(NeonLime.copy(alpha = 0.3f), 9.dp.toPx(), c)
