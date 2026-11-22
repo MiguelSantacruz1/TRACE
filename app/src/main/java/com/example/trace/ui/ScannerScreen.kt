@@ -500,3 +500,30 @@ private fun PillChip(text: String, onClick: () -> Unit) {
     )
 }
 
+// ── Fondo ────────────────────────────────────────────────────────────────────
+
+@Composable
+private fun CameraFeed(modifier: Modifier = Modifier) {
+    Canvas(modifier.background(Void)) {
+        val w = size.width
+        val h = size.height
+        drawRect(Brush.verticalGradient(listOf(Color(0xFF0B1913), Color(0xFF05080A), Color(0xFF0A0612))))
+
+        val vp = Offset(w / 2f, h * 0.42f)
+        val grid = NeonMint.copy(alpha = 0.07f)
+        for (i in -8..8) {
+            drawLine(grid, vp, Offset(w / 2f + i * w * 0.22f, h), 1f)
+        }
+        var y = vp.y
+        var gap = 10.dp.toPx()
+        while (y < h) {
+            drawLine(grid, Offset(0f, y), Offset(w, y), 1f)
+            y += gap
+            gap *= 1.28f
+        }
+
+        drawRect(
+            Brush.radialGradient(
+                listOf(Color.Transparent, Color.Black.copy(alpha = 0.55f)),
+                center = center,
+                radius = size.maxDimension * 0.65f
