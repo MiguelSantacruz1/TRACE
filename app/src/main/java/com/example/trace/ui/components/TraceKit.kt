@@ -381,3 +381,30 @@ fun TraceTopBar(title: String, onBack: () -> Unit, modifier: Modifier = Modifier
     }
 }
 
+/**
+ * Estructura común de las pantallas: barra opcional, contenido centrado con ancho
+ * máximo (tablets) y manejo correcto de insets (una sola vez).
+ */
+@Composable
+fun TraceScaffold(
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    onBack: (() -> Unit)? = null,
+    scroll: Boolean = true,
+    contentPadding: PaddingValues = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
+    spacing: Dp = 16.dp,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    Column(modifier.fillMaxSize()) {
+        if (title != null && onBack != null) {
+            TraceTopBar(title = title, onBack = onBack)
+        } else {
+            Box(Modifier.statusBarsPadding().height(8.dp))
+        }
+        Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.TopCenter) {
+            Column(
+                modifier = Modifier
+                    .widthIn(max = 640.dp)
+                    .fillMaxSize()
+                    .then(if (scroll) Modifier.verticalScroll(rememberScrollState()) else Modifier)
+                    .padding(contentPadding),
