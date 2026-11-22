@@ -88,3 +88,15 @@ import kotlin.math.sin
 
 // ── Lógica de score compartida ───────────────────────────────────────────────
 
+fun scoreColor(score: Int): Color = when {
+    score >= 80 -> HighScoreGreen
+    score >= 65 -> MediumScoreAmber
+    else -> LowScoreRed
+}
+
+fun scoreRating(score: Int): String = when {
+    score >= 80 -> "SOSTENIBILIDAD MUY ALTA"
+    score >= 65 -> "SOSTENIBILIDAD ACEPTABLE"
+    else -> "SOSTENIBILIDAD BAJA"
+}
+
