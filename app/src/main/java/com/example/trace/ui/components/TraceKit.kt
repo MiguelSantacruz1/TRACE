@@ -417,3 +417,19 @@ fun TraceScaffold(
     }
 }
 
+// ── Animación de entrada escalonada ──────────────────────────────────────────
+
+fun Modifier.staggerIn(index: Int): Modifier = composed {
+    val a = remember { Animatable(0f) }
+    LaunchedEffect(Unit) {
+        delay(index * 70L)
+        a.animateTo(1f, tween(520, easing = FastOutSlowInEasing))
+    }
+    graphicsLayer {
+        alpha = a.value
+        translationY = (1f - a.value) * 36.dp.toPx()
+    }
+}
+
+/** Quita el prefijo "Etiqueta: " de textos como "Ciclo de vida estimado: 4 años". */
+fun String.valueOnly(): String = substringAfter(": ", this)
