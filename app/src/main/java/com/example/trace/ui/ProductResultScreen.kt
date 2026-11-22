@@ -214,3 +214,13 @@ fun ProductResultScreen(
                 NeonButton(
                     text = "Inicio",
                     style = NeonStyle.Ghost,
+                    height = 50.dp,
+                    onClick = onGoHome,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+        Spacer(Modifier.height(12.dp))
+    }
+}
+
