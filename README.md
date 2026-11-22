@@ -42,3 +42,10 @@ GEMINI_API_KEY=tu_clave
 ./gradlew assembleDebug
 ```
 
+El APK queda en `app/build/outputs/apk/debug/`.
+
+## Notas
+
+- Con el plan gratuito de Gemini la búsqueda web no siempre está disponible. En ese caso la IA califica con lo que ve en la foto y su conocimiento del producto, y no muestra fuentes.
+- La calificación es una estimación hecha por IA a partir de información pública y puede contener errores.
+- Los productos de ejemplo de la pantalla de inicio son datos de demostración.
