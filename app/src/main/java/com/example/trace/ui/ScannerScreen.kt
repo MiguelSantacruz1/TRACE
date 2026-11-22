@@ -469,3 +469,18 @@ private fun Shutter(enabled: Boolean, onClick: () -> Unit) {
     }
 }
 
+@Composable
+private fun SideButton(icon: String, label: String, onClick: () -> Unit) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .width(64.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable(onClick = onClick)
+            .padding(vertical = 6.dp)
+    ) {
+        Text(icon, fontSize = 26.sp)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = TextMid)
+    }
+}
+
