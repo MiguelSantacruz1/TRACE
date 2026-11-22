@@ -223,3 +223,30 @@ fun TimelineItemRow(
                     .clip(CircleShape)
                     .background(nodeColor.copy(alpha = if (isAvailable) 0.14f else 0.06f))
                     .border(1.5.dp, nodeColor.copy(alpha = if (isAvailable) 0.8f else 0.35f), CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stage.icon,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(0.dp)
+                )
+            }
+            if (!isLast) {
+                Box(
+                    modifier = Modifier
+                        .width(2.dp)
+                        .weight(1f)
+                        .padding(vertical = 2.dp)
+                        .background(
+                            if (isAvailable) Brush.verticalGradient(listOf(NeonMint.copy(alpha = 0.7f), NeonMint.copy(alpha = 0.15f)))
+                            else Brush.verticalGradient(listOf(TextLow.copy(alpha = 0.35f), TextLow.copy(alpha = 0.1f)))
+                        )
+                )
+            }
+        }
+
+        Spacer(Modifier.width(14.dp))
+
+        Column(
+            modifier = Modifier
+                .weight(1f)
