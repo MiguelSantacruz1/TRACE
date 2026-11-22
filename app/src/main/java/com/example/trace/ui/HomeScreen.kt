@@ -133,3 +133,30 @@ fun HeaderSection(modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun ScanHeroCard(onScanClick: () -> Unit, modifier: Modifier = Modifier) {
+    GlassCard(modifier = modifier.fillMaxWidth(), accent = NeonLime) {
+        Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(18.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                RadarOrb(size = 96.dp)
+                Spacer(Modifier.width(18.dp))
+                Column {
+                    Text(
+                        text = "Descubre el rastro de cada producto",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = TextHi
+                    )
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        text = "Origen, transporte, reciclaje y un puntaje de sostenibilidad en segundos.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = TextMid
+                    )
+                }
+            }
+            NeonButton(
+                text = "Escanear producto",
+                leading = "📷",
+                onClick = onScanClick,
+                modifier = Modifier.fillMaxWidth()
+            )
