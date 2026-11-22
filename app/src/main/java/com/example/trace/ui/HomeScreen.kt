@@ -160,3 +160,30 @@ fun ScanHeroCard(onScanClick: () -> Unit, modifier: Modifier = Modifier) {
                 onClick = onScanClick,
                 modifier = Modifier.fillMaxWidth()
             )
+        }
+    }
+}
+
+@Composable
+private fun RadarOrb(size: Dp, modifier: Modifier = Modifier) {
+    val t = rememberInfiniteTransition(label = "radar")
+    val sweep = t.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(tween(3200, easing = LinearEasing)),
+        label = "sweep"
+    )
+    val pulse = t.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(2200, easing = FastOutSlowInEasing)),
+        label = "pulse"
+    )
+
+    Canvas(modifier.size(size)) {
+        val c = center
+        val r = this.size.minDimension / 2f
+        val hair = 1.dp.toPx()
+
+        drawCircle(NeonLime.copy(alpha = 0.06f), r)
+        for (i in 1..3) drawCircle(NeonLime.copy(alpha = 0.22f), r * i / 3f, style = Stroke(hair))
