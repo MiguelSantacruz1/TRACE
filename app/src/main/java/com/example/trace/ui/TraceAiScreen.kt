@@ -335,3 +335,14 @@ fun PromptOptionChip(
     }
 }
 
+/** Convierte **texto** en negrita; el resto se deja tal cual. */
+private fun markdownBold(text: String, boldColor: Color): AnnotatedString = buildAnnotatedString {
+    text.split("**").forEachIndexed { i, part ->
+        if (i % 2 == 1) {
+            withStyle(SpanStyle(fontWeight = FontWeight.ExtraBold, color = boldColor)) { append(part) }
+        } else {
+            append(part)
+        }
+    }
+}
+
