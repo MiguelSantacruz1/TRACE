@@ -203,3 +203,16 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
             repairability = str("repairability") ?: "Información no disponible",
             repairIndex = idx("repairIndex"),
             recyclability = str("recyclability") ?: "Información no disponible",
+            recycleIndex = idx("recycleIndex"),
+            transport = str("transport"),
+            rawMaterial = str("rawMaterial"),
+            manufacturing = str("manufacturing"),
+            countryOfOrigin = str("countryOfOrigin"),
+            store = str("store"),
+            consumerStage = str("consumerStage"),
+            summary = str("summary"),
+            sources = sources.take(5),
+            aiGenerated = true
+        )
+    }
+}
