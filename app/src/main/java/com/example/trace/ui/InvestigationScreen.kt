@@ -297,3 +297,21 @@ fun PillarTile(
                 style = MaterialTheme.typography.titleSmall,
                 color = TextHi
             )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun InvestigationScreenPreview() {
+    TRACETheme {
+        AuroraBackground {
+            InvestigationScreen(
+                productId = "1",
+                onAskAiClick = {},
+                onBackClick = {},
+                onGoHome = {}
+            )
+        }
+    }
+}
