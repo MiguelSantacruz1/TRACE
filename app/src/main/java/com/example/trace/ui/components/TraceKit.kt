@@ -127,3 +127,30 @@ fun AuroraBackground(modifier: Modifier = Modifier, content: @Composable BoxScop
                     radius = w, center = c1
                 )
                 val c2 = Offset(w * (0.95f - 0.40f * d), h * 0.88f)
+                drawCircle(
+                    Brush.radialGradient(listOf(NeonViolet.copy(alpha = 0.20f), Color.Transparent), center = c2, radius = w * 0.9f),
+                    radius = w * 0.9f, center = c2
+                )
+                val c3 = Offset(w * 0.9f, h * (0.35f + 0.1f * d))
+                drawCircle(
+                    Brush.radialGradient(listOf(NeonCyan.copy(alpha = 0.08f), Color.Transparent), center = c3, radius = w * 0.7f),
+                    radius = w * 0.7f, center = c3
+                )
+
+                // Rejilla tenue
+                val step = 36.dp.toPx()
+                val lineColor = Color.White.copy(alpha = 0.03f)
+                var x = 0f
+                while (x < w) {
+                    drawLine(lineColor, Offset(x, 0f), Offset(x, h), 1f)
+                    x += step
+                }
+                var y = 0f
+                while (y < h) {
+                    drawLine(lineColor, Offset(0f, y), Offset(w, y), 1f)
+                    y += step
+                }
+            },
+        content = content
+    )
+}
