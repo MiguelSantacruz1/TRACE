@@ -41,3 +41,30 @@ Reglas: no inventes datos; si algo no aparece en tus fuentes, usa null. Responde
  "identified": true o false,
  "name": "marca y nombre del producto",
  "category": "una o dos palabras (Electrónica, Calzado, Alimentos, Ropa, Hogar...)",
+ "score": entero 0-100,
+ "impactTag": "frase muy corta (máximo 6 palabras) sobre su impacto ambiental",
+ "repairability": "p. ej. 6/10, o 'No aplica (consumible)'",
+ "repairIndex": número 0-1 o null,
+ "recyclability": "p. ej. 70%",
+ "recycleIndex": número 0-1 o null,
+ "transport": "texto o null",
+ "rawMaterial": "texto o null",
+ "manufacturing": "texto o null",
+ "countryOfOrigin": "texto o null",
+ "store": "dónde se vende, o null",
+ "consumerStage": "vida útil / disposición final, o null",
+ "summary": "2 o 3 frases: qué encontraste y por qué ese puntaje"
+}
+Si en la foto no hay un producto identificable, responde {"identified": false}."""
+
+    suspend fun analyze(jpeg: ByteArray): Result<Product> = withContext(Dispatchers.IO) {
+        runCatching {
+            if (BuildConfig.GEMINI_API_KEY.isBlank()) {
+                throw AnalysisException(
+                    "Falta la clave de Gemini. Crea una gratis en aistudio.google.com/apikey " +
+                        "y agrégala en local.properties como GEMINI_API_KEY=..."
+                )
+            }
+            var response: JSONObject? = null
+            for (attempt in 1..4) {
+                try {
