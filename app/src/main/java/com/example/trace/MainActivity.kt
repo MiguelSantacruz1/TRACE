@@ -12,3 +12,21 @@ import com.example.trace.ui.TRACEApp
 import com.example.trace.ui.components.AuroraBackground
 import com.example.trace.ui.theme.TRACETheme
 
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // App oscura: íconos claros en las barras del sistema, transparentes sobre el fondo.
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
+            navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT)
+        )
+        setContent {
+            TRACETheme {
+                AuroraBackground {
+                    TRACEApp()
+                }
+            }
+        }
+    }
+}
+
