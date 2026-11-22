@@ -373,3 +373,19 @@ private fun generateAiResponse(question: String, product: Product): String = whe
             "Alimentos" -> "El empaque es biodegradable o reciclable. Separa los residuos orgánicos de los envases y usa la caneca que corresponda al código de colores local."
             "Calzado" -> "Si todavía sirve, dónalo. Si está desgastado, llévalo a puntos de acopio de calzado o textil, o a programas de recolección de marcas."
             else -> "Consulta las guías de separación de residuos y los puntos limpios de tu ciudad para materiales de tipo ${product.category}."
+        }
+        "Reciclabilidad registrada: **${product.recyclability}**.\n\n$advice"
+    }
+
+    Q_COMPARE -> {
+        val ranking = ProductStore.products.sortedByDescending { it.score }
+        val position = ranking.indexOfFirst { it.id == product.id } + 1
+        val lines = ranking.mapIndexed { i, p ->
+            "${i + 1}. ${p.name} — ${p.score}/100" + if (p.id == product.id) "  ◀ este" else ""
+        }.joinToString("\n")
+        "**${product.name}** ocupa el puesto **$position de ${ranking.size}** entre los productos registrados en TRACE.\n\n$lines"
+    }
+
+    else -> "Analicé **${product.name}**: puntaje ${product.score}/100, ${product.impactTag}."
+}
+
