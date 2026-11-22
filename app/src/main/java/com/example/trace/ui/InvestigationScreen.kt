@@ -78,3 +78,30 @@ fun InvestigationScreen(
                 color = TextHi
             )
         }
+
+        // Score
+        GlassCard(
+            modifier = Modifier.fillMaxWidth().staggerIn(1),
+            accent = color,
+            shape = RoundedCornerShape(24.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ScoreGauge(score = product.score, size = 104.dp, stroke = 10.dp, showCaption = false)
+                Spacer(Modifier.width(18.dp))
+                Column(Modifier.weight(1f)) {
+                    Text(
+                        text = "TRACE SCORE",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = TextMid
+                    )
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        text = "Puntuación de sostenibilidad",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = TextHi
+                    )
