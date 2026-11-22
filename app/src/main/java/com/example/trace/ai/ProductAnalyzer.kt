@@ -149,3 +149,30 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
                     }
                 )
             }
+            return JSONObject(conn.inputStream.bufferedReader().readText())
+        } finally {
+            conn.disconnect()
+        }
+    }
+
+    private fun parse(response: JSONObject): Product {
+        val candidate = response.optJSONArray("candidates")?.optJSONObject(0)
+            ?: throw AnalysisException("La IA no devolvió respuesta (puede haberse bloqueado la imagen).")
+
+        val text = buildString {
+            val parts = candidate.optJSONObject("content")?.optJSONArray("parts") ?: JSONArray()
+            for (i in 0 until parts.length()) append(parts.getJSONObject(i).optString("text"))
+        }
+        val start = text.indexOf('{')
+        val end = text.lastIndexOf('}')
+        if (start < 0 || end <= start) throw AnalysisException("La IA respondió en un formato inesperado.")
+        val json = JSONObject(text.substring(start, end + 1))
+
+        if (!json.optBoolean("identified", true) || json.optString("name").isBlank()) {
+            throw AnalysisException("No pude identificar un producto en la foto. Acércate y procura buena luz.")
+        }
+
+        fun str(key: String): String? =
+            if (json.isNull(key)) null
+            else json.optString(key).trim().takeIf { it.isNotEmpty() && it != "null" }
+
