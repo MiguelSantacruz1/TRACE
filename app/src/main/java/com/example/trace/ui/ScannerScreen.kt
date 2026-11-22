@@ -415,3 +415,30 @@ private fun CameraPreview(
     AndroidView(factory = { previewView }, modifier = modifier)
 }
 
+@Composable
+private fun PermissionPanel(denied: Boolean, onRequest: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(20.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text("📷", fontSize = 34.sp)
+        Spacer(Modifier.height(8.dp))
+        Text(
+            text = if (denied) "Sin permiso de cámara" else "TRACE necesita la cámara",
+            style = MaterialTheme.typography.titleSmall,
+            color = TextHi,
+            textAlign = TextAlign.Center
+        )
+        Spacer(Modifier.height(4.dp))
+        Text(
+            text = "Para fotografiar el producto. También puedes elegir una foto de la galería.",
+            style = MaterialTheme.typography.bodySmall,
+            color = TextMid,
+            textAlign = TextAlign.Center
+        )
+        Spacer(Modifier.height(10.dp))
+        PillChip(text = "Permitir cámara", onClick = onRequest)
+    }
