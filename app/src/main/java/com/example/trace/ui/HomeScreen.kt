@@ -307,3 +307,10 @@ fun ProductCard(
     }
 }
 
+@Preview(showBackground = true, widthDp = 360, heightDp = 740)
+@Composable
+fun HomeScreenPhonePreview() {
+    TRACETheme {
+        AuroraBackground { HomeScreen() }
+    }
+}
