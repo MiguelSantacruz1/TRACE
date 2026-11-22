@@ -79,3 +79,12 @@ import com.example.trace.ui.theme.TextHi
 import com.example.trace.ui.theme.TextMid
 import com.example.trace.ui.theme.TraceMono
 import com.example.trace.ui.theme.Void
+import com.example.trace.ui.theme.Ink
+import kotlinx.coroutines.delay
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.roundToInt
+import kotlin.math.sin
+
+// ── Lógica de score compartida ───────────────────────────────────────────────
+
