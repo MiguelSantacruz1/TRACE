@@ -95,3 +95,30 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
             call(jpeg, useSearch = true)
         } catch (e: QuotaException) {
             // La búsqueda web no tiene cuota gratuita en todas las cuentas:
+            // se recuerda para no gastar una llamada en cada foto.
+            searchAvailable = false
+            call(jpeg, useSearch = false)
+        }
+    }
+
+    private fun call(jpeg: ByteArray, useSearch: Boolean): JSONObject {
+        val body = JSONObject()
+            .put("systemInstruction", JSONObject().put("parts", JSONArray().put(JSONObject().put("text", SYSTEM))))
+            .put(
+                "contents", JSONArray().put(
+                    JSONObject().put("role", "user").put(
+                        "parts", JSONArray()
+                            .put(
+                                JSONObject().put(
+                                    "inline_data",
+                                    JSONObject()
+                                        .put("mime_type", "image/jpeg")
+                                        .put("data", Base64.encodeToString(jpeg, Base64.NO_WRAP))
+                                )
+                            )
+                            .put(JSONObject().put("text", PROMPT))
+                    )
+                )
+            )
+            .put("generationConfig", JSONObject().put("temperature", 0.2))
+        if (useSearch) body.put("tools", JSONArray().put(JSONObject().put("google_search", JSONObject())))
