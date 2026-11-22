@@ -71,3 +71,13 @@ import com.example.trace.ui.theme.Void
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+data class ChatMessage(
+    val id: Int,
+    val sender: MessageSender,
+    val text: String
+)
+
+enum class MessageSender {
+    USER, AI
+}
+
