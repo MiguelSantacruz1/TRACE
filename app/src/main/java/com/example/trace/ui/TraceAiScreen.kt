@@ -272,3 +272,17 @@ fun ChatMessageBubble(
     }
 }
 
+@Composable
+private fun AiAvatar() {
+    Box(
+        modifier = Modifier
+            .size(36.dp)
+            .clip(CircleShape)
+            .background(NeonCyan.copy(alpha = 0.12f))
+            .border(1.dp, NeonCyan.copy(alpha = 0.6f), CircleShape),
+        contentAlignment = Alignment.Center
+    ) {
+        Text("🤖", fontSize = 18.sp)
+    }
+}
+
