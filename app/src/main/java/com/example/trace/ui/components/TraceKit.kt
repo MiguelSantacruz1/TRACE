@@ -245,3 +245,20 @@ fun NeonButton(
     }
 }
 
+// ── Etiquetas ────────────────────────────────────────────────────────────────
+
+@Composable
+fun NeonChip(text: String, color: Color, modifier: Modifier = Modifier) {
+    val shape = RoundedCornerShape(50)
+    Text(
+        text = text,
+        color = color,
+        style = MaterialTheme.typography.labelSmall,
+        modifier = modifier
+            .clip(shape)
+            .background(color.copy(alpha = 0.12f))
+            .border(1.dp, color.copy(alpha = 0.35f), shape)
+            .padding(horizontal = 10.dp, vertical = 5.dp)
+    )
+}
+
