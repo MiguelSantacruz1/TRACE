@@ -1,5 +1,9 @@
 package com.example.trace.ui
 
+import com.example.trace.ui.theme.Tint
+import com.example.trace.ui.theme.ThemeMode
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -100,7 +104,7 @@ fun HeaderSection(modifier: Modifier = Modifier) {
     )
 
     Column(modifier = modifier.fillMaxWidth().padding(top = 8.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Box(
                 Modifier
                     .size(8.dp)
@@ -109,19 +113,21 @@ fun HeaderSection(modifier: Modifier = Modifier) {
             )
             Spacer(Modifier.width(8.dp))
             Text(
-                text = "SISTEMA EN LÍNEA · V1.0",
+                text = "EN LÍNEA · V1.0",
                 style = MaterialTheme.typography.labelSmall,
                 color = NeonMint
             )
+            Spacer(Modifier.weight(1f))
+            ModeToggle()
         }
         Spacer(Modifier.height(6.dp))
         Text(
             text = "TRACE",
             style = TextStyle(
                 brush = Brush.horizontalGradient(listOf(NeonLime, NeonMint, NeonCyan)),
-                fontSize = 64.sp,
+                fontSize = 96.sp,
                 fontWeight = FontWeight.Black,
-                letterSpacing = 6.sp,
+                letterSpacing = 8.sp,
                 shadow = Shadow(NeonMint.copy(alpha = 0.55f), Offset.Zero, 28f)
             )
         )
@@ -131,6 +137,22 @@ fun HeaderSection(modifier: Modifier = Modifier) {
             color = TextMid
         )
     }
+}
+
+@Composable
+private fun ModeToggle() {
+    val shape = RoundedCornerShape(50)
+    Text(
+        text = if (ThemeMode.dark) "MODO CLARO" else "MODO OSCURO",
+        style = MaterialTheme.typography.labelSmall,
+        color = TextHi,
+        modifier = Modifier
+            .clip(shape)
+            .background(Tint.copy(alpha = 0.06f))
+            .border(1.dp, NeonMint.copy(alpha = 0.5f), shape)
+            .clickable { ThemeMode.toggle() }
+            .padding(horizontal = 12.dp, vertical = 7.dp)
+    )
 }
 
 @Composable
@@ -156,7 +178,6 @@ fun ScanHeroCard(onScanClick: () -> Unit, modifier: Modifier = Modifier) {
             }
             NeonButton(
                 text = "Escanear producto",
-                leading = "📷",
                 onClick = onScanClick,
                 modifier = Modifier.fillMaxWidth()
             )

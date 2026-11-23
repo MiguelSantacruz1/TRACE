@@ -121,27 +121,27 @@ fun InvestigationScreen(
                 modifier = Modifier.height(IntrinsicSize.Max),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                PillarTile("🌍", "Impacto", product.impactTag, NeonMint, Modifier.weight(1f).fillMaxHeight())
-                PillarTile("🚛", "Transporte", product.transport ?: "No disponible", NeonViolet, Modifier.weight(1f).fillMaxHeight())
+                PillarTile("Impacto", product.impactTag, NeonMint, Modifier.weight(1f).fillMaxHeight())
+                PillarTile("Transporte", product.transport ?: "No disponible", NeonViolet, Modifier.weight(1f).fillMaxHeight())
             }
             Row(
                 modifier = Modifier.height(IntrinsicSize.Max),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                PillarTile("🛠️", "Reparabilidad", product.repairability, NeonCyan, Modifier.weight(1f).fillMaxHeight())
-                PillarTile("♻️", "Reciclabilidad", product.recyclability, NeonLime, Modifier.weight(1f).fillMaxHeight())
+                PillarTile("Reparabilidad", product.repairability, NeonCyan, Modifier.weight(1f).fillMaxHeight())
+                PillarTile("Reciclabilidad", product.recyclability, NeonLime, Modifier.weight(1f).fillMaxHeight())
             }
         }
 
         // Línea de tiempo
         val stages = listOf(
-            TimelineStage("Materia prima", "🌾", product.rawMaterial),
-            TimelineStage("Fabricación", "🏭", product.manufacturing),
-            TimelineStage("País de origen", "🗺️", product.countryOfOrigin),
-            TimelineStage("Transporte", "🚛", product.transport),
-            TimelineStage("País de destino", "🇨🇴", product.destinationCountry),
-            TimelineStage("Tienda", "🏪", product.store),
-            TimelineStage("Consumidor", "👤", product.consumerStage)
+            TimelineStage("Materia prima", product.rawMaterial),
+            TimelineStage("Fabricación", product.manufacturing),
+            TimelineStage("País de origen", product.countryOfOrigin),
+            TimelineStage("Transporte", product.transport),
+            TimelineStage("País de destino", product.destinationCountry),
+            TimelineStage("Tienda", product.store),
+            TimelineStage("Consumidor", product.consumerStage)
         )
         val verified = stages.count { !it.value.isNullOrBlank() }
 
@@ -173,7 +173,6 @@ fun InvestigationScreen(
         ) {
             NeonButton(
                 text = "Preguntar a TRACE AI",
-                leading = "🤖",
                 style = NeonStyle.Secondary,
                 onClick = onAskAiClick,
                 modifier = Modifier.fillMaxWidth()
@@ -192,7 +191,6 @@ fun InvestigationScreen(
 
 data class TimelineStage(
     val title: String,
-    val icon: String,
     val value: String?
 )
 
@@ -225,10 +223,11 @@ fun TimelineItemRow(
                     .border(1.5.dp, nodeColor.copy(alpha = if (isAvailable) 0.8f else 0.35f), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = stage.icon,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(0.dp)
+                Box(
+                    Modifier
+                        .size(10.dp)
+                        .clip(CircleShape)
+                        .background(nodeColor)
                 )
             }
             if (!isLast) {
@@ -272,7 +271,6 @@ fun TimelineItemRow(
 
 @Composable
 fun PillarTile(
-    icon: String,
     title: String,
     value: String,
     accent: Color,
@@ -284,8 +282,6 @@ fun PillarTile(
                 .fillMaxSize()
                 .padding(14.dp)
         ) {
-            Text(icon, fontSize = 24.sp)
-            Spacer(Modifier.height(8.dp))
             Text(
                 text = title.uppercase(),
                 style = MaterialTheme.typography.labelSmall,

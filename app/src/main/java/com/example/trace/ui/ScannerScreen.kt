@@ -1,5 +1,7 @@
 package com.example.trace.ui
 
+import com.example.trace.ui.theme.ThemeMode
+import com.example.trace.ui.theme.Tint
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -308,16 +310,15 @@ fun ScannerScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(24.dp)
                     ) {
-                        SideButton("🖼", "GALERÍA") { galleryLauncher.launch("image/*") }
+                        SideButton("GALERÍA") { galleryLauncher.launch("image/*") }
                         Shutter(enabled = realCamera, onClick = ::takePhoto)
                         // Marcador de simetría con el botón de galería.
-                        Spacer(Modifier.size(64.dp))
+                        Spacer(Modifier.width(84.dp))
                     }
 
                     ScanState.ERROR -> {
                         NeonButton(
                             text = "Intentar de nuevo",
-                            leading = "↺",
                             onClick = ::reset,
                             modifier = Modifier.fillMaxWidth()
                         )
@@ -424,8 +425,6 @@ private fun PermissionPanel(denied: Boolean, onRequest: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("📷", fontSize = 34.sp)
-        Spacer(Modifier.height(8.dp))
         Text(
             text = if (denied) "Sin permiso de cámara" else "TRACE necesita la cámara",
             style = MaterialTheme.typography.titleSmall,
@@ -470,17 +469,19 @@ private fun Shutter(enabled: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-private fun SideButton(icon: String, label: String, onClick: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+private fun SideButton(label: String, onClick: () -> Unit) {
+    val shape = RoundedCornerShape(14.dp)
+    Box(
         modifier = Modifier
-            .width(64.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .clickable(onClick = onClick)
-            .padding(vertical = 6.dp)
+            .width(84.dp)
+            .height(46.dp)
+            .clip(shape)
+            .background(Tint.copy(alpha = 0.05f))
+            .border(1.dp, NeonMint.copy(alpha = 0.45f), shape)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center
     ) {
-        Text(icon, fontSize = 26.sp)
-        Text(label, style = MaterialTheme.typography.labelSmall, color = TextMid)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = TextHi)
     }
 }
 
@@ -507,7 +508,12 @@ private fun CameraFeed(modifier: Modifier = Modifier) {
     Canvas(modifier.background(Void)) {
         val w = size.width
         val h = size.height
-        drawRect(Brush.verticalGradient(listOf(Color(0xFF0B1913), Color(0xFF05080A), Color(0xFF0A0612))))
+        drawRect(
+            Brush.verticalGradient(
+                if (ThemeMode.dark) listOf(Color(0xFF0B1913), Color(0xFF05080A), Color(0xFF0A0612))
+                else listOf(Color(0xFFF4F8F6), Color(0xFFE6EFEA))
+            )
+        )
 
         val vp = Offset(w / 2f, h * 0.42f)
         val grid = NeonMint.copy(alpha = 0.07f)
@@ -524,7 +530,7 @@ private fun CameraFeed(modifier: Modifier = Modifier) {
 
         drawRect(
             Brush.radialGradient(
-                listOf(Color.Transparent, Color.Black.copy(alpha = 0.55f)),
+                listOf(Color.Transparent, Color.Black.copy(alpha = if (ThemeMode.dark) 0.55f else 0.06f)),
                 center = center,
                 radius = size.maxDimension * 0.65f
             )
@@ -561,7 +567,7 @@ private fun Viewfinder(
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
-            .background(Color.White.copy(alpha = 0.04f))
+            .background(Tint.copy(alpha = 0.04f))
     ) {
         content()
         Canvas(Modifier.fillMaxSize()) {

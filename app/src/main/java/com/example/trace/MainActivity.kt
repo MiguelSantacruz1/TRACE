@@ -1,5 +1,7 @@
 package com.example.trace
 
+import com.example.trace.ui.theme.ThemeMode
+import androidx.compose.runtime.SideEffect
 import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,12 +19,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ProductStore.init(this)
-        // App oscura: íconos claros en las barras del sistema, transparentes sobre el fondo.
-        enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
-            navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT)
-        )
+        ThemeMode.init(this)
         setContent {
+            // Íconos de las barras del sistema acordes al modo, transparentes sobre el fondo.
+            val dark = ThemeMode.dark
+            SideEffect {
+                val style = if (dark) SystemBarStyle.dark(Color.TRANSPARENT)
+                else SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT)
+                enableEdgeToEdge(statusBarStyle = style, navigationBarStyle = style)
+            }
             TRACETheme {
                 AuroraBackground {
                     TRACEApp()

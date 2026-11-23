@@ -1,5 +1,6 @@
 package com.example.trace.ui.components
 
+import com.example.trace.ui.theme.Tint
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
@@ -139,7 +140,7 @@ fun AuroraBackground(modifier: Modifier = Modifier, content: @Composable BoxScop
 
                 // Rejilla tenue
                 val step = 36.dp.toPx()
-                val lineColor = Color.White.copy(alpha = 0.03f)
+                val lineColor = Tint.copy(alpha = 0.03f)
                 var x = 0f
                 while (x < w) {
                     drawLine(lineColor, Offset(x, 0f), Offset(x, h), 1f)
@@ -169,10 +170,10 @@ fun GlassCard(
         modifier = modifier
             .clip(shape)
             .background(Ink.copy(alpha = 0.72f))
-            .background(Brush.linearGradient(listOf(accent.copy(alpha = 0.10f), Color.White.copy(alpha = 0.02f))))
+            .background(Brush.linearGradient(listOf(accent.copy(alpha = 0.10f), Tint.copy(alpha = 0.02f))))
             .border(
                 1.dp,
-                Brush.linearGradient(listOf(accent.copy(alpha = 0.65f), Color.White.copy(alpha = 0.06f), accent.copy(alpha = 0.18f))),
+                Brush.linearGradient(listOf(accent.copy(alpha = 0.65f), Tint.copy(alpha = 0.06f), accent.copy(alpha = 0.18f))),
                 shape
             )
             .then(if (onClick != null) Modifier.clickable(role = Role.Button, onClick = onClick) else Modifier),
@@ -202,7 +203,7 @@ fun NeonButton(
     val fill: Brush = when (style) {
         NeonStyle.Primary -> Brush.horizontalGradient(listOf(NeonLime, NeonMint))
         NeonStyle.Secondary -> Brush.horizontalGradient(listOf(NeonCyan, NeonViolet))
-        NeonStyle.Ghost -> SolidColor(Color.White.copy(alpha = 0.05f))
+        NeonStyle.Ghost -> SolidColor(Tint.copy(alpha = 0.05f))
     }
     val fg = if (style == NeonStyle.Ghost) TextHi else Void
 
@@ -313,7 +314,7 @@ fun ScoreGauge(
             val topLeft = Offset(inset, inset)
             val sweep = 270f * progress.value
 
-            drawArc(Color.White.copy(alpha = 0.07f), 135f, 270f, false, topLeft, arcSize, style = Stroke(sw, cap = StrokeCap.Round))
+            drawArc(Tint.copy(alpha = 0.07f), 135f, 270f, false, topLeft, arcSize, style = Stroke(sw, cap = StrokeCap.Round))
             if (sweep > 0.5f) {
                 drawArc(color.copy(alpha = 0.22f), 135f, sweep, false, topLeft, arcSize, style = Stroke(sw * 2.4f, cap = StrokeCap.Round))
                 drawArc(color, 135f, sweep, false, topLeft, arcSize, style = Stroke(sw, cap = StrokeCap.Round))
@@ -358,7 +359,7 @@ fun TraceTopBar(title: String, onBack: () -> Unit, modifier: Modifier = Modifier
             modifier = Modifier
                 .size(44.dp)
                 .clip(CircleShape)
-                .background(Color.White.copy(alpha = 0.06f))
+                .background(Tint.copy(alpha = 0.06f))
                 .border(1.dp, NeonMint.copy(alpha = 0.4f), CircleShape)
                 .semantics { contentDescription = "Volver" }
                 .clickable(role = Role.Button, onClick = onBack),

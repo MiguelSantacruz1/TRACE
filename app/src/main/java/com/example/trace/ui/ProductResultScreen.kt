@@ -1,5 +1,6 @@
 package com.example.trace.ui
 
+import com.example.trace.ui.theme.Tint
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -150,7 +151,6 @@ fun ProductResultScreen(
         SectionLabel("MÉTRICAS DE SOSTENIBILIDAD", Modifier.staggerIn(1))
 
         MetricItemCard(
-            icon = "🌍",
             title = "Impacto ambiental",
             value = product.impactTag,
             description = "Huella de carbono y emisiones durante la producción.",
@@ -158,7 +158,6 @@ fun ProductResultScreen(
             modifier = Modifier.staggerIn(2)
         )
         MetricItemCard(
-            icon = "🛠️",
             title = "Reparabilidad",
             value = product.repairability,
             description = "Capacidad para reparar y sustituir componentes.",
@@ -167,7 +166,6 @@ fun ProductResultScreen(
             modifier = Modifier.staggerIn(3)
         )
         MetricItemCard(
-            icon = "♻️",
             title = "Reciclabilidad",
             value = product.recyclability,
             description = "Proporción de materiales reciclables o biodegradables.",
@@ -176,7 +174,6 @@ fun ProductResultScreen(
             modifier = Modifier.staggerIn(4)
         )
         MetricItemCard(
-            icon = "🚛",
             title = "Transporte y logística",
             value = product.transport ?: "Información no disponible",
             description = "Método de envío e impacto logístico.",
@@ -192,13 +189,11 @@ fun ProductResultScreen(
         ) {
             NeonButton(
                 text = "Ver investigación",
-                leading = "🔍",
                 onClick = onViewInvestigation,
                 modifier = Modifier.fillMaxWidth()
             )
             NeonButton(
                 text = "Preguntar a TRACE AI",
-                leading = "🤖",
                 style = NeonStyle.Secondary,
                 onClick = onAskAiClick,
                 modifier = Modifier.fillMaxWidth()
@@ -226,7 +221,6 @@ fun ProductResultScreen(
 
 @Composable
 fun MetricItemCard(
-    icon: String,
     title: String,
     value: String,
     description: String,
@@ -244,14 +238,11 @@ fun MetricItemCard(
         ) {
             Box(
                 modifier = Modifier
-                    .size(48.dp)
-                    .clip(RoundedCornerShape(14.dp))
-                    .background(accent.copy(alpha = 0.12f))
-                    .border(1.dp, accent.copy(alpha = 0.4f), RoundedCornerShape(14.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(icon, fontSize = 24.sp)
-            }
+                    .width(4.dp)
+                    .height(44.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .background(accent)
+            )
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {
                 Text(
@@ -289,7 +280,7 @@ private fun LevelBar(level: Float, color: Color) {
             .fillMaxWidth()
             .height(6.dp)
             .clip(RoundedCornerShape(3.dp))
-            .background(Color.White.copy(alpha = 0.08f))
+            .background(Tint.copy(alpha = 0.08f))
     ) {
         Box(
             Modifier

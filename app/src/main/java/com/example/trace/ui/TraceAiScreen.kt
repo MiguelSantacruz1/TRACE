@@ -1,5 +1,6 @@
 package com.example.trace.ui
 
+import com.example.trace.ui.theme.Tint
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -220,7 +221,7 @@ private fun ProductBanner(product: Product, modifier: Modifier = Modifier) {
                     color = TextHi
                 )
                 Spacer(Modifier.height(4.dp))
-                NeonChip("⚡ IA LOCAL · DATOS DEL PRODUCTO", NeonLime)
+                NeonChip("IA LOCAL · DATOS DEL PRODUCTO", NeonLime)
             }
         }
     }
@@ -257,7 +258,7 @@ fun ChatMessageBubble(
                 .then(
                     if (isUser) Modifier.background(Brush.linearGradient(listOf(NeonLime, NeonMint)))
                     else Modifier
-                        .background(Color.White.copy(alpha = 0.06f))
+                        .background(Tint.copy(alpha = 0.06f))
                         .border(1.dp, NeonCyan.copy(alpha = 0.35f), shape)
                 )
                 .padding(horizontal = 16.dp, vertical = 12.dp)
@@ -282,7 +283,7 @@ private fun AiAvatar() {
             .border(1.dp, NeonCyan.copy(alpha = 0.6f), CircleShape),
         contentAlignment = Alignment.Center
     ) {
-        Text("🤖", fontSize = 18.sp)
+        Text("AI", style = MaterialTheme.typography.labelSmall, color = NeonCyan)
     }
 }
 
@@ -321,7 +322,7 @@ fun PromptOptionChip(
             .height(58.dp)
             .alpha(if (enabled) 1f else 0.45f)
             .clip(shape)
-            .background(Color.White.copy(alpha = 0.05f))
+            .background(Tint.copy(alpha = 0.05f))
             .border(1.dp, NeonMint.copy(alpha = 0.35f), shape)
             .clickable(enabled = enabled, onClick = onClick)
             .padding(horizontal = 12.dp),
@@ -349,13 +350,13 @@ private fun markdownBold(text: String, boldColor: Color): AnnotatedString = buil
 private fun generateAiResponse(question: String, product: Product): String = when (question) {
     Q_WORTH -> when {
         product.score >= 80 ->
-            "Sí, vale la pena 🟢. Con **${product.score}/100** destaca por su compromiso de sostenibilidad (${product.impactTag}) y una reciclabilidad de ${product.recyclability}."
+            "Sí, vale la pena. Con **${product.score}/100** destaca por su compromiso de sostenibilidad (${product.impactTag}) y una reciclabilidad de ${product.recyclability}."
 
         product.score >= 65 ->
-            "Es una opción aceptable 🟡. Su puntaje es **${product.score}/100** (${product.impactTag}). Tiene puntos a favor, pero todavía hay margen de mejora en reciclabilidad (${product.recyclability}) y transporte. Antes de comprarlo, evalúa si puedes alargar la vida de lo que ya tienes."
+            "Es una opción aceptable. Su puntaje es **${product.score}/100** (${product.impactTag}). Tiene puntos a favor, pero todavía hay margen de mejora en reciclabilidad (${product.recyclability}) y transporte. Antes de comprarlo, evalúa si puedes alargar la vida de lo que ya tienes."
 
         else ->
-            "No lo recomendamos como primera opción 🔴. Su puntaje es **${product.score}/100**: reparabilidad ${product.repairability} y reciclabilidad ${product.recyclability}. Considera alternativas mejor calificadas."
+            "No lo recomendamos como primera opción. Su puntaje es **${product.score}/100**: reparabilidad ${product.repairability} y reciclabilidad ${product.recyclability}. Considera alternativas mejor calificadas."
     }
 
     Q_GREENER -> {
