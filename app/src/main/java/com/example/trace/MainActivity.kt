@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.trace.model.ProductStore
 import com.example.trace.ui.TRACEApp
 import com.example.trace.ui.components.AuroraBackground
 import com.example.trace.ui.theme.TRACETheme
@@ -15,6 +16,7 @@ import com.example.trace.ui.theme.TRACETheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ProductStore.init(this)
         // App oscura: íconos claros en las barras del sistema, transparentes sobre el fondo.
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),

@@ -1,6 +1,10 @@
 package com.example.trace.model
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.compose.runtime.mutableStateListOf
+import org.json.JSONArray
+import org.json.JSONObject
 
 data class SourceLink(val title: String, val url: String)
 
@@ -94,8 +98,81 @@ val sampleProducts = listOf(
 object ProductStore {
     val products = mutableStateListOf<Product>().apply { addAll(sampleProducts) }
 
+    private const val PREFS = "trace_store"
+    private const val KEY = "scanned"
+    private var prefs: SharedPreferences? = null
+
+    /** Carga los escaneos guardados. Se llama una vez al abrir la app. */
+    fun init(context: Context) {
+        if (prefs != null) return
+        val p = context.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        prefs = p
+        val saved = runCatching { fromJson(JSONArray(p.getString(KEY, "[]"))) }.getOrDefault(emptyList())
+        products.addAll(0, saved)
+    }
+
     fun add(product: Product) {
         products.add(0, product)
+        save()
+    }
+
+    private fun save() {
+        val scanned = products.filter { it.aiGenerated }
+        prefs?.edit()?.putString(KEY, toJson(scanned).toString())?.apply()
+    }
+
+    private fun toJson(list: List<Product>): JSONArray = JSONArray().also { arr ->
+        list.forEach { p ->
+            arr.put(
+                JSONObject()
+                    .put("id", p.id).put("name", p.name).put("score", p.score)
+                    .put("category", p.category).put("impactTag", p.impactTag)
+                    .put("repairability", p.repairability).put("repairIndex", p.repairIndex?.toDouble() ?: JSONObject.NULL)
+                    .put("recyclability", p.recyclability).put("recycleIndex", p.recycleIndex?.toDouble() ?: JSONObject.NULL)
+                    .put("transport", p.transport ?: JSONObject.NULL)
+                    .put("rawMaterial", p.rawMaterial ?: JSONObject.NULL)
+                    .put("manufacturing", p.manufacturing ?: JSONObject.NULL)
+                    .put("countryOfOrigin", p.countryOfOrigin ?: JSONObject.NULL)
+                    .put("store", p.store ?: JSONObject.NULL)
+                    .put("consumerStage", p.consumerStage ?: JSONObject.NULL)
+                    .put("summary", p.summary ?: JSONObject.NULL)
+                    .put(
+                        "sources",
+                        JSONArray().also { s ->
+                            p.sources.forEach { s.put(JSONObject().put("title", it.title).put("url", it.url)) }
+                        }
+                    )
+            )
+        }
+    }
+
+    private fun fromJson(arr: JSONArray): List<Product> = (0 until arr.length()).map { i ->
+        val o = arr.getJSONObject(i)
+        fun str(k: String) = if (o.isNull(k)) null else o.getString(k)
+        fun idx(k: String) = if (o.isNull(k)) null else o.getDouble(k).toFloat()
+        val src = o.optJSONArray("sources") ?: JSONArray()
+        Product(
+            id = o.getString("id"),
+            name = o.getString("name"),
+            score = o.getInt("score"),
+            category = o.getString("category"),
+            impactTag = o.getString("impactTag"),
+            repairability = o.getString("repairability"),
+            repairIndex = idx("repairIndex"),
+            recyclability = o.getString("recyclability"),
+            recycleIndex = idx("recycleIndex"),
+            transport = str("transport"),
+            rawMaterial = str("rawMaterial"),
+            manufacturing = str("manufacturing"),
+            countryOfOrigin = str("countryOfOrigin"),
+            store = str("store"),
+            consumerStage = str("consumerStage"),
+            summary = str("summary"),
+            sources = (0 until src.length()).map {
+                SourceLink(src.getJSONObject(it).getString("title"), src.getJSONObject(it).getString("url"))
+            },
+            aiGenerated = true
+        )
     }
 }
 
