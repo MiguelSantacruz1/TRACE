@@ -2,6 +2,7 @@ package com.example.trace.model
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.trace.i18n.tr
 import androidx.compose.runtime.mutableStateListOf
 import org.json.JSONArray
 import org.json.JSONObject
@@ -34,69 +35,74 @@ data class Product(
     val aiGenerated: Boolean = false
 )
 
-val sampleProducts = listOf(
+/** Productos de ejemplo, en el idioma activo. */
+fun sampleProducts(): List<Product> = listOf(
     Product(
         id = "1",
-        name = "Auriculares XYZ",
+        name = tr("Auriculares XYZ", "XYZ Headphones"),
         barcode = "7701234567897",
         score = 72,
-        category = "Electrónica",
-        impactTag = "Huella CO₂ neutra",
+        category = tr("Electrónica", "Electronics"),
+        impactTag = tr("Huella CO₂ neutra", "Carbon neutral footprint"),
         repairability = "7/10",
         repairIndex = 0.7f,
         recyclability = "65%",
         recycleIndex = 0.65f,
-        transport = "Carga marítima baja en emisiones",
-        rawMaterial = "Plástico reciclado y aluminio",
-        manufacturing = "Ensamblado automatizado de precisión",
-        countryOfOrigin = "Vietnam",
-        destinationCountry = "Colombia",
-        store = "Distribuidor certificado TRACE",
-        consumerStage = "Ciclo de vida estimado: 4 años"
+        transport = tr("Carga marítima baja en emisiones", "Low-emission sea freight"),
+        rawMaterial = tr("Plástico reciclado y aluminio", "Recycled plastic and aluminum"),
+        manufacturing = tr("Ensamblado automatizado de precisión", "Automated precision assembly"),
+        countryOfOrigin = tr("Vietnam", "Vietnam"),
+        destinationCountry = tr("Colombia", "Colombia"),
+        store = tr("Distribuidor certificado TRACE", "TRACE certified distributor"),
+        consumerStage = tr("Ciclo de vida estimado: 4 años", "Estimated lifespan: 4 years")
     ),
     Product(
         id = "2",
-        name = "Zapatillas ABC",
+        name = tr("Zapatillas ABC", "ABC Sneakers"),
         barcode = "7709876543217",
         score = 61,
-        category = "Calzado",
-        impactTag = "Materiales reciclados",
+        category = tr("Calzado", "Footwear"),
+        impactTag = tr("Materiales reciclados", "Recycled materials"),
         repairability = "5/10",
         repairIndex = 0.5f,
         recyclability = "50%",
         recycleIndex = 0.5f,
-        transport = "Transporte multimodal",
-        rawMaterial = "Caucho natural y polímeros reciclados",
+        transport = tr("Transporte multimodal", "Multimodal transport"),
+        rawMaterial = tr("Caucho natural y polímeros reciclados", "Natural rubber and recycled polymers"),
         manufacturing = null, // Demuestra 'Información no disponible'
-        countryOfOrigin = "Indonesia",
-        destinationCountry = "Colombia",
-        store = "Tienda oficial y distribuidores",
+        countryOfOrigin = tr("Indonesia", "Indonesia"),
+        destinationCountry = tr("Colombia", "Colombia"),
+        store = tr("Tienda oficial y distribuidores", "Official store and distributors"),
         consumerStage = null // Demuestra 'Información no disponible'
     ),
     Product(
         id = "3",
-        name = "Café XYZ",
+        name = tr("Café XYZ", "XYZ Coffee"),
         barcode = "7705551234562",
         score = 84,
-        category = "Alimentos",
-        impactTag = "Orgánico & Comercio Justo",
-        repairability = "No aplica (consumible)",
+        category = tr("Alimentos", "Food"),
+        impactTag = tr("Orgánico & Comercio Justo", "Organic & Fair Trade"),
+        repairability = tr("No aplica (consumible)", "Not applicable (consumable)"),
         repairIndex = null,
         recyclability = "90%",
         recycleIndex = 0.9f,
-        transport = "Transporte terrestre de proximidad",
-        rawMaterial = "Grano 100% Arábica de origen sostenible",
-        manufacturing = "Tostado y empaque de bajo impacto en origen",
-        countryOfOrigin = "Colombia (Eje Cafetero)",
-        destinationCountry = "Colombia",
-        store = "Comercio local y tiendas ecológicas",
-        consumerStage = "Consumo directo y compostaje del empaque"
+        transport = tr("Transporte terrestre de proximidad", "Local ground transport"),
+        rawMaterial = tr("Grano 100% Arábica de origen sostenible", "100% Arabica beans from sustainable sources"),
+        manufacturing = tr("Tostado y empaque de bajo impacto en origen", "Low-impact roasting and packaging at origin"),
+        countryOfOrigin = tr("Colombia (Eje Cafetero)", "Colombia (Coffee Region)"),
+        destinationCountry = tr("Colombia", "Colombia"),
+        store = tr("Comercio local y tiendas ecológicas", "Local shops and eco stores"),
+        consumerStage = tr("Consumo directo y compostaje del empaque", "Direct consumption and packaging composting")
     )
 )
 
 /** Productos de ejemplo + los que la IA identifica al escanear (el más reciente primero). */
 object ProductStore {
-    val products = mutableStateListOf<Product>().apply { addAll(sampleProducts) }
+    /** Productos escaneados con la IA (el más reciente primero). */
+    private val scanned = mutableStateListOf<Product>()
+
+    /** Escaneos propios + productos de ejemplo en el idioma activo. */
+    val products: List<Product> get() = scanned + sampleProducts()
 
     private const val PREFS = "trace_store"
     private const val KEY = "scanned"
@@ -108,17 +114,16 @@ object ProductStore {
         val p = context.applicationContext.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         prefs = p
         val saved = runCatching { fromJson(JSONArray(p.getString(KEY, "[]"))) }.getOrDefault(emptyList())
-        products.addAll(0, saved)
+        scanned.addAll(saved)
     }
 
     fun add(product: Product) {
-        products.add(0, product)
+        scanned.add(0, product)
         save()
     }
 
     private fun save() {
-        val scanned = products.filter { it.aiGenerated }
-        prefs?.edit()?.putString(KEY, toJson(scanned).toString())?.apply()
+        prefs?.edit()?.putString(KEY, toJson(scanned.toList()).toString())?.apply()
     }
 
     private fun toJson(list: List<Product>): JSONArray = JSONArray().also { arr ->

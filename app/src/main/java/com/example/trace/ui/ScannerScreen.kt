@@ -1,5 +1,6 @@
 package com.example.trace.ui
 
+import com.example.trace.i18n.tr
 import com.example.trace.ui.theme.ThemeMode
 import com.example.trace.ui.theme.Tint
 import android.Manifest
@@ -104,11 +105,11 @@ enum class ScanState {
 
 private const val MAX_SIDE = 1024
 
-private val analyzingMessages = listOf(
-    "IDENTIFICANDO PRODUCTO",
-    "BUSCANDO EN LA WEB",
-    "REVISANDO MATERIALES Y ORIGEN",
-    "CALCULANDO TU TRACE SCORE"
+private val analyzingMessages: List<String> get() = listOf(
+    tr("IDENTIFICANDO PRODUCTO", "IDENTIFYING PRODUCT"),
+    tr("BUSCANDO EN LA WEB", "SEARCHING THE WEB"),
+    tr("REVISANDO MATERIALES Y ORIGEN", "CHECKING MATERIALS AND ORIGIN"),
+    tr("CALCULANDO TU TRACE SCORE", "CALCULATING YOUR TRACE SCORE")
 )
 
 @Composable
@@ -162,7 +163,7 @@ fun ScannerScreen(
                     onScanSuccess(product.id)
                 }
                 .onFailure {
-                    errorText = it.message ?: "Error desconocido."
+                    errorText = it.message ?: tr("Error desconocido.", "Unknown error.")
                     scanState = ScanState.ERROR
                 }
         }
@@ -178,7 +179,7 @@ fun ScannerScreen(
         if (uri != null) {
             val bmp = runCatching { decodeUri(context, uri) }.getOrNull()
             if (bmp != null) analyze(bmp) else {
-                errorText = "No se pudo leer esa imagen."
+                errorText = tr("No se pudo leer esa imagen.", "That image could not be read.")
                 scanState = ScanState.ERROR
             }
         }
@@ -193,13 +194,13 @@ fun ScannerScreen(
                     val bmp = runCatching { image.toScaledBitmap() }.getOrNull()
                     image.close()
                     if (bmp != null) analyze(bmp) else {
-                        errorText = "No se pudo procesar la foto."
+                        errorText = tr("No se pudo procesar la foto.", "The photo could not be processed.")
                         scanState = ScanState.ERROR
                     }
                 }
 
                 override fun onError(exception: ImageCaptureException) {
-                    errorText = "No se pudo tomar la foto."
+                    errorText = tr("No se pudo tomar la foto.", "The photo could not be taken.")
                     scanState = ScanState.ERROR
                 }
             }
@@ -232,7 +233,7 @@ fun ScannerScreen(
         CameraFeed(Modifier.fillMaxSize())
 
         Column(Modifier.fillMaxSize()) {
-            TraceTopBar(title = "Escáner IA", onBack = onBackClick)
+            TraceTopBar(title = tr("Escáner IA", "AI Scanner"), onBack = onBackClick)
 
             Column(
                 modifier = Modifier
@@ -244,7 +245,7 @@ fun ScannerScreen(
             ) {
                 val badgeColor = if (realCamera) NeonMint else NeonAmber
                 Text(
-                    text = if (realCamera) "● CÁMARA ACTIVA" else "● SIN CÁMARA · USA LA GALERÍA",
+                    text = if (realCamera) tr("● CÁMARA ACTIVA", "● CAMERA ON") else tr("● SIN CÁMARA · USA LA GALERÍA", "● NO CAMERA · USE THE GALLERY"),
                     style = MaterialTheme.typography.labelSmall,
                     color = badgeColor,
                     modifier = Modifier
@@ -268,7 +269,7 @@ fun ScannerScreen(
                     when {
                         shot != null -> Image(
                             bitmap = shot.asImageBitmap(),
-                            contentDescription = "Foto del producto",
+                            contentDescription = tr("Foto del producto", "Product photo"),
                             contentScale = ContentScale.Crop,
                             modifier = Modifier.fillMaxSize()
                         )
@@ -310,7 +311,7 @@ fun ScannerScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(24.dp)
                     ) {
-                        SideButton("GALERÍA") { galleryLauncher.launch("image/*") }
+                        SideButton(tr("GALERÍA", "GALLERY")) { galleryLauncher.launch("image/*") }
                         Shutter(enabled = realCamera, onClick = ::takePhoto)
                         // Marcador de simetría con el botón de galería.
                         Spacer(Modifier.width(84.dp))
@@ -318,14 +319,14 @@ fun ScannerScreen(
 
                     ScanState.ERROR -> {
                         NeonButton(
-                            text = "Intentar de nuevo",
+                            text = tr("Intentar de nuevo", "Try again"),
                             onClick = ::reset,
                             modifier = Modifier.fillMaxWidth()
                         )
                     }
 
                     else -> NeonButton(
-                        text = if (scanState == ScanState.ANALYZING) "Analizando…" else "¡Identificado!",
+                        text = if (scanState == ScanState.ANALYZING) tr("Analizando…", "Analyzing…") else tr("¡Identificado!", "Identified!"),
                         enabled = false,
                         onClick = {},
                         modifier = Modifier.fillMaxWidth()
@@ -333,7 +334,7 @@ fun ScannerScreen(
                 }
                 if (scanState == ScanState.ANALYZING) {
                     NeonButton(
-                        text = "Cancelar",
+                        text = tr("Cancelar", "Cancel"),
                         style = NeonStyle.Ghost,
                         height = 46.dp,
                         onClick = {
@@ -426,20 +427,20 @@ private fun PermissionPanel(denied: Boolean, onRequest: () -> Unit) {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = if (denied) "Sin permiso de cámara" else "TRACE necesita la cámara",
+            text = if (denied) tr("Sin permiso de cámara", "No camera permission") else tr("TRACE necesita la cámara", "TRACE needs the camera"),
             style = MaterialTheme.typography.titleSmall,
             color = TextHi,
             textAlign = TextAlign.Center
         )
         Spacer(Modifier.height(4.dp))
         Text(
-            text = "Para fotografiar el producto. También puedes elegir una foto de la galería.",
+            text = tr("Para fotografiar el producto. También puedes elegir una foto de la galería.", "To photograph the product. You can also pick a photo from the gallery."),
             style = MaterialTheme.typography.bodySmall,
             color = TextMid,
             textAlign = TextAlign.Center
         )
         Spacer(Modifier.height(10.dp))
-        PillChip(text = "Permitir cámara", onClick = onRequest)
+        PillChip(text = tr("Permitir cámara", "Allow camera"), onClick = onRequest)
     }
 }
 
@@ -634,10 +635,10 @@ private fun StatusHud(
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
         Text(
             text = when (scanState) {
-                ScanState.IDLE -> "ENCUADRA EL PRODUCTO"
+                ScanState.IDLE -> tr("ENCUADRA EL PRODUCTO", "FRAME THE PRODUCT")
                 ScanState.ANALYZING -> message
-                ScanState.IDENTIFIED -> "PRODUCTO IDENTIFICADO"
-                ScanState.ERROR -> "NO SE PUDO ANALIZAR"
+                ScanState.IDENTIFIED -> tr("PRODUCTO IDENTIFICADO", "PRODUCT IDENTIFIED")
+                ScanState.ERROR -> tr("NO SE PUDO ANALIZAR", "COULD NOT ANALYZE")
             },
             color = color,
             textAlign = TextAlign.Center,
@@ -646,15 +647,15 @@ private fun StatusHud(
         Spacer(Modifier.height(8.dp))
         when (scanState) {
             ScanState.IDLE -> Text(
-                text = if (cameraProblem) "Elige una foto de la galería para que la IA la analice."
-                else "Toma una foto: la IA reconoce el producto, lo busca en la web y lo califica.",
+                text = if (cameraProblem) tr("Elige una foto de la galería para que la IA la analice.", "Pick a photo from the gallery for the AI to analyze.")
+                else tr("Toma una foto: la IA reconoce el producto, lo busca en la web y lo califica.", "Take a photo: the AI recognizes the product and rates it."),
                 color = TextMid,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall
             )
 
             ScanState.ANALYZING -> Text(
-                text = "Puede tardar unos segundos…",
+                text = tr("Puede tardar unos segundos…", "It may take a few seconds…"),
                 color = TextMid,
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall

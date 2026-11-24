@@ -1,5 +1,7 @@
 package com.example.trace.ai
 
+import com.example.trace.i18n.Lang
+import com.example.trace.i18n.tr
 import android.util.Base64
 import com.example.trace.BuildConfig
 import com.example.trace.model.Product
@@ -61,8 +63,10 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
         runCatching {
             if (BuildConfig.GEMINI_API_KEY.isBlank()) {
                 throw AnalysisException(
-                    "Falta la clave de Gemini. Crea una gratis en aistudio.google.com/apikey " +
-                        "y agrégala en local.properties como GEMINI_API_KEY=..."
+                    tr(
+                        "Falta la clave de Gemini. Crea una gratis en aistudio.google.com/apikey y agrégala en local.properties como GEMINI_API_KEY=...",
+                        "Gemini key missing. Create a free one at aistudio.google.com/apikey and add it to local.properties as GEMINI_API_KEY=..."
+                    )
                 )
             }
             var response: JSONObject? = null
@@ -73,7 +77,7 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
                 } catch (e: OverloadedException) {
                     // 503: el modelo está saturado, suele pasar en segundos.
                     if (attempt == 4) {
-                        throw AnalysisException("Gemini está saturado en este momento. Intenta de nuevo en un minuto.")
+                        throw AnalysisException(tr("Gemini está saturado en este momento. Intenta de nuevo en un minuto.", "Gemini is overloaded right now. Try again in a minute."))
                     }
                     delay(2500L * attempt)
                 }
@@ -82,12 +86,17 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
         }.recoverCatching {
             throw when (it) {
                 is AnalysisException -> it
-                is UnknownHostException -> AnalysisException("Sin conexión a internet.")
-                is SocketTimeoutException -> AnalysisException("La IA tardó demasiado. Intenta de nuevo.")
-                else -> AnalysisException("No se pudo analizar el producto: ${it.message}")
+                is UnknownHostException -> AnalysisException(tr("Sin conexión a internet.", "No internet connection."))
+                is SocketTimeoutException -> AnalysisException(tr("La IA tardó demasiado. Intenta de nuevo.", "The AI took too long. Please try again."))
+                else -> AnalysisException(tr("No se pudo analizar el producto: ${it.message}", "The product could not be analyzed: ${it.message}"))
             }
         }
     }
+
+    /** Indica al modelo en qué idioma escribir los valores del JSON. */
+    private fun languageNote(): String =
+        if (Lang.en) "\nLANGUAGE: write every text value of the JSON in English (category, impactTag, repairability, recyclability, transport, rawMaterial, manufacturing, countryOfOrigin, store, consumerStage and summary). Keep the JSON keys exactly as given. Use categories like Electronics, Footwear, Food, Clothing, Home."
+        else ""
 
     private fun send(jpeg: ByteArray): JSONObject {
         if (!searchAvailable) return call(jpeg, useSearch = false)
@@ -103,7 +112,7 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
 
     private fun call(jpeg: ByteArray, useSearch: Boolean): JSONObject {
         val body = JSONObject()
-            .put("systemInstruction", JSONObject().put("parts", JSONArray().put(JSONObject().put("text", SYSTEM))))
+            .put("systemInstruction", JSONObject().put("parts", JSONArray().put(JSONObject().put("text", SYSTEM + languageNote()))))
             .put(
                 "contents", JSONArray().put(
                     JSONObject().put("role", "user").put(
@@ -143,9 +152,9 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
                 if (code == 503) throw OverloadedException()
                 throw AnalysisException(
                     when (code) {
-                        400, 403 -> "Clave de Gemini inválida o sin permiso: $msg"
-                        429 -> "Se alcanzó el límite gratuito de Gemini. Espera un minuto e intenta de nuevo."
-                        else -> "Error $code de Gemini: $msg"
+                        400, 403 -> tr("Clave de Gemini inválida o sin permiso: $msg", "Invalid Gemini key or no permission: $msg")
+                        429 -> tr("Se alcanzó el límite gratuito de Gemini. Espera un minuto e intenta de nuevo.", "The free Gemini limit was reached. Wait a minute and try again.")
+                        else -> tr("Error $code de Gemini: $msg", "Gemini error $code: $msg")
                     }
                 )
             }
@@ -157,7 +166,7 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
 
     private fun parse(response: JSONObject): Product {
         val candidate = response.optJSONArray("candidates")?.optJSONObject(0)
-            ?: throw AnalysisException("La IA no devolvió respuesta (puede haberse bloqueado la imagen).")
+            ?: throw AnalysisException(tr("La IA no devolvió respuesta (puede haberse bloqueado la imagen).", "The AI returned no answer (the image may have been blocked)."))
 
         val text = buildString {
             val parts = candidate.optJSONObject("content")?.optJSONArray("parts") ?: JSONArray()
@@ -165,11 +174,11 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
         }
         val start = text.indexOf('{')
         val end = text.lastIndexOf('}')
-        if (start < 0 || end <= start) throw AnalysisException("La IA respondió en un formato inesperado.")
+        if (start < 0 || end <= start) throw AnalysisException(tr("La IA respondió en un formato inesperado.", "The AI answered in an unexpected format."))
         val json = JSONObject(text.substring(start, end + 1))
 
         if (!json.optBoolean("identified", true) || json.optString("name").isBlank()) {
-            throw AnalysisException("No pude identificar un producto en la foto. Acércate y procura buena luz.")
+            throw AnalysisException(tr("No pude identificar un producto en la foto. Acércate y procura buena luz.", "I could not identify a product in the photo. Move closer and use good light."))
         }
 
         fun str(key: String): String? =
@@ -198,11 +207,11 @@ Si en la foto no hay un producto identificable, responde {"identified": false}."
             id = "ai-${System.currentTimeMillis()}",
             name = json.getString("name").trim(),
             score = json.optInt("score", 50).coerceIn(0, 100),
-            category = str("category") ?: "Producto",
-            impactTag = str("impactTag") ?: "Impacto no determinado",
-            repairability = str("repairability") ?: "Información no disponible",
+            category = str("category") ?: tr("Producto", "Product"),
+            impactTag = str("impactTag") ?: tr("Impacto no determinado", "Impact not determined"),
+            repairability = str("repairability") ?: tr("Información no disponible", "Information not available"),
             repairIndex = idx("repairIndex"),
-            recyclability = str("recyclability") ?: "Información no disponible",
+            recyclability = str("recyclability") ?: tr("Información no disponible", "Information not available"),
             recycleIndex = idx("recycleIndex"),
             transport = str("transport"),
             rawMaterial = str("rawMaterial"),

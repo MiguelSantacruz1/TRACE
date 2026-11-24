@@ -1,5 +1,6 @@
 package com.example.trace.ui
 
+import com.example.trace.i18n.tr
 import com.example.trace.ui.theme.Tint
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -82,11 +83,19 @@ enum class MessageSender {
     USER, AI
 }
 
-private const val Q_WORTH = "¿Vale la pena comprarlo?"
-private const val Q_GREENER = "¿Hay una opción más sostenible?"
-private const val Q_RECYCLE = "¿Cómo puedo reciclarlo?"
-private const val Q_COMPARE = "¿Cómo se compara con los demás?"
-private val quickQuestions = listOf(Q_WORTH, Q_GREENER, Q_RECYCLE, Q_COMPARE)
+private enum class Question {
+    WORTH, GREENER, RECYCLE, COMPARE;
+
+    val label: String
+        get() = when (this) {
+            WORTH -> tr("¿Vale la pena comprarlo?", "Is it worth buying?")
+            GREENER -> tr("¿Hay una opción más sostenible?", "Is there a more sustainable option?")
+            RECYCLE -> tr("¿Cómo puedo reciclarlo?", "How can I recycle it?")
+            COMPARE -> tr("¿Cómo se compara con los demás?", "How does it compare to the others?")
+        }
+}
+
+private val quickQuestions = Question.values().toList()
 
 @Composable
 fun TraceAiScreen(
@@ -101,7 +110,10 @@ fun TraceAiScreen(
             ChatMessage(
                 id = 0,
                 sender = MessageSender.AI,
-                text = "¡Hola! Soy **TRACE AI**. Analicé **${product.name}** (puntaje ${product.score}/100). ¿Qué quieres saber?"
+                text = tr(
+                    "¡Hola! Soy **TRACE AI**. Analicé **${product.name}** (puntaje ${product.score}/100). ¿Qué quieres saber?",
+                    "Hi! I'm **TRACE AI**. I analyzed **${product.name}** (score ${product.score}/100). What would you like to know?"
+                )
             )
         )
     }
@@ -116,9 +128,9 @@ fun TraceAiScreen(
         if (last >= 0) listState.animateScrollToItem(last)
     }
 
-    fun ask(question: String) {
+    fun ask(question: Question) {
         if (isAnalyzing) return
-        messages.add(ChatMessage(nextId++, MessageSender.USER, question))
+        messages.add(ChatMessage(nextId++, MessageSender.USER, question.label))
         isAnalyzing = true
         scope.launch {
             delay(900) // simula el análisis local
@@ -161,7 +173,7 @@ fun TraceAiScreen(
                 .padding(horizontal = 20.dp, vertical = 12.dp)
         ) {
             Text(
-                text = "PREGÚNTALE A TRACE AI",
+                text = tr("PREGÚNTALE A TRACE AI", "ASK TRACE AI"),
                 style = MaterialTheme.typography.labelSmall,
                 color = TextMid,
                 modifier = Modifier.padding(bottom = 10.dp)
@@ -175,7 +187,7 @@ fun TraceAiScreen(
                 ) {
                     row.forEach { q ->
                         PromptOptionChip(
-                            text = q,
+                            text = q.label,
                             enabled = !isAnalyzing,
                             onClick = { ask(q) },
                             modifier = Modifier.weight(1f)
@@ -184,7 +196,7 @@ fun TraceAiScreen(
                 }
             }
             NeonButton(
-                text = "Volver",
+                text = tr("Volver", "Back"),
                 style = NeonStyle.Ghost,
                 height = 46.dp,
                 onClick = onBack,
@@ -211,7 +223,7 @@ private fun ProductBanner(product: Product, modifier: Modifier = Modifier) {
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {
                 Text(
-                    text = "ANALIZANDO",
+                    text = tr("ANALIZANDO", "ANALYZING"),
                     style = MaterialTheme.typography.labelSmall,
                     color = TextMid
                 )
@@ -221,7 +233,7 @@ private fun ProductBanner(product: Product, modifier: Modifier = Modifier) {
                     color = TextHi
                 )
                 Spacer(Modifier.height(4.dp))
-                NeonChip("IA LOCAL · DATOS DEL PRODUCTO", NeonLime)
+                NeonChip(tr("IA LOCAL · DATOS DEL PRODUCTO", "LOCAL AI · PRODUCT DATA"), NeonLime)
             }
         }
     }
@@ -301,7 +313,7 @@ fun AnalyzingIndicator(modifier: Modifier = Modifier) {
         AiAvatar()
         Spacer(Modifier.width(10.dp))
         Text(
-            text = "TRACE AI ESTÁ ANALIZANDO…",
+            text = tr("TRACE AI ESTÁ ANALIZANDO…", "TRACE AI IS ANALYZING…"),
             style = MaterialTheme.typography.labelSmall,
             color = NeonCyan,
             modifier = Modifier.alpha(pulse)
@@ -347,47 +359,77 @@ private fun markdownBold(text: String, boldColor: Color): AnnotatedString = buil
     }
 }
 
-private fun generateAiResponse(question: String, product: Product): String = when (question) {
-    Q_WORTH -> when {
-        product.score >= 80 ->
-            "Sí, vale la pena. Con **${product.score}/100** destaca por su compromiso de sostenibilidad (${product.impactTag}) y una reciclabilidad de ${product.recyclability}."
+private fun generateAiResponse(question: Question, product: Product): String = when (question) {
+    Question.WORTH -> when {
+        product.score >= 80 -> tr(
+            "Sí, vale la pena. Con **${product.score}/100** destaca por su compromiso de sostenibilidad (${product.impactTag}) y una reciclabilidad de ${product.recyclability}.",
+            "Yes, it is worth it. With **${product.score}/100** it stands out for its sustainability commitment (${product.impactTag}) and a recyclability of ${product.recyclability}."
+        )
 
-        product.score >= 65 ->
-            "Es una opción aceptable. Su puntaje es **${product.score}/100** (${product.impactTag}). Tiene puntos a favor, pero todavía hay margen de mejora en reciclabilidad (${product.recyclability}) y transporte. Antes de comprarlo, evalúa si puedes alargar la vida de lo que ya tienes."
+        product.score >= 65 -> tr(
+            "Es una opción aceptable. Su puntaje es **${product.score}/100** (${product.impactTag}). Tiene puntos a favor, pero todavía hay margen de mejora en reciclabilidad (${product.recyclability}) y transporte. Antes de comprarlo, evalúa si puedes alargar la vida de lo que ya tienes.",
+            "It is an acceptable option. Its score is **${product.score}/100** (${product.impactTag}). It has strong points, but there is still room to improve in recyclability (${product.recyclability}) and transport. Before buying, consider whether you can extend the life of what you already own."
+        )
 
-        else ->
-            "No lo recomendamos como primera opción. Su puntaje es **${product.score}/100**: reparabilidad ${product.repairability} y reciclabilidad ${product.recyclability}. Considera alternativas mejor calificadas."
+        else -> tr(
+            "No lo recomendamos como primera opción. Su puntaje es **${product.score}/100**: reparabilidad ${product.repairability} y reciclabilidad ${product.recyclability}. Considera alternativas mejor calificadas.",
+            "We do not recommend it as a first choice. Its score is **${product.score}/100**: repairability ${product.repairability} and recyclability ${product.recyclability}. Consider better-rated alternatives."
+        )
     }
 
-    Q_GREENER -> {
+    Question.GREENER -> {
         val better = ProductStore.products.filter { it.score > product.score }.maxByOrNull { it.score }
         if (better != null) {
-            "Sí. En el registro local la opción más sostenible es **${better.name}** con **${better.score}/100** (${better.impactTag}, reciclabilidad ${better.recyclability}). Ojo: es de otra categoría (${better.category}), así que sirve como referencia, no como reemplazo directo."
+            tr(
+                "Sí. En el registro local la opción más sostenible es **${better.name}** con **${better.score}/100** (${better.impactTag}, reciclabilidad ${better.recyclability}). Ojo: es de otra categoría (${better.category}), así que sirve como referencia, no como reemplazo directo.",
+                "Yes. In the local registry the most sustainable option is **${better.name}** with **${better.score}/100** (${better.impactTag}, recyclability ${better.recyclability}). Note: it is a different category (${better.category}), so use it as a reference, not a direct replacement."
+            )
         } else {
-            "**${product.name}** ya tiene el puntaje más alto del registro local de TRACE (**${product.score}/100**, ${product.impactTag})."
+            tr(
+                "**${product.name}** ya tiene el puntaje más alto del registro local de TRACE (**${product.score}/100**, ${product.impactTag}).",
+                "**${product.name}** already has the highest score in the local TRACE registry (**${product.score}/100**, ${product.impactTag})."
+            )
         }
     }
 
-    Q_RECYCLE -> {
-        val advice = when (product.category) {
-            "Electrónica" -> "Llévalo a un punto de recolección de residuos electrónicos autorizado en Colombia, para evitar la contaminación por metales pesados."
-            "Alimentos" -> "El empaque es biodegradable o reciclable. Separa los residuos orgánicos de los envases y usa la caneca que corresponda al código de colores local."
-            "Calzado" -> "Si todavía sirve, dónalo. Si está desgastado, llévalo a puntos de acopio de calzado o textil, o a programas de recolección de marcas."
-            else -> "Consulta las guías de separación de residuos y los puntos limpios de tu ciudad para materiales de tipo ${product.category}."
+    Question.RECYCLE -> {
+        val cat = product.category.lowercase()
+        val advice = when {
+            cat.contains("electr") -> tr(
+                "Llévalo a un punto de recolección de residuos electrónicos autorizado en Colombia, para evitar la contaminación por metales pesados.",
+                "Take it to an authorized e-waste collection point to avoid heavy-metal contamination."
+            )
+            cat.contains("aliment") || cat.contains("food") -> tr(
+                "El empaque es biodegradable o reciclable. Separa los residuos orgánicos de los envases y usa la caneca que corresponda al código de colores local.",
+                "The packaging is biodegradable or recyclable. Separate organic waste from containers and use the bin that matches your local color code."
+            )
+            cat.contains("calzado") || cat.contains("footwear") || cat.contains("shoe") -> tr(
+                "Si todavía sirve, dónalo. Si está desgastado, llévalo a puntos de acopio de calzado o textil, o a programas de recolección de marcas.",
+                "If it is still usable, donate it. If it is worn out, take it to footwear or textile drop-off points, or to brand take-back programs."
+            )
+            else -> tr(
+                "Consulta las guías de separación de residuos y los puntos limpios de tu ciudad para materiales de tipo ${product.category}.",
+                "Check your city's waste-sorting guides and recycling points for ${product.category} materials."
+            )
         }
-        "Reciclabilidad registrada: **${product.recyclability}**.\n\n$advice"
+        tr(
+            "Reciclabilidad registrada: **${product.recyclability}**.\n\n$advice",
+            "Recorded recyclability: **${product.recyclability}**.\n\n$advice"
+        )
     }
 
-    Q_COMPARE -> {
+    Question.COMPARE -> {
         val ranking = ProductStore.products.sortedByDescending { it.score }
         val position = ranking.indexOfFirst { it.id == product.id } + 1
+        val here = tr("  ◀ este", "  ◀ this one")
         val lines = ranking.mapIndexed { i, p ->
-            "${i + 1}. ${p.name} — ${p.score}/100" + if (p.id == product.id) "  ◀ este" else ""
+            "${i + 1}. ${p.name} — ${p.score}/100" + if (p.id == product.id) here else ""
         }.joinToString("\n")
-        "**${product.name}** ocupa el puesto **$position de ${ranking.size}** entre los productos registrados en TRACE.\n\n$lines"
+        tr(
+            "**${product.name}** ocupa el puesto **$position de ${ranking.size}** entre los productos registrados en TRACE.\n\n$lines",
+            "**${product.name}** ranks **$position of ${ranking.size}** among the products registered in TRACE.\n\n$lines"
+        )
     }
-
-    else -> "Analicé **${product.name}**: puntaje ${product.score}/100, ${product.impactTag}."
 }
 
 @Preview(showBackground = true)

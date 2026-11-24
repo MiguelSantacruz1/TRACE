@@ -1,5 +1,6 @@
 package com.example.trace.ui
 
+import com.example.trace.i18n.tr
 import com.example.trace.ui.theme.Tint
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -69,7 +70,7 @@ fun ProductResultScreen(
 
     TraceScaffold(
         modifier = modifier,
-        title = "Producto detectado",
+        title = tr("Producto detectado", "Product detected"),
         onBack = onGoHome
     ) {
         // Tarjeta héroe con el score
@@ -113,16 +114,16 @@ fun ProductResultScreen(
                 shape = RoundedCornerShape(22.dp)
             ) {
                 Column(Modifier.fillMaxWidth().padding(18.dp)) {
-                    SectionLabel("ANÁLISIS DE LA IA")
+                    SectionLabel(tr("ANÁLISIS DE LA IA", "AI ANALYSIS"))
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        text = product.summary ?: "La IA identificó el producto pero no dejó un resumen.",
+                        text = product.summary ?: tr("La IA identificó el producto pero no dejó un resumen.", "The AI identified the product but left no summary."),
                         style = MaterialTheme.typography.bodyMedium,
                         color = TextHi
                     )
                     if (product.sources.isNotEmpty()) {
                         Spacer(Modifier.height(14.dp))
-                        Text("FUENTES WEB", style = MaterialTheme.typography.labelSmall, color = TextMid)
+                        Text(tr("FUENTES WEB", "WEB SOURCES"), style = MaterialTheme.typography.labelSmall, color = TextMid)
                         Spacer(Modifier.height(6.dp))
                         product.sources.forEach { src ->
                             Text(
@@ -140,7 +141,7 @@ fun ProductResultScreen(
                     }
                     Spacer(Modifier.height(10.dp))
                     Text(
-                        text = "Calificación estimada por IA a partir de información pública. Puede contener errores.",
+                        text = tr("Calificación estimada por IA a partir de información pública. Puede contener errores.", "Rating estimated by AI from public information. It may contain errors."),
                         style = MaterialTheme.typography.labelSmall,
                         color = TextMid
                     )
@@ -148,35 +149,35 @@ fun ProductResultScreen(
             }
         }
 
-        SectionLabel("MÉTRICAS DE SOSTENIBILIDAD", Modifier.staggerIn(1))
+        SectionLabel(tr("MÉTRICAS DE SOSTENIBILIDAD", "SUSTAINABILITY METRICS"), Modifier.staggerIn(1))
 
         MetricItemCard(
-            title = "Impacto ambiental",
+            title = tr("Impacto ambiental", "Environmental impact"),
             value = product.impactTag,
-            description = "Huella de carbono y emisiones durante la producción.",
+            description = tr("Huella de carbono y emisiones durante la producción.", "Carbon footprint and emissions during production."),
             accent = NeonMint,
             modifier = Modifier.staggerIn(2)
         )
         MetricItemCard(
-            title = "Reparabilidad",
+            title = tr("Reparabilidad", "Repairability"),
             value = product.repairability,
-            description = "Capacidad para reparar y sustituir componentes.",
+            description = tr("Capacidad para reparar y sustituir componentes.", "Ability to repair and replace components."),
             accent = NeonCyan,
             index = product.repairIndex,
             modifier = Modifier.staggerIn(3)
         )
         MetricItemCard(
-            title = "Reciclabilidad",
+            title = tr("Reciclabilidad", "Recyclability"),
             value = product.recyclability,
-            description = "Proporción de materiales reciclables o biodegradables.",
+            description = tr("Proporción de materiales reciclables o biodegradables.", "Share of recyclable or biodegradable materials."),
             accent = NeonLime,
             index = product.recycleIndex,
             modifier = Modifier.staggerIn(4)
         )
         MetricItemCard(
-            title = "Transporte y logística",
-            value = product.transport ?: "Información no disponible",
-            description = "Método de envío e impacto logístico.",
+            title = tr("Transporte y logística", "Transport and logistics"),
+            value = product.transport ?: tr("Información no disponible", "Information not available"),
+            description = tr("Método de envío e impacto logístico.", "Shipping method and logistics impact."),
             accent = NeonViolet,
             modifier = Modifier.staggerIn(5)
         )
@@ -188,26 +189,26 @@ fun ProductResultScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             NeonButton(
-                text = "Ver investigación",
+                text = tr("Ver investigación", "View investigation"),
                 onClick = onViewInvestigation,
                 modifier = Modifier.fillMaxWidth()
             )
             NeonButton(
-                text = "Preguntar a TRACE AI",
+                text = tr("Preguntar a TRACE AI", "Ask TRACE AI"),
                 style = NeonStyle.Secondary,
                 onClick = onAskAiClick,
                 modifier = Modifier.fillMaxWidth()
             )
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 NeonButton(
-                    text = "Escanear otro",
+                    text = tr("Escanear otro", "Scan another"),
                     style = NeonStyle.Ghost,
                     height = 50.dp,
                     onClick = onScanAnother,
                     modifier = Modifier.weight(1f)
                 )
                 NeonButton(
-                    text = "Inicio",
+                    text = tr("Inicio", "Home"),
                     style = NeonStyle.Ghost,
                     height = 50.dp,
                     onClick = onGoHome,

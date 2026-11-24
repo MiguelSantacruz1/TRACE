@@ -1,5 +1,6 @@
 package com.example.trace.ui.components
 
+import com.example.trace.i18n.tr
 import com.example.trace.ui.theme.Tint
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -96,9 +97,9 @@ fun scoreColor(score: Int): Color = when {
 }
 
 fun scoreRating(score: Int): String = when {
-    score >= 80 -> "SOSTENIBILIDAD MUY ALTA"
-    score >= 65 -> "SOSTENIBILIDAD ACEPTABLE"
-    else -> "SOSTENIBILIDAD BAJA"
+    score >= 80 -> tr("SOSTENIBILIDAD MUY ALTA", "VERY HIGH SUSTAINABILITY")
+    score >= 65 -> tr("SOSTENIBILIDAD ACEPTABLE", "ACCEPTABLE SUSTAINABILITY")
+    else -> tr("SOSTENIBILIDAD BAJA", "LOW SUSTAINABILITY")
 }
 
 // ── Fondo ────────────────────────────────────────────────────────────────────
@@ -361,7 +362,7 @@ fun TraceTopBar(title: String, onBack: () -> Unit, modifier: Modifier = Modifier
                 .clip(CircleShape)
                 .background(Tint.copy(alpha = 0.06f))
                 .border(1.dp, NeonMint.copy(alpha = 0.4f), CircleShape)
-                .semantics { contentDescription = "Volver" }
+                .semantics { contentDescription = tr("Volver", "Back") }
                 .clickable(role = Role.Button, onClick = onBack),
             contentAlignment = Alignment.Center
         ) {

@@ -1,5 +1,6 @@
 package com.example.trace
 
+import com.example.trace.i18n.Lang
 import com.example.trace.ui.theme.ThemeMode
 import androidx.compose.runtime.SideEffect
 import android.graphics.Color
@@ -20,6 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         ProductStore.init(this)
         ThemeMode.init(this)
+        Lang.init(this)
         setContent {
             // Íconos de las barras del sistema acordes al modo, transparentes sobre el fondo.
             val dark = ThemeMode.dark

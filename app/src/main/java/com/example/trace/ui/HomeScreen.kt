@@ -1,5 +1,10 @@
 package com.example.trace.ui
 
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import com.example.trace.i18n.Lang
+import com.example.trace.i18n.tr
 import com.example.trace.ui.theme.Tint
 import com.example.trace.ui.theme.ThemeMode
 import androidx.compose.foundation.border
@@ -78,7 +83,7 @@ fun HomeScreen(
         StatsRow(products, Modifier.staggerIn(2))
 
         SectionLabel(
-            text = "ÚLTIMOS ESCANEOS",
+            text = tr("ÚLTIMOS ESCANEOS", "LATEST SCANS"),
             trailing = "${products.size}",
             modifier = Modifier.staggerIn(3)
         )
@@ -113,11 +118,13 @@ fun HeaderSection(modifier: Modifier = Modifier) {
             )
             Spacer(Modifier.width(8.dp))
             Text(
-                text = "EN LÍNEA · V1.0",
+                text = "V1.0",
                 style = MaterialTheme.typography.labelSmall,
                 color = NeonMint
             )
             Spacer(Modifier.weight(1f))
+            LangToggle()
+            Spacer(Modifier.width(8.dp))
             ModeToggle()
         }
         Spacer(Modifier.height(6.dp))
@@ -132,7 +139,7 @@ fun HeaderSection(modifier: Modifier = Modifier) {
             )
         )
         Text(
-            text = "INVESTIGA LO QUE COMPRAS",
+            text = tr("INVESTIGA LO QUE COMPRAS", "INVESTIGATE WHAT YOU BUY"),
             style = MaterialTheme.typography.labelLarge,
             color = TextMid
         )
@@ -140,10 +147,30 @@ fun HeaderSection(modifier: Modifier = Modifier) {
 }
 
 @Composable
+private fun LangToggle() {
+    val shape = RoundedCornerShape(50)
+    val label = buildAnnotatedString {
+        withStyle(SpanStyle(color = if (Lang.en) TextMid else NeonMint)) { append("ES") }
+        withStyle(SpanStyle(color = TextMid)) { append(" | ") }
+        withStyle(SpanStyle(color = if (Lang.en) NeonMint else TextMid)) { append("EN") }
+    }
+    Text(
+        text = label,
+        style = MaterialTheme.typography.labelSmall,
+        modifier = Modifier
+            .clip(shape)
+            .background(Tint.copy(alpha = 0.06f))
+            .border(1.dp, NeonMint.copy(alpha = 0.5f), shape)
+            .clickable { Lang.toggle() }
+            .padding(horizontal = 12.dp, vertical = 7.dp)
+    )
+}
+
+@Composable
 private fun ModeToggle() {
     val shape = RoundedCornerShape(50)
     Text(
-        text = if (ThemeMode.dark) "MODO CLARO" else "MODO OSCURO",
+        text = if (ThemeMode.dark) tr("MODO CLARO", "LIGHT MODE") else tr("MODO OSCURO", "DARK MODE"),
         style = MaterialTheme.typography.labelSmall,
         color = TextHi,
         modifier = Modifier
@@ -164,20 +191,20 @@ fun ScanHeroCard(onScanClick: () -> Unit, modifier: Modifier = Modifier) {
                 Spacer(Modifier.width(18.dp))
                 Column {
                     Text(
-                        text = "Descubre el rastro de cada producto",
+                        text = tr("Descubre el rastro de cada producto", "Discover the trace of every product"),
                         style = MaterialTheme.typography.titleMedium,
                         color = TextHi
                     )
                     Spacer(Modifier.height(6.dp))
                     Text(
-                        text = "Origen, transporte, reciclaje y un puntaje de sostenibilidad en segundos.",
+                        text = tr("Origen, transporte, reciclaje y un puntaje de sostenibilidad en segundos.", "Origin, transport, recycling and a sustainability score in seconds."),
                         style = MaterialTheme.typography.bodySmall,
                         color = TextMid
                     )
                 }
             }
             NeonButton(
-                text = "Escanear producto",
+                text = tr("Escanear producto", "Scan product"),
                 onClick = onScanClick,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -245,9 +272,9 @@ private fun StatsRow(products: List<Product>, modifier: Modifier = Modifier) {
     val best = products.maxOfOrNull { it.score } ?: 0
 
     Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        StatTile("${products.size}", "ANALIZADOS", NeonCyan, Modifier.weight(1f))
-        StatTile("$average", "PROMEDIO", NeonLime, Modifier.weight(1f))
-        StatTile("$best", "MEJOR SCORE", NeonMint, Modifier.weight(1f))
+        StatTile("${products.size}", tr("ANALIZADOS", "ANALYZED"), NeonCyan, Modifier.weight(1f))
+        StatTile("$average", tr("PROMEDIO", "AVERAGE"), NeonLime, Modifier.weight(1f))
+        StatTile("$best", tr("MEJOR SCORE", "BEST SCORE"), NeonMint, Modifier.weight(1f))
     }
 }
 

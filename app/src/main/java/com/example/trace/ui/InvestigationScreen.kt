@@ -1,5 +1,6 @@
 package com.example.trace.ui
 
+import com.example.trace.i18n.tr
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -64,7 +65,7 @@ fun InvestigationScreen(
 
     TraceScaffold(
         modifier = modifier,
-        title = "Investigación",
+        title = tr("Investigación", "Investigation"),
         onBack = onBackClick,
         spacing = 18.dp
     ) {
@@ -101,7 +102,7 @@ fun InvestigationScreen(
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        text = "Puntuación de sostenibilidad",
+                        text = tr("Puntuación de sostenibilidad", "Sustainability score"),
                         style = MaterialTheme.typography.titleMedium,
                         color = TextHi
                     )
@@ -111,7 +112,7 @@ fun InvestigationScreen(
             }
         }
 
-        SectionLabel("PILARES DE SOSTENIBILIDAD", Modifier.staggerIn(2))
+        SectionLabel(tr("PILARES DE SOSTENIBILIDAD", "SUSTAINABILITY PILLARS"), Modifier.staggerIn(2))
 
         Column(
             modifier = Modifier.fillMaxWidth().staggerIn(3),
@@ -121,33 +122,33 @@ fun InvestigationScreen(
                 modifier = Modifier.height(IntrinsicSize.Max),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                PillarTile("Impacto", product.impactTag, NeonMint, Modifier.weight(1f).fillMaxHeight())
-                PillarTile("Transporte", product.transport ?: "No disponible", NeonViolet, Modifier.weight(1f).fillMaxHeight())
+                PillarTile(tr("Impacto", "Impact"), product.impactTag, NeonMint, Modifier.weight(1f).fillMaxHeight())
+                PillarTile(tr("Transporte", "Transport"), product.transport ?: tr("No disponible", "Not available"), NeonViolet, Modifier.weight(1f).fillMaxHeight())
             }
             Row(
                 modifier = Modifier.height(IntrinsicSize.Max),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                PillarTile("Reparabilidad", product.repairability, NeonCyan, Modifier.weight(1f).fillMaxHeight())
-                PillarTile("Reciclabilidad", product.recyclability, NeonLime, Modifier.weight(1f).fillMaxHeight())
+                PillarTile(tr("Reparabilidad", "Repairability"), product.repairability, NeonCyan, Modifier.weight(1f).fillMaxHeight())
+                PillarTile(tr("Reciclabilidad", "Recyclability"), product.recyclability, NeonLime, Modifier.weight(1f).fillMaxHeight())
             }
         }
 
         // Línea de tiempo
         val stages = listOf(
-            TimelineStage("Materia prima", product.rawMaterial),
-            TimelineStage("Fabricación", product.manufacturing),
-            TimelineStage("País de origen", product.countryOfOrigin),
-            TimelineStage("Transporte", product.transport),
-            TimelineStage("País de destino", product.destinationCountry),
-            TimelineStage("Tienda", product.store),
-            TimelineStage("Consumidor", product.consumerStage)
+            TimelineStage(tr("Materia prima", "Raw material"), product.rawMaterial),
+            TimelineStage(tr("Fabricación", "Manufacturing"), product.manufacturing),
+            TimelineStage(tr("País de origen", "Country of origin"), product.countryOfOrigin),
+            TimelineStage(tr("Transporte", "Transport"), product.transport),
+            TimelineStage(tr("País de destino", "Destination country"), product.destinationCountry),
+            TimelineStage(tr("Tienda", "Store"), product.store),
+            TimelineStage(tr("Consumidor", "Consumer"), product.consumerStage)
         )
         val verified = stages.count { !it.value.isNullOrBlank() }
 
         SectionLabel(
-            text = "RECORRIDO DEL PRODUCTO",
-            trailing = "$verified/${stages.size} VERIFICADAS",
+            text = tr("RECORRIDO DEL PRODUCTO", "PRODUCT JOURNEY"),
+            trailing = tr("$verified/${stages.size} VERIFICADAS", "$verified/${stages.size} VERIFIED"),
             modifier = Modifier.staggerIn(4)
         )
 
@@ -172,13 +173,13 @@ fun InvestigationScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             NeonButton(
-                text = "Preguntar a TRACE AI",
+                text = tr("Preguntar a TRACE AI", "Ask TRACE AI"),
                 style = NeonStyle.Secondary,
                 onClick = onAskAiClick,
                 modifier = Modifier.fillMaxWidth()
             )
             NeonButton(
-                text = "Volver al inicio",
+                text = tr("Volver al inicio", "Back to home"),
                 style = NeonStyle.Ghost,
                 height = 50.dp,
                 onClick = onGoHome,
@@ -201,7 +202,7 @@ fun TimelineItemRow(
     modifier: Modifier = Modifier
 ) {
     val isAvailable = !stage.value.isNullOrBlank()
-    val displayValue = if (isAvailable) stage.value!! else "Información no disponible"
+    val displayValue = if (isAvailable) stage.value!! else tr("Información no disponible", "Information not available")
     val nodeColor = if (isAvailable) NeonMint else TextLow
 
     Row(
